@@ -21,7 +21,7 @@ public class UserService {
     @Path("login")
     @POST
     public User login(Credentials credentials) {
-        User user = findUserByUsername(credentials.username);
+        User user = findByUsername(credentials.username);
         System.out.println(user);
         if (user != null && user.getPassword().compareTo(credentials.password) == 0)
             return user;
@@ -37,7 +37,7 @@ public class UserService {
         return user;
     }
 
-    public User findUserByUsername(String username) {
+    public User findByUsername(String username) {
         TypedQuery<User> query = entityManager.createNamedQuery("User.findByUsername", User.class);
         query.setParameter("username", username);
         List<User> users = query.getResultList();
@@ -48,7 +48,7 @@ public class UserService {
     }
 
     public void createAdmin() {
-        if (findUserByUsername("admin") != null)
+        if (findByUsername("admin") != null)
             return;
 
         User admin = new User();

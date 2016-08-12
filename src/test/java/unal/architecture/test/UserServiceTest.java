@@ -1,8 +1,6 @@
 package unal.architecture.test;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import unal.architecture.entity.User;
 import unal.architecture.rest.UserService;
 
@@ -22,16 +20,24 @@ public class UserServiceTest {
         Object lookup = EJBContainer.createEJBContainer().getContext().lookup(JNDI);
         assertTrue(lookup instanceof UserService);
         service = (UserService) lookup;
-        service.createAdmin();
     }
 
     @AfterClass
     public static void afterClass() throws NamingException {
     }
 
+    @Before
+    public void before() {
+    }
+
+    @After
+    public void after() {
+    }
+
     @Test
-    public void testFindByUsername() {
-        User user = service.findUserByUsername("admin");
+    public void testAdmin() {
+        service.createAdmin();
+        User user = service.findByUsername("admin");
         assertNotNull(user);
     }
 }
