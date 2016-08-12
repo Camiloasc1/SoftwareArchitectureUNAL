@@ -14,7 +14,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class UserServiceTest {
-    private static final String JNDI = "java:global/SoftwareArchitecture/UserService";
+    private static final String JNDI = "java:global/SoftwareArchitectureUNAL/UserService";
     private static UserService service;
 
     @BeforeClass
