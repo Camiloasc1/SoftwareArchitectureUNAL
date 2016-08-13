@@ -6,9 +6,6 @@ import unal.architecture.rest.UserService;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.MediaType;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

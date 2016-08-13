@@ -53,22 +53,11 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*Integration.java</exclude>
-                    </excludes>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.19.1</version>
-                <configuration>
-                    <includes>
-                        <include>**/*Integration.java</include>
-                    </includes>
-                </configuration>
-
                 <executions>
                     <execution>
                         <goals>
@@ -78,8 +67,8 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- https://mvnrepository.com/artifact/org.apache.tomee.maven/tomee-maven-plugin -->
             <plugin>
-                <!-- https://mvnrepository.com/artifact/org.apache.tomee.maven/tomee-maven-plugin -->
                 <groupId>org.apache.tomee.maven</groupId>
                 <artifactId>tomee-maven-plugin</artifactId>
                 <version>7.0.1</version>
@@ -90,9 +79,6 @@
                         <goals>
                             <goal>start</goal>
                         </goals>
-                        <configuration>
-                            <checkStarted>true</checkStarted>
-                        </configuration>
                     </execution>
                     <execution>
                         <id>stop</id>
@@ -102,9 +88,26 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <simpleLog>true</simpleLog>
-                </configuration>
+            </plugin>
+            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-antrun-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>sleep-for-a-while</id>
+                        <phase>pre-integration-test</phase>
+                        <configuration>
+                            <target>
+                                <sleep seconds="15"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

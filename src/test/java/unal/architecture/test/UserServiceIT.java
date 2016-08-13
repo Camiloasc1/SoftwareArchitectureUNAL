@@ -1,29 +1,20 @@
 package unal.architecture.test;
 
 import org.junit.*;
-import unal.architecture.entity.User;
-import unal.architecture.rest.UserService;
 
-import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
-public class UserServiceIntegration {
-    private static final String JNDI = "java:global/SoftwareArchitectureUNAL/UserService";
-    private static UserService service;
+public class UserServiceIT {
+    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/user";
     private static Client client;
 
     @BeforeClass
     public static void beforeClass() throws NamingException {
-        Object lookup = EJBContainer.createEJBContainer().getContext().lookup(JNDI);
-        assertTrue(lookup instanceof UserService);
-        service = (UserService) lookup;
-
         client = ClientBuilder.newClient();
     }
 
@@ -42,9 +33,9 @@ public class UserServiceIntegration {
 
     @Test
     public void testLogin() {
-        String result = client.target("http://localhost:8080/SoftwareArchitectureUNAL/user/")
+        String result = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
                 .get(String.class);
-
+        assertEquals(result, "Hello!");
     }
 }
