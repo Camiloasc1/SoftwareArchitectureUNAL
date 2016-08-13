@@ -18,6 +18,11 @@ public class UserService {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @GET
+    public String hello() {
+        return "Hello!";
+    }
+
     @Path("login")
     @POST
     public User login(Credentials credentials) {
