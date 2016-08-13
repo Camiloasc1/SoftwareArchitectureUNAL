@@ -14,6 +14,12 @@ public class User {
     private String password;
     @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
+    private boolean admin;
+    @Column(nullable = false)
+    private boolean worker;
+    @Column(nullable = false)
+    private boolean salesman;
 
     public User() {
     }
@@ -48,5 +54,42 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
+    public boolean isWorker() {
+        return worker;
+    }
+
+    public void setWorker(boolean worker) {
+        this.worker = worker;
+    }
+
+    public boolean isSalesman() {
+        return salesman;
+    }
+
+    public void setSalesman(boolean salesman) {
+        this.salesman = salesman;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", admin=" + admin +
+                ", worker=" + worker +
+                ", salesman=" + salesman +
+                '}';
     }
 }

@@ -1,25 +1,23 @@
 package unal.architecture.test;
 
 import org.junit.*;
-import unal.architecture.entity.User;
-import unal.architecture.service.UserService;
+import unal.architecture.service.StartupService;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class UserServiceTest {
-    private static final String JNDI = "java:global/SoftwareArchitectureUNAL/UserService";
-    private static UserService service;
+public class StartupServiceTest {
+    private static final String JNDI = "java:global/SoftwareArchitectureUNAL/StartupService";
+    private static StartupService service;
 
     @BeforeClass
     public static void beforeClass() throws NamingException {
         Object lookup = EJBContainer.createEJBContainer().getContext().lookup(JNDI);
         System.out.println(lookup.getClass());
-        assertTrue(lookup instanceof UserService);
-        service = (UserService) lookup;
+        assertTrue(lookup instanceof StartupService);
+        service = (StartupService) lookup;
     }
 
     @AfterClass
@@ -32,12 +30,5 @@ public class UserServiceTest {
 
     @After
     public void after() {
-    }
-
-    @Test
-    public void testAdmin() {
-        User admin = service.findByUsername("admin");
-        assertNotNull(admin);
-        assertTrue(admin.isAdmin());
     }
 }
