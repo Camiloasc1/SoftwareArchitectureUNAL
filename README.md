@@ -1,3 +1,5 @@
 [![Build Status](https://travis-ci.org/Camiloasc1/SoftwareArchitectureUNAL.svg?branch=master)](https://travis-ci.org/Camiloasc1/SoftwareArchitectureUNAL)
 # SoftwareArchitectureUNAL
+
+[![Join the chat at https://gitter.im/softwarearchitectureunal-g6/Lobby](https://badges.gitter.im/softwarearchitectureunal-g6/Lobby.svg)](https://gitter.im/softwarearchitectureunal-g6/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Project for Software Architecture at UNAL
