@@ -1,4 +1,11 @@
 language: java
 script: mvn verify -B
 jdk:
-  - oraclejdk8
+- oraclejdk8
+notifications:
+  webhooks:
+    urls:
+      - secure: "czNLlienfqkRuVjcU1EQJpOMY4m9XhECN+ESweeee5UZCWGL7g35/XWU4WQCmksQNcMIRlIi8Lyejw23ZlSCMWxNEe7+dZYTTfcmWcLE12M9VLjW/RjJjtrnTVKyLKpoyiLqc3wK0/qaxuAvIjg2mOy2lWrLbFDZdk8EEuy3058QBSFTefu+nOxSwe6utY7Z4znwGdWhJ3bC23dKF1cgpIlJfNCQHFC8u0qNGPcEUYuv2h303x+Qv5n/F/nuA2ZWZMICDO3njyG2oiJlsh455Tf1Loh2Ngf5nilSAFDYFuMJoo8hnhrXkPgSwEKpFZMrlLik4dLZjw3WNw/4Mukx5i3A/uDOT4mFvB0MtZlfg/fWf1lg8GHG7SAfwgVbw535cAi7Z6CHawCvcVtdTgSwX/qhzAelMQIw/cduTxfcQj1QA3633nNQOnUg01pOtBLmkVLmZS0TeUOTzEMEkCTVaQVDX48I6OR8W/45e6HGIrFmsQZJxKl/ntjMglgc/qMzDL4FJWQJFFQdRizHIasGUJGRnCSY5FyORMLEWGWSdG65cyTnhklshRPTqqWC1N1b+cq4IxHNjOW8/6ktl1+4vegbSVh0uF2VHD8733rZwXHcgGeJbCnJSWIg0jwJMx568DhNoYGqBwm1pJQyTAZIRb8uRVnpgjJI0qPHAmfByBs="
+    on_success: always  # options: [always|never|change] default: always
+    on_failure: always  # options: [always|never|change] default: always
+    on_start: always     # options: [always|never|change] default: always
