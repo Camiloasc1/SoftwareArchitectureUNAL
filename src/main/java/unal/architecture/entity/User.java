@@ -7,13 +7,13 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue
-    private int id;
-    @Column(unique = true, nullable = false)
-    private String username;
-    @Column(nullable = false)
-    private String password;
+    private long id;
     @Column(nullable = false)
     private String name;
+    @Column(unique = true, nullable = false)
+    private String username;
+    @Column()
+    private String email;
     @Column(nullable = false)
     private boolean admin;
     @Column(nullable = false)
@@ -24,12 +24,20 @@ public class User {
     public User() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsername() {
@@ -40,20 +48,12 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public boolean isAdmin() {
@@ -78,18 +78,5 @@ public class User {
 
     public void setSalesman(boolean salesman) {
         this.salesman = salesman;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", admin=" + admin +
-                ", worker=" + worker +
-                ", salesman=" + salesman +
-                '}';
     }
 }

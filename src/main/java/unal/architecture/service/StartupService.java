@@ -1,6 +1,7 @@
 package unal.architecture.service;
 
 import unal.architecture.entity.User;
+import unal.architecture.entity.UserPassword;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -15,7 +16,7 @@ public class StartupService {
     @EJB
     private UserService userService;
     @PersistenceContext
-    private EntityManager entityManager;
+    private EntityManager em;
 
     @PostConstruct
     public void init() {
@@ -29,10 +30,14 @@ public class StartupService {
         User admin = new User();
         admin.setUsername("admin");
         admin.setName("admin");
-        admin.setPassword("admin");
         admin.setAdmin(true);
         admin.setWorker(true);
         admin.setSalesman(true);
-        entityManager.persist(admin);
+        em.persist(admin);
+
+        UserPassword password = new UserPassword();
+        password.setUser(admin);
+        password.setPassword("admin");
+        em.persist(password);
     }
 }
