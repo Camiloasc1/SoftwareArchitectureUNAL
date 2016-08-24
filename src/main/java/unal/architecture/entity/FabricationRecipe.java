@@ -3,16 +3,14 @@ package unal.architecture.entity;
 import javax.persistence.*;
 
 @Entity
-public class SaleDetail {
+public class FabricationRecipe {
     @Id
     @GeneratedValue
     private long id;
     @ManyToOne(optional = false)
-    private Sale sale;
-    @ManyToOne(optional = false)
     private Product product;
+    @ManyToOne(optional = false)
+    private Material material;
     @Column(nullable = false)
-    private int quantity;
-    @Column(nullable = false)
-    private float price;
+    private float requiredQuantity;
 }
