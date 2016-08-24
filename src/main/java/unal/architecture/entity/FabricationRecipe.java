@@ -13,4 +13,36 @@ public class FabricationRecipe {
     private Material material;
     @Column(nullable = false)
     private float requiredQuantity;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
+
+    public float getRequiredQuantity() {
+        return requiredQuantity;
+    }
+
+    public void setRequiredQuantity(float requiredQuantity) {
+        this.requiredQuantity = requiredQuantity;
+    }
 }

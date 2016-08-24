@@ -17,4 +17,52 @@ public class Material {
     private boolean rawMaterial;
     @Column(nullable = false)
     private String provider;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public float getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(float inventory) {
+        this.inventory = inventory;
+    }
+
+    public boolean isSupply() {
+        return supply;
+    }
+
+    public void setSupply(boolean supply) {
+        this.supply = supply;
+    }
+
+    public boolean isRawMaterial() {
+        return rawMaterial;
+    }
+
+    public void setRawMaterial(boolean rawMaterial) {
+        this.rawMaterial = rawMaterial;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
 }
