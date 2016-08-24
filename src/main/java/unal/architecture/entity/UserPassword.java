@@ -8,7 +8,7 @@ public class UserPassword {
     @Id
     @GeneratedValue
     private long id;
-    @OneToOne
+    @OneToOne(optional = false)
     private User user;
     @Column(nullable = false)
     private String password;
