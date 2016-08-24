@@ -49,13 +49,13 @@ public class UserRESTIT {
         assertNull(user);
 
         //Login.
-        User admin = new User();
-        admin.setUsername("admin");
-        admin.setPassword("admin");
+        Credentials credentials = new Credentials();
+        credentials.setUsername("admin");
+        credentials.setPassword("admin");
         response = client.target(URI)
                 .path("login")
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json(admin));
+                .post(Entity.json(credentials));
         String session = response.getCookies().get("JSESSIONID").getValue();
         user = response.readEntity(User.class);
         assertNotNull(user);
@@ -82,5 +82,26 @@ public class UserRESTIT {
                 .cookie("JSESSIONID", session)
                 .get(User.class);
         assertNull(user);
+    }
+}
+
+class Credentials {
+    private String username;
+    private String password;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -1,6 +1,7 @@
 package unal.architecture.rest;
 
 import unal.architecture.entity.User;
+import unal.architecture.entity.UserPassword;
 import unal.architecture.service.UserService;
 
 import javax.ejb.EJB;
@@ -32,8 +33,8 @@ public class UserREST {
     @POST
     public User login(Credentials credentials,
                       @Context HttpServletRequest request) {
-        User user = userService.findByUsername(credentials.username);
-        if (user == null || user.getPassword().compareTo(credentials.password) != 0) {
+        User user = userService.findByUsername(credentials.getUsername());
+        if (user == null || !userService.compareUserPassword(user, credentials.getPassword())) {
             return null;
         }
         request.getSession().setAttribute("user", user);
@@ -48,8 +49,8 @@ public class UserREST {
 }
 
 class Credentials {
-    public String username;
-    public String password;
+    private String username;
+    private String password;
 
     public String getUsername() {
         return username;
