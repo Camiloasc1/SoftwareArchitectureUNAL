@@ -34,7 +34,7 @@ public class UserREST {
     public User login(Credentials credentials,
                       @Context HttpServletRequest request) {
         User user = userService.findByUsername(credentials.getUsername());
-        if (user == null || !userService.compareUserPassword(user,credentials.getPassword())) {
+        if (user == null || !userService.compareUserPassword(user, credentials.getPassword())) {
             return null;
         }
         request.getSession().setAttribute("user", user);
