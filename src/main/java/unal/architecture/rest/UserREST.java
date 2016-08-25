@@ -1,5 +1,6 @@
 package unal.architecture.rest;
 
+import unal.architecture.entity.Credentials;
 import unal.architecture.entity.User;
 import unal.architecture.entity.UserPassword;
 import unal.architecture.service.UserService;
@@ -45,26 +46,5 @@ public class UserREST {
     @POST
     public void logout(@Context HttpServletRequest request) {
         request.getSession().setAttribute("user", null);
-    }
-}
-
-class Credentials {
-    private String username;
-    private String password;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

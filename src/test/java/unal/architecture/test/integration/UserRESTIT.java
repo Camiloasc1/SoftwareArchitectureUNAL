@@ -1,7 +1,8 @@
-package unal.architecture.test;
+package unal.architecture.test.integration;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
+import unal.architecture.entity.Credentials;
 import unal.architecture.entity.User;
 
 import javax.naming.NamingException;
@@ -82,26 +83,5 @@ public class UserRESTIT {
                 .cookie("JSESSIONID", session)
                 .get(User.class);
         assertNull(user);
-    }
-}
-
-class Credentials {
-    private String username;
-    private String password;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

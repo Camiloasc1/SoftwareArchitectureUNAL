@@ -1,4 +1,4 @@
-package unal.architecture.test;
+package unal.architecture.test.unit;
 
 import org.junit.*;
 import unal.architecture.entity.User;

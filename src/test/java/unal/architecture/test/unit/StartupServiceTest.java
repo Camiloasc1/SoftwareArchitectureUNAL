@@ -1,8 +1,9 @@
-package unal.architecture.test;
+package unal.architecture.test.unit;
 
 import org.junit.*;
 import unal.architecture.service.StartupService;
 
+import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 
@@ -10,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 public class StartupServiceTest {
     private static final String JNDI = "java:global/SoftwareArchitectureUNAL/StartupService";
+    @EJB
     private static StartupService service;
 
     @BeforeClass
