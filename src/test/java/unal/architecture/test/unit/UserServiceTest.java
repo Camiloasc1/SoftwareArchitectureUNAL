@@ -7,6 +7,8 @@ import unal.architecture.service.UserService;
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -32,6 +34,21 @@ public class UserServiceTest {
 
     @After
     public void after() {
+    }
+
+    @Test
+    public void findAll() {
+        List<User> users = userService.findAll();
+        assertTrue(!users.isEmpty());
+
+        boolean found = false;
+        for (User u : users) {
+            if (u.getUsername().equals("admin")) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue(found);
     }
 
     @Test

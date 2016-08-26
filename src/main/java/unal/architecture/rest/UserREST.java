@@ -27,10 +27,10 @@ public class UserREST {
     }
 
     @POST
-    public void create(User user) {
+    public User create(User user) {
         user.setId(0);
         em.persist(user);
-        return;
+        return user;
     }
 
     @GET
@@ -41,11 +41,11 @@ public class UserREST {
 
     @PUT
     @Path("{username}")
-    public void update(@PathParam("username") String username, User user) {
+    public User update(@PathParam("username") String username, User user) {
         user.setId(userService.findByUsername(username).getId());
         user.setUsername(username);
         em.merge(user);
-        return;
+        return user;
     }
 
     @DELETE

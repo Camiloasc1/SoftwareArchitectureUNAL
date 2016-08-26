@@ -80,14 +80,14 @@ public class UserRESTIT {
         user.setName("Test User");
         user.setUsername("testuser");
 
-        response = client.target(URI)
+        user = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json(user));
-        assertEquals(204, response.getStatus());
+                .post(Entity.json(user),User.class);
+        assertNotNull(user);
 
         //Read
         user = client.target(URI)
-                .path("testuser")
+                .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
                 .get(User.class);
         assertNotNull(user);
@@ -96,28 +96,22 @@ public class UserRESTIT {
 
         //Update
         user.setEmail("testuser@architecure.unal");
-        response = client.target(URI)
-                .path("testuser")
-                .request(MediaType.APPLICATION_JSON)
-                .put(Entity.json(user));
-        assertEquals(204, response.getStatus());
-
         user = client.target(URI)
-                .path("testuser")
+                .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
-                .get(User.class);
+                .put(Entity.json(user),User.class);
         assertNotNull(user);
         assertEquals("testuser@architecure.unal", user.getEmail());
 
         //Delete
         response = client.target(URI)
-                .path("testuser")
+                .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
                 .delete();
         assertEquals(204, response.getStatus());
 
         user = client.target(URI)
-                .path("testuser")
+                .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
                 .get(User.class);
         assertNull(user);
