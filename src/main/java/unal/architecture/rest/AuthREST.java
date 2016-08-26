@@ -14,14 +14,12 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 @Stateless
-@Path("user")
+@Path("auth")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class UserREST {
+public class AuthREST {
     @EJB
     UserService userService;
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Path("me")
     @GET

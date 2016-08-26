@@ -15,8 +15,8 @@ import javax.ws.rs.core.Response;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-public class UserRESTIT {
-    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/user";
+public class AuthRESTIT {
+    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/auth";
     private static Client client;
 
     @BeforeClass
