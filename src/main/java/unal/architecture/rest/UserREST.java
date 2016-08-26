@@ -23,29 +23,35 @@ public class UserREST {
 
     @GET
     public List<User> list() {
-        return null;
+        return userService.findAll();
     }
 
     @POST
-    public boolean create(User user) {
-        return false;
+    public void create(User user) {
+        user.setId(0);
+        em.persist(user);
+        return;
     }
 
     @GET
     @Path("{username}")
     public User show(@PathParam("username") String username) {
-        return null;
+        return userService.findByUsername(username);
     }
 
     @PUT
     @Path("{username}")
-    public boolean update(@PathParam("username") String username, User user) {
-        return false;
+    public void update(@PathParam("username") String username, User user) {
+        user.setId(userService.findByUsername(username).getId());
+        user.setUsername(username);
+        em.merge(user);
+        return;
     }
 
     @DELETE
     @Path("{username}")
-    public boolean delete(@PathParam("username") String username) {
-        return false;
+    public void delete(@PathParam("username") String username) {
+        em.remove(userService.findByUsername(username));
+        return;
     }
 }

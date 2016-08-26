@@ -10,6 +10,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import java.util.List;
 
@@ -71,18 +72,18 @@ public class UserRESTIT {
 
     @Test
     public void crudUser() {
+        Response response;
         User user;
-        boolean status;
 
         //Create
         user = new User();
         user.setName("Test User");
         user.setUsername("testuser");
 
-        status = client.target(URI)
+        response = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json(user), Boolean.class);
-        assertTrue(status);
+                .post(Entity.json(user));
+        assertEquals(204, response.getStatus());
 
         //Read
         user = client.target(URI)
@@ -90,28 +91,30 @@ public class UserRESTIT {
                 .request(MediaType.APPLICATION_JSON)
                 .get(User.class);
         assertNotNull(user);
-        assertEquals(user.getName(), "Test User");
-        assertEquals(user.getUsername(), "testuser");
+        assertEquals("Test User", user.getName());
+        assertEquals("testuser", user.getUsername());
 
         //Update
         user.setEmail("testuser@architecure.unal");
-        status = client.target(URI)
+        response = client.target(URI)
+                .path("testuser")
                 .request(MediaType.APPLICATION_JSON)
-                .put(Entity.json(user), Boolean.class);
-        assertTrue(status);
+                .put(Entity.json(user));
+        assertEquals(204, response.getStatus());
 
         user = client.target(URI)
                 .path("testuser")
                 .request(MediaType.APPLICATION_JSON)
                 .get(User.class);
         assertNotNull(user);
-        assertEquals(user.getEmail(), "testuser@architecure.unal");
+        assertEquals("testuser@architecure.unal", user.getEmail());
 
         //Delete
-        status = client.target(URI)
+        response = client.target(URI)
+                .path("testuser")
                 .request(MediaType.APPLICATION_JSON)
-                .delete(Boolean.class);
-        assertTrue(status);
+                .delete();
+        assertEquals(204, response.getStatus());
 
         user = client.target(URI)
                 .path("testuser")

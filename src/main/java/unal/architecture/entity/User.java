@@ -3,7 +3,11 @@ package unal.architecture.entity;
 import javax.persistence.*;
 
 @Entity
-@NamedQuery(name = "User.findByUsername", query = "Select u from User u where u.username = :username")
+@NamedQueries({
+        @NamedQuery(name = "User.findAll", query = "Select u from User u"),
+        @NamedQuery(name = "User.findByUsername", query = "Select u from User u where u.username = :username")
+})
+
 public class User {
     @Id
     @GeneratedValue
