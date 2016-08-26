@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class UserRESTIT {
-    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/user";
+    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/users";
     private static Client client;
 
     @BeforeClass

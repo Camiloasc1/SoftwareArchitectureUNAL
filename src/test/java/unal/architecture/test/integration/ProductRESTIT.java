@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class ProductRESTIT {
-    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/product";
+    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/products";
     private static Client client;
 
     @BeforeClass
