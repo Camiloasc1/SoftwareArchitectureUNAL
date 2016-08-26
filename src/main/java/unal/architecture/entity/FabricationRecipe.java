@@ -12,7 +12,7 @@ public class FabricationRecipe {
     @ManyToOne(optional = false)
     private Material material;
     @Column(nullable = false)
-    private float requiredQuantity;
+    private int requiredQuantity;
 
     public long getId() {
         return id;
@@ -38,11 +38,11 @@ public class FabricationRecipe {
         this.material = material;
     }
 
-    public float getRequiredQuantity() {
+    public int getRequiredQuantity() {
         return requiredQuantity;
     }
 
-    public void setRequiredQuantity(float requiredQuantity) {
+    public void setRequiredQuantity(int requiredQuantity) {
         this.requiredQuantity = requiredQuantity;
     }
 }

@@ -3,6 +3,9 @@ package unal.architecture.entity;
 import javax.persistence.*;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Material.findAll", query = "Select m from Material m")
+})
 public class Material {
     @Id
     @GeneratedValue
@@ -10,7 +13,7 @@ public class Material {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    private float inventory;
+    private int inventory;
     @Column(nullable = false)
     private boolean supply;
     @Column(nullable = false)
@@ -34,11 +37,11 @@ public class Material {
         this.name = name;
     }
 
-    public float getInventory() {
+    public int getInventory() {
         return inventory;
     }
 
-    public void setInventory(float inventory) {
+    public void setInventory(int inventory) {
         this.inventory = inventory;
     }
 
