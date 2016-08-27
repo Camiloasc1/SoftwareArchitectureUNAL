@@ -52,4 +52,27 @@ public class Sale {
     public void setSeller(User seller) {
         this.seller = seller;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Sale)) return false;
+
+        Sale sale = (Sale) o;
+
+        if (id != sale.id) return false;
+        if (date != null ? !date.equals(sale.date) : sale.date != null) return false;
+        if (client != null ? !client.equals(sale.client) : sale.client != null) return false;
+        return seller != null ? seller.equals(sale.seller) : sale.seller == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (client != null ? client.hashCode() : 0);
+        result = 31 * result + (seller != null ? seller.hashCode() : 0);
+        return result;
+    }
 }

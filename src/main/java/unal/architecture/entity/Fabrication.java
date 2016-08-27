@@ -62,4 +62,29 @@ public class Fabrication {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Fabrication)) return false;
+
+        Fabrication that = (Fabrication) o;
+
+        if (id != that.id) return false;
+        if (quantity != that.quantity) return false;
+        if (product != null ? !product.equals(that.product) : that.product != null) return false;
+        if (worker != null ? !worker.equals(that.worker) : that.worker != null) return false;
+        return date != null ? date.equals(that.date) : that.date == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (product != null ? product.hashCode() : 0);
+        result = 31 * result + (worker != null ? worker.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + quantity;
+        return result;
+    }
 }
