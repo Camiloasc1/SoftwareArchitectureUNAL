@@ -20,6 +20,8 @@ public class Credit {
     private float interest;
     @Column(nullable = false)
     private boolean paid;
+    @ManyToOne(optional = false)
+    private User user;
 
     public long getId() {
         return id;
@@ -53,6 +55,14 @@ public class Credit {
         this.paid = paid;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,7 +73,8 @@ public class Credit {
         if (id != credit.id) return false;
         if (Float.compare(credit.interest, interest) != 0) return false;
         if (paid != credit.paid) return false;
-        return date != null ? date.equals(credit.date) : credit.date == null;
+        if (date != null ? !date.equals(credit.date) : credit.date != null) return false;
+        return user != null ? user.equals(credit.user) : credit.user == null;
 
     }
 
@@ -73,6 +84,7 @@ public class Credit {
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (interest != +0.0f ? Float.floatToIntBits(interest) : 0);
         result = 31 * result + (paid ? 1 : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
         return result;
     }
 }
