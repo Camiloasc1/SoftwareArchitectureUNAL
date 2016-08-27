@@ -36,7 +36,6 @@ public class CreditRESTIT {
     }
 
     @Test
-    @Ignore
     public void crudProduct() {
         Response response;
         Credit credit;

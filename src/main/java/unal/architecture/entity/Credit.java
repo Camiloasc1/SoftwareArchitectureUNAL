@@ -1,7 +1,9 @@
 package unal.architecture.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @NamedQueries({
@@ -12,7 +14,8 @@ public class Credit {
     @GeneratedValue
     private long id;
     @Column(nullable = false)
-    private java.sql.Date date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private Date date;
     @Column(nullable = false)
     private float interest;
     @Column(nullable = false)

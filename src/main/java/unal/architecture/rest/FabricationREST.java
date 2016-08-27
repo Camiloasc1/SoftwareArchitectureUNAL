@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -30,6 +31,7 @@ public class FabricationREST {
     @POST
     public Fabrication create(Fabrication fabrication) {
         fabrication.setId(0);
+        fabrication.setDate(new Date());
         em.persist(fabrication);
         return fabrication;
     }
