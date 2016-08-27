@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Sale.findAll", query = "Select s from Sale s")
+})
 public class Sale {
     @Id
     @GeneratedValue

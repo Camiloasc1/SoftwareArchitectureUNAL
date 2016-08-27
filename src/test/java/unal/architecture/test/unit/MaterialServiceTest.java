@@ -2,7 +2,6 @@ package unal.architecture.test.unit;
 
 import org.junit.*;
 import unal.architecture.entity.Material;
-import unal.architecture.entity.Product;
 import unal.architecture.service.MaterialService;
 
 import javax.ejb.embeddable.EJBContainer;

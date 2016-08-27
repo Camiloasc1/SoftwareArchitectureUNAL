@@ -61,9 +61,9 @@ public class MaterialRESTIT {
         assertNotNull(material);
         assertEquals("Test Product", material.getName());
         assertEquals(0, material.getInventory());
-        assertEquals(false,material.isSupply());
-        assertEquals(false,material.isRawMaterial());
-        assertEquals("Test Provider",material.getProvider());
+        assertEquals(false, material.isSupply());
+        assertEquals(false, material.isRawMaterial());
+        assertEquals("Test Provider", material.getProvider());
 
         //Update
         material.setInventory(100);

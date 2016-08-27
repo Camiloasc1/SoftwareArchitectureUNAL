@@ -1,7 +1,6 @@
 package unal.architecture.service;
 
 import unal.architecture.entity.Material;
-import unal.architecture.entity.Product;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

@@ -11,7 +11,6 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -82,7 +81,7 @@ public class UserRESTIT {
 
         user = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json(user),User.class);
+                .post(Entity.json(user), User.class);
         assertNotNull(user);
 
         //Read
@@ -99,7 +98,7 @@ public class UserRESTIT {
         user = client.target(URI)
                 .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
-                .put(Entity.json(user),User.class);
+                .put(Entity.json(user), User.class);
         assertNotNull(user);
         assertEquals("testuser@architecure.unal", user.getEmail());
 

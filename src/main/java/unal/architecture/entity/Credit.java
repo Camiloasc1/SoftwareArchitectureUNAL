@@ -1,12 +1,12 @@
 package unal.architecture.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Credit.findAll", query = "Select c from Credit c")
+})
 public class Credit {
     @Id
     @GeneratedValue

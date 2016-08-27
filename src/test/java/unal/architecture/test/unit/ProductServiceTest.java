@@ -2,15 +2,13 @@ package unal.architecture.test.unit;
 
 import org.junit.*;
 import unal.architecture.entity.Product;
-import unal.architecture.entity.User;
 import unal.architecture.service.ProductService;
-import unal.architecture.service.UserService;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class ProductServiceTest {
     private static final String JNDI = "java:global/SoftwareArchitectureUNAL/ProductService";

@@ -1,7 +1,6 @@
 package unal.architecture.rest;
 
 import unal.architecture.entity.Product;
-import unal.architecture.entity.User;
 import unal.architecture.service.ProductService;
 
 import javax.ejb.EJB;

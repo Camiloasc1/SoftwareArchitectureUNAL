@@ -1,6 +1,9 @@
 package unal.architecture.test.unit;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import unal.architecture.service.StartupService;
 
 import javax.ejb.EJB;

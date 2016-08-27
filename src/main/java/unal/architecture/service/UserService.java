@@ -13,7 +13,7 @@ public class UserService {
     @PersistenceContext
     private EntityManager em;
 
-    public List<User> findAll(){
+    public List<User> findAll() {
         TypedQuery<User> query = em.createNamedQuery("User.findAll", User.class);
         return query.getResultList();
     }
