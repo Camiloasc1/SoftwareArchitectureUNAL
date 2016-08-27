@@ -13,6 +13,11 @@ public class UserService {
     @PersistenceContext
     private EntityManager em;
 
+    public List<User> findAll() {
+        TypedQuery<User> query = em.createNamedQuery("User.findAll", User.class);
+        return query.getResultList();
+    }
+
     public User findByUsername(String username) {
         TypedQuery<User> query = em.createNamedQuery("User.findByUsername", User.class);
         query.setParameter("username", username);
@@ -30,7 +35,7 @@ public class UserService {
         return password;
     }
 
-    public boolean compareUserPassword(User user, String password) {
+    public boolean checkUserPassword(User user, String password) {
         return findUserPassword(user).equals(password);
     }
 }

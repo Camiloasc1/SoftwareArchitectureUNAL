@@ -3,7 +3,10 @@ package unal.architecture.entity;
 import javax.persistence.*;
 
 @Entity
-@NamedQuery(name = "User.findByUsername", query = "Select u from User u where u.username = :username")
+@NamedQueries({
+        @NamedQuery(name = "User.findAll", query = "Select u from User u"),
+        @NamedQuery(name = "User.findByUsername", query = "Select u from User u where u.username = :username")
+})
 public class User {
     @Id
     @GeneratedValue
@@ -78,5 +81,34 @@ public class User {
 
     public void setSalesman(boolean salesman) {
         this.salesman = salesman;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        if (id != user.id) return false;
+        if (admin != user.admin) return false;
+        if (worker != user.worker) return false;
+        if (salesman != user.salesman) return false;
+        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+        return email != null ? email.equals(user.email) : user.email == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (admin ? 1 : 0);
+        result = 31 * result + (worker ? 1 : 0);
+        result = 31 * result + (salesman ? 1 : 0);
+        return result;
     }
 }

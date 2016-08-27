@@ -1,50 +1,57 @@
 package unal.architecture.rest;
 
-import unal.architecture.entity.Credentials;
 import unal.architecture.entity.User;
-import unal.architecture.entity.UserPassword;
 import unal.architecture.service.UserService;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 @Stateless
-@Path("user")
+@Path("users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserREST {
+    @PersistenceContext
+    private EntityManager em;
     @EJB
     UserService userService;
-    @PersistenceContext
-    private EntityManager entityManager;
 
-    @Path("me")
     @GET
-    public Object me(@Context HttpServletRequest request) {
-        return request.getSession().getAttribute("user");
+    public List<User> list() {
+        return userService.findAll();
     }
 
-    @Path("login")
     @POST
-    public User login(Credentials credentials,
-                      @Context HttpServletRequest request) {
-        User user = userService.findByUsername(credentials.getUsername());
-        if (user == null || !userService.compareUserPassword(user, credentials.getPassword())) {
-            return null;
-        }
-        request.getSession().setAttribute("user", user);
+    public User create(User user) {
+        user.setId(0);
+        em.persist(user);
         return user;
     }
 
-    @Path("logout")
-    @POST
-    public void logout(@Context HttpServletRequest request) {
-        request.getSession().setAttribute("user", null);
+    @GET
+    @Path("{username}")
+    public User show(@PathParam("username") String username) {
+        return userService.findByUsername(username);
+    }
+
+    @PUT
+    @Path("{username}")
+    public User update(@PathParam("username") String username, User user) {
+        user.setId(userService.findByUsername(username).getId());
+        user.setUsername(username);
+        em.merge(user);
+        return user;
+    }
+
+    @DELETE
+    @Path("{username}")
+    public void delete(@PathParam("username") String username) {
+        em.remove(userService.findByUsername(username));
+        return;
     }
 }

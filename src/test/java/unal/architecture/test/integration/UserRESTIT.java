@@ -2,21 +2,21 @@ package unal.architecture.test.integration;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
-import unal.architecture.entity.Credentials;
 import unal.architecture.entity.User;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class UserRESTIT {
-    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/user";
+    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/users";
     private static Client client;
 
     @BeforeClass
@@ -38,49 +38,80 @@ public class UserRESTIT {
     }
 
     @Test
-    public void testLogin() {
+    public void findAdminFromList() {
+        List<User> users;
+
+        users = client.target(URI)
+                .request(MediaType.APPLICATION_JSON)
+                .get(new GenericType<List<User>>() {
+                });
+        assertNotNull(users);
+        assertTrue(!users.isEmpty());
+
+        boolean found = false;
+        for (User u : users) {
+            if (u.getUsername().equals("admin")) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue(found);
+    }
+
+    @Test
+    public void findAdmin() {
+        User user;
+
+        user = client.target(URI)
+                .path("admin")
+                .request(MediaType.APPLICATION_JSON)
+                .get(User.class);
+        assertNotNull(user);
+    }
+
+    @Test
+    public void crudUser() {
         Response response;
         User user;
 
-        //Not logged in yet.
+        //Create
+        user = new User();
+        user.setName("Test User");
+        user.setUsername("testuser");
+
         user = client.target(URI)
-                .path("me")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.json(user), User.class);
+        assertNotNull(user);
+
+        //Read
+        user = client.target(URI)
+                .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
                 .get(User.class);
-        assertNull(user);
+        assertNotNull(user);
+        assertEquals("Test User", user.getName());
+        assertEquals("testuser", user.getUsername());
 
-        //Login.
-        Credentials credentials = new Credentials();
-        credentials.setUsername("admin");
-        credentials.setPassword("admin");
+        //Update
+        user.setEmail("testuser@architecure.unal");
+        user = client.target(URI)
+                .path(user.getUsername())
+                .request(MediaType.APPLICATION_JSON)
+                .put(Entity.json(user), User.class);
+        assertNotNull(user);
+        assertEquals("testuser@architecure.unal", user.getEmail());
+
+        //Delete
         response = client.target(URI)
-                .path("login")
+                .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json(credentials));
-        String session = response.getCookies().get("JSESSIONID").getValue();
-        user = response.readEntity(User.class);
-        assertNotNull(user);
+                .delete();
+        assertEquals(204, response.getStatus());
 
-        //Logged in.
         user = client.target(URI)
-                .path("me")
+                .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
-                .cookie("JSESSIONID", session)
-                .get(User.class);
-        assertNotNull(user);
-
-        //Logout.
-        client.target(URI)
-                .path("logout")
-                .request(MediaType.APPLICATION_JSON)
-                .cookie("JSESSIONID", session)
-                .post(Entity.json(""));
-
-        //Not logged in again.
-        user = client.target(URI)
-                .path("me")
-                .request(MediaType.APPLICATION_JSON)
-                .cookie("JSESSIONID", session)
                 .get(User.class);
         assertNull(user);
     }

@@ -55,4 +55,29 @@ public class SaleDetail {
     public void setPrice(float price) {
         this.price = price;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SaleDetail)) return false;
+
+        SaleDetail that = (SaleDetail) o;
+
+        if (id != that.id) return false;
+        if (quantity != that.quantity) return false;
+        if (Float.compare(that.price, price) != 0) return false;
+        if (sale != null ? !sale.equals(that.sale) : that.sale != null) return false;
+        return product != null ? product.equals(that.product) : that.product == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (sale != null ? sale.hashCode() : 0);
+        result = 31 * result + (product != null ? product.hashCode() : 0);
+        result = 31 * result + quantity;
+        result = 31 * result + (price != +0.0f ? Float.floatToIntBits(price) : 0);
+        return result;
+    }
 }

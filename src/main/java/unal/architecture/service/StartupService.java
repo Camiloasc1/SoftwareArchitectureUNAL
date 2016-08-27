@@ -30,6 +30,7 @@ public class StartupService {
         User admin = new User();
         admin.setUsername("admin");
         admin.setName("admin");
+        admin.setEmail("admin@architecture.unal");
         admin.setAdmin(true);
         admin.setWorker(true);
         admin.setSalesman(true);
