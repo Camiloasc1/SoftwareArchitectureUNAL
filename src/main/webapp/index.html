@@ -23,8 +23,29 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.material-design/0.5.10/css/ripples.min.css">
 </head>
 <body ng-app="SoftwareArchitectureUNAL" ng-controller="NavigationController" ng-cloak>
+
+<nav class="navbar">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#!/">WebSiteName</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#!/">Home</a></li>
+            <li><a href="#!/">Page 1</a></li>
+            <li><a href="#!/">Page 2</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li ng-show="user === null"><a href="#!/login"><span class="glyphicon glyphicon-log-in"></span> Ingresar</a>
+            </li>
+            <li ng-show="user !== null"><a href="#!/me"><span class="glyphicon glyphicon-user"></span> {{user.name}}</a>
+            <li ng-show="user !== null"><a href="#!/" ng-click="logout()"><span
+                    class="glyphicon glyphicon-log-out"></span> Salir</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
 <div class="container">
-    {{user.name}}
     <div ng-view></div>
 </div>
 
