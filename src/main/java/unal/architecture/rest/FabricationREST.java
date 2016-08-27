@@ -1,7 +1,6 @@
 package unal.architecture.rest;
 
 import unal.architecture.entity.Fabrication;
-import unal.architecture.entity.Material;
 import unal.architecture.service.FabricationService;
 
 import javax.ejb.EJB;

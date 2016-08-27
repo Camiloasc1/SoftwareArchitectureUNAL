@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 import static org.junit.Assert.*;
 
 public class FabricationRESTIT {
-    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/products";
+    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/fabrications";
     private static Client client;
 
     @BeforeClass
@@ -38,7 +38,6 @@ public class FabricationRESTIT {
     }
 
     @Test
-    @Ignore
     public void crudProduct() {
         Response response;
         Fabrication fabrication;

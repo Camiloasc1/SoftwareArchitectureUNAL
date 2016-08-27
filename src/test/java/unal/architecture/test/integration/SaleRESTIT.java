@@ -2,7 +2,6 @@ package unal.architecture.test.integration;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
-import unal.architecture.entity.Product;
 import unal.architecture.entity.Sale;
 import unal.architecture.entity.User;
 
@@ -13,12 +12,10 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import java.sql.Date;
-
 import static org.junit.Assert.*;
 
 public class SaleRESTIT {
-    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/products";
+    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/sales";
     private static Client client;
 
     @BeforeClass
@@ -40,7 +37,6 @@ public class SaleRESTIT {
     }
 
     @Test
-    @Ignore
     public void crudProduct() {
         Response response;
         Sale sale;
