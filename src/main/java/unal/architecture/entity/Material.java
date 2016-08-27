@@ -68,4 +68,31 @@ public class Material {
     public void setProvider(String provider) {
         this.provider = provider;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Material)) return false;
+
+        Material material = (Material) o;
+
+        if (id != material.id) return false;
+        if (inventory != material.inventory) return false;
+        if (supply != material.supply) return false;
+        if (rawMaterial != material.rawMaterial) return false;
+        if (name != null ? !name.equals(material.name) : material.name != null) return false;
+        return provider != null ? provider.equals(material.provider) : material.provider == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + inventory;
+        result = 31 * result + (supply ? 1 : 0);
+        result = 31 * result + (rawMaterial ? 1 : 0);
+        result = 31 * result + (provider != null ? provider.hashCode() : 0);
+        return result;
+    }
 }

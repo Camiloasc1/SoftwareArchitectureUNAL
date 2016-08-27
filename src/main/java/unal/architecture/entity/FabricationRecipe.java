@@ -45,4 +45,27 @@ public class FabricationRecipe {
     public void setRequiredQuantity(int requiredQuantity) {
         this.requiredQuantity = requiredQuantity;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof FabricationRecipe)) return false;
+
+        FabricationRecipe that = (FabricationRecipe) o;
+
+        if (id != that.id) return false;
+        if (requiredQuantity != that.requiredQuantity) return false;
+        if (product != null ? !product.equals(that.product) : that.product != null) return false;
+        return material != null ? material.equals(that.material) : that.material == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (product != null ? product.hashCode() : 0);
+        result = 31 * result + (material != null ? material.hashCode() : 0);
+        result = 31 * result + requiredQuantity;
+        return result;
+    }
 }

@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -29,7 +30,7 @@ public class CreditREST {
     @POST
     public Credit create(Credit credit) {
         credit.setId(0);
-        credit.setDate(new java.sql.Date(System.currentTimeMillis()));
+        credit.setDate(new Date());
         em.persist(credit);
         return credit;
     }
