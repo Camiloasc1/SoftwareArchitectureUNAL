@@ -18,11 +18,13 @@
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
     <!-- Bootstrap Material Design -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.material-design/0.5.10/css/bootstrap-material-design.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/bootstrap.material-design/0.5.10/css/bootstrap-material-design.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.material-design/0.5.10/css/ripples.min.css">
 </head>
-<body ng-app="SoftwareArchitectureUNAL" ng-cloak>
+<body ng-app="SoftwareArchitectureUNAL" ng-controller="NavigationController" ng-cloak>
 <div class="container">
+    {{user.name}}
     <div ng-view></div>
 </div>
 

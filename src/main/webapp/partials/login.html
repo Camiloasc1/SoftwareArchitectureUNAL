@@ -1,8 +1,7 @@
 <div class="login">
     <h1>Login</h1>
-    <form method="post">
-        <input type="text" name="u" placeholder="Nombre de usuario" required="required" />
-        <input type="password" name="p" placeholder="Contraseña" required="required" />
-        <button type="submit" class="btn btn-primary btn-block btn-large">Ingresar</button>
-    </form>
+    <input type="text" name="u" placeholder="Nombre de usuario" required="required" ng-model="credentials.username"/>
+    <input type="password" name="p" placeholder="Contraseña" required="required" ng-model="credentials.password"/>
+    <button ng-click="submit()" class="btn btn-primary btn-block btn-large">Ingresar</button>
+    <div>{{message}}</div>
 </div>
