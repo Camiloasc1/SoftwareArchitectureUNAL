@@ -1,0 +1,70 @@
+<div class="users">
+    <h3>Crear un nuevo usuario</h3>
+    <div class="container">
+        <form name="newuser">
+            <div class="form-group">
+                <h4>Nombre:</h4>
+                <input type="text" name="name" placeholder="Nombre" required="required" ng-model="user.name"/>
+            </div>
+            <div class="form-group">
+                <h4>Username:</h4>
+                <input type="text" name="username" placeholder="Nombre de usuario" required="required" ng-model="user.username"/>
+            </div>
+            <div class="form-group">
+                <h4>Password:</h4>
+                <input type="password" name="password" placeholder="Password" required="required" ng-model="password"/>
+                <h4>Confirmar Password:</h4>
+                <input type="password" name="checkPassword" placeholder="Confirmar Password" required="required" ng-model="checkPassword"/>
+            </div>
+            <div class="form-group">
+                <h4>e-mail:</h4>
+                <input type="text" name="email" placeholder="e-mail" ng-model="user.email"/>
+            </div>
+            <br><h4>Tipo de usuario</h4> <br>
+            <input type="radio" name="userType" ng-model="typeUser" value="admin" required="required">Administrador
+            <input type="radio" name="userType" ng-model="typeUser" value="worker">Empleado
+            <input type="radio" name="userType" ng-model="typeUser" value="salesman">Vendedor
+            <br><br>
+            <button ng-click="submit()" ng-disabled="newuser.$invalid" class="btn btn-primary btn-block btn-lg">Crear Usuario</button>
+        </form>
+        <br>
+    </div>
+
+</div>
+
+
+        <!--<form>
+            <div class="form-group">
+                <h3>Nombre:</h3>
+                <input type="text" name="name" placeholder="Nombre" required="required" ng-model="user.name"/>
+            </div>
+            <div class="form-group">
+                <h3>Username:</h3>
+                <input type="text" name="username" placeholder="Nombre de usuario" required="required" ng-model="user.username"/>
+            </div>
+            <div class="form-group">
+                <h3>Password:</h3>
+                <input type="password" name="password" placeholder="Password" required="required" ng-model="user.password"/>
+                <h3>Confirmar Password:</h3>
+                <input type="password" name="cpassword" placeholder="Confirmar Password" required="required" ng-model="user.cpassword"/>
+            </div>
+            <div class="form-group">
+                <h3>e-mail:</h3>
+                <input type="text" name="email" placeholder="e-mail" ng-model="user.email"/>
+            </div>
+            <br><h3>  Tipo de usuario </h3> <br>
+            <label class="radio-inline">
+                <input type="radio" name="userType" ng-model="user.admin">Administrador
+            </label>
+            <label class="">
+                <input type="radio" name="userType" ng-model="user.worker">Empleado
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="userType" ng-model="user.salesman">Vendedor
+            </label>
+            <br><br>
+            <button ng-click="submit()" class="btn btn-primary btn-block btn-lg">Crear Usuario</button>
+        </form>
+    </div>
+
+</div>  -->
