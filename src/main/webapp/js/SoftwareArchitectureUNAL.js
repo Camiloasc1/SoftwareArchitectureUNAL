@@ -92,11 +92,10 @@ app.controller('SalesController', ['$scope', '$http', function ($scope, $http) {
 app.controller('ProductionController', ['$scope', '$http', function ($scope, $http) {
 }]);
 
-app.controller('UsersController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
-    $scope.userPassword = {};
+app.controller('controlUsersController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+    $scope.userPassword = {password:""};
     $scope.typeUser = "";
     $scope.existUser = false;
-    $scope.password = "";
     $scope.checkPassword = "";
 
     $scope.submit = function () {
@@ -152,9 +151,9 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
             templateUrl: 'partials/material.html',
             controller: 'MaterialController'
         })
-        .when('/newuser', {
+        .when('/users', {
             templateUrl: 'partials/users.html',
-            controller: 'UsersController'
+            controller: 'controlUsersController'
         })
         .otherwise({redirectTo: '/'});
 
