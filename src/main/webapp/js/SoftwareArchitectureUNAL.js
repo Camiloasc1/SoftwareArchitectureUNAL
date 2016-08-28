@@ -154,7 +154,7 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
         $http.post('materials', $scope.material)
             .then(function (response) {
                 if (response.status === 200) {
-                    $scope.materialToEdit = {};
+                    $scope.material = {};
                     alert("Agregado correctamente");
                 }
                 else {
@@ -207,11 +207,9 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
                     else $scope.type_edit = "raw";
 
                     $scope.editing = true;
-                    //document.getElementById("editMaterial").setAttribute("hidden","false");
                 } else {
-                    alert("Producto no encontrado");
+                    alert("Material no encontrado");
                     $scope.editing = false;
-                    //document.getElementById("editMaterial").setAttribute("hidden","true");
                 }
             })
     }
@@ -231,15 +229,27 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
 
                 if (response.status === 200) {
                     $scope.materialToEdit = {};
-                    alert("Producto editado correctamente");
+                    alert("Material editado correctamente");
+                    $scope.editing = false;
                 } else {
-                    alert("No se pudo editar el producto");
+                    alert("No se pudieron guardar los cambios");
                 }
 
             });
-
-        $scope.editing = false;
     }
-    
 
+
+    $scope.delete = function () {
+        $http.delete('materials/' + $scope.materialToEdit.id)
+            .then(function (response) {
+                if (response.status === 204) {
+                    $scope.materialToEdit = {};
+                    alert("Material borrado correctamente");
+                    $scope.editing = false;
+                } else {
+                    alert("No se pudo borrar el material");
+                }
+
+            });
+    }
 }]);
