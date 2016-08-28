@@ -1,17 +1,41 @@
 <div class="col-lg-12">
-<form class="form-horizontal">
-    <div class="card">
-        <div class="card-head style-primary">
-            <header><h3>  Crear producto  </h3></header>
-        </div>
-        <div class="card-body">
-            <div class="product">
-                <input type="text" name="n" placeholder="Nombre del producto" required="required" ng-model="product.name" />
-                <input type="text" name="i" placeholder="Cantidad disponible" required="required" ng-model="product.inventory" />
-                <i> $ </i><input type="text" name="p" placeholder="Precio" required="required" ng-model="product.price" />
-                <button type="button" ng-click="submit()" class="btn btn-raised btn-primary" ><i class="glyphicon glyphicon-car-wheel"></i> Crear </button>
-            </div>
+    <div class="jumbotron">
+        <h2 style="color:#60a37e;">Crear producto</h2>
+        <div class="products">
+            <input type="text" name="n" placeholder="Nombre del producto" required="required" ng-model="product.name" />
+            <input type="text" name="i" placeholder="Cantidad disponible" required="required" ng-model="product.inventory" />
+            <i> $ </i><input type="text" name="p" placeholder="Precio" required="required" ng-model="product.price" />
+            <button type="button" ng-click="submit()" class="btn btn-raised btn-primary" ><i class="glyphicon glyphicon-plus"></i> Crear </button>
         </div>
     </div>
-</form>
+</div>
+
+<div class="col-lg-12">
+    <div class="jumbotron">
+        <h2 style="color:#60a37e;">Ver productos</h2>
+
+        <div>
+            <button ng-click="getProducts()" class="btn btn-primary btn-block btn-large">Ver productos</button>
+        </div>
+
+        <div>
+            <table id='table' class="table table-striped table-hover ">
+
+                <th ng-repeat="column in columns" ng-show="column.visible">
+                    {{column.title}}
+                </th>
+                <th>Editar</th>
+                <th>Borrar</th>
+
+                <tr ng-repeat="p in products">
+                    <td>{{p.name}}</td>
+                    <td>{{p.inventory}}</td>
+                    <td>$ {{p.price}}</td>
+                    <td><button type="button" ><i class="glyphicon glyphicon-edit"></i></button></td>
+                    <td><button type="button" ><i class="glyphicon glyphicon-remove"></i></button></td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
 </div>

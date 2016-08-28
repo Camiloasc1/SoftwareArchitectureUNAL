@@ -67,6 +67,7 @@ app.controller('UserController', ['$scope', '$http', function ($scope, $http) {
 
 app.controller('ProductController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
     $scope.product = {};
+    $scope.products = {};
     $scope.submit = function () {
         $http.post('products', $scope.product)
             .then(function (response) {
@@ -75,6 +76,22 @@ app.controller('ProductController', ['$scope', '$http', '$location', function ($
                 }
                 else{
                     alert("No se pudo crear el producto");
+                }
+            });
+    }
+    $scope.getProducts = function () {
+        $http.get('products')
+            .then(function (response) {
+                if (response.status === 200) {
+                    $scope.products = response.data;
+                    $scope.columns = [
+                        { title: 'Nombre', field: 'name', visible: true },
+                        { title: 'Existencias', field: 'inventory', visible: true },
+                        { title: 'Precio', field: 'price', visible: true }
+                    ];
+                }
+                else{
+                    alert("No existen productos en el sistema");
                 }
             });
     }
