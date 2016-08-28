@@ -2,6 +2,7 @@ package unal.architecture.test.integration;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
+import org.junit.rules.ExpectedException;
 import unal.architecture.entity.Credentials;
 import unal.architecture.entity.User;
 
@@ -18,6 +19,9 @@ import static org.junit.Assert.assertNull;
 public class AuthRESTIT {
     private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/auth";
     private static Client client;
+
+    @Rule
+    public ExpectedException thrown= ExpectedException.none();
 
     @BeforeClass
     public static void beforeClass() throws NamingException {
@@ -38,16 +42,21 @@ public class AuthRESTIT {
     }
 
     @Test
-    public void testLogin() {
-        Response response;
+    public void testNotLoggedin(){
         User user;
 
-        //Not logged in yet.
+        thrown.expect(javax.ws.rs.ProcessingException.class);
         user = client.target(URI)
                 .path("me")
                 .request(MediaType.APPLICATION_JSON)
                 .get(User.class);
         assertNull(user);
+    }
+
+    @Test
+    public void testLogin() {
+        Response response;
+        User user;
 
         //Login.
         Credentials credentials = new Credentials();
@@ -77,6 +86,7 @@ public class AuthRESTIT {
                 .post(Entity.json(""));
 
         //Not logged in again.
+        thrown.expect(javax.ws.rs.ProcessingException.class);
         user = client.target(URI)
                 .path("me")
                 .request(MediaType.APPLICATION_JSON)
