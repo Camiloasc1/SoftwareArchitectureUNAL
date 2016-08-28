@@ -65,6 +65,21 @@ app.controller('UserController', ['$scope', '$http', function ($scope, $http) {
     $scope.me();
 }]);
 
+app.controller('ProductController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+    $scope.product = {};
+    $scope.submit = function () {
+        $http.post('products', $scope.product)
+            .then(function (response) {
+                if (response.status === 200) {
+                    alert("producto creado");
+                }
+                else{
+                    alert("No se pudo crear el producto");
+                }
+            });
+    }
+}]);
+
 app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
     $routeProvider
         .when('/', {
@@ -78,6 +93,10 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
         .when('/me', {
             templateUrl: 'partials/me.html',
             controller: 'UserController'
+        })
+        .when('/product', {
+            templateUrl: 'partials/product.html',
+            controller: 'ProductController'
         })
         .otherwise({redirectTo: '/'});
 
