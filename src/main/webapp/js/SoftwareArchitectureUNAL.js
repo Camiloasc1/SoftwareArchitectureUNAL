@@ -14,6 +14,7 @@ app.controller('HomeController', ['$scope', '$http', function ($scope, $http) {
 
 app.controller('MaterialController', ['$scope', '$http', function ($scope, $http) {
     $scope.material = {};
+    $scope.materials = {};
 
     $scope.notRaw = function () {
         $scope.material.rawMaterial = true;
@@ -36,6 +37,29 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
                 }
             });
     }
+
+    $scope.getMaterials = function () {
+        $http.get('materials')
+            .then(function (response) {
+            if (response.status === 200) {
+                //console.log(response.data);
+                $scope.materials = response.data;
+
+                $scope.columns = [
+                    { title: 'Nombre', field: 'name', visible: true },
+                    { title: 'Existencias', field: 'inventory', visible: true },
+                    { title: 'Es suministro?', field: 'supply', visible: true },
+                    { title: 'Es materia prima?', field: 'rawMaterial', visible: true },
+                    { title: 'Proveedor', field: 'provider', visible: true }
+                ];
+
+            }
+            else{
+
+            }
+        });
+    }
+
 }]);
 
 app.controller('LoginController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
