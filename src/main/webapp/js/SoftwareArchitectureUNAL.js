@@ -30,22 +30,24 @@ app.controller('LoginController', ['$scope', '$http', '$location', function ($sc
 }]);
 
 app.controller('UsersController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
-    $scope.user = {};
+    $scope.userPassword = {};
     $scope.typeUser = "";
-    $scope.Password = "";
+    $scope.password = "";
+    $scope.checkPassword = "";
+
 
     $scope.submit = function () {
-        $scope.user.admin = ($scope.typeUser === "admin");
-        $scope.user.worker = ($scope.typeUser === "worker");
-        $scope.user.salesman = ($scope.typeUser === "salesman");
-        $http.post('users', $scope.user)
-             .then(function (response) {
-             if (response.status === 200) {
-                 alert("El usuario se creo correctamente")
-             }
-             else {
-             }
-         });
+        $scope.userPassword.user.admin = ($scope.typeUser === "admin");
+        $scope.userPassword.user.worker = ($scope.typeUser === "worker");
+        $scope.userPassword.user.salesman = ($scope.typeUser === "salesman");
+        $http.post('users', $scope.userPassword)
+            .then(function (response) {
+                if (response.status === 200) {
+                    alert("El usuario se creo correctamente")
+                }
+                else {
+                }
+            });
     }
 }]);
 
