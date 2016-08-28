@@ -1,6 +1,17 @@
-<div class="product">
-    <input type="text" name="n" placeholder="Nombre del producto" required="required" ng-model="product.name" />
-    <input type="text" name="i" placeholder="Cantidad disponible" required="required" ng-model="product.inventory" />
-    <input type="text" name="p" placeholder="Precio" required="required" ng-model="product.price" />
-    <button ng-click="submit()" class="btn btn-primary btn-block btn-large">Crear</button>
+<div class="col-lg-12">
+<form class="form-horizontal">
+    <div class="card">
+        <div class="card-head style-primary">
+            <header><h3>  Crear producto  </h3></header>
+        </div>
+        <div class="card-body">
+            <div class="product">
+                <input type="text" name="n" placeholder="Nombre del producto" required="required" ng-model="product.name" />
+                <input type="text" name="i" placeholder="Cantidad disponible" required="required" ng-model="product.inventory" />
+                <i> $ </i><input type="text" name="p" placeholder="Precio" required="required" ng-model="product.price" />
+                <button type="button" ng-click="submit()" class="btn btn-raised btn-primary" ><i class="glyphicon glyphicon-car-wheel"></i> Crear </button>
+            </div>
+        </div>
+    </div>
+</form>
 </div>
