@@ -2,6 +2,7 @@ package unal.architecture.test.integration;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import unal.architecture.entity.Material;
 
 import javax.naming.NamingException;
@@ -47,7 +48,7 @@ public class MaterialRESTIT {
         material.setSupply(false);
         material.setRawMaterial(false);
         material.setProvider("Test Provider");
-        material.setPrice(1);
+        material.setPrice(0);
 
         material = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
