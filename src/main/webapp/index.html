@@ -31,9 +31,9 @@
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a href="#!/">Inicio</a></li>
-            <li ng-show="user.admin"><a href="#!/">Administracion</a></li>
-            <li ng-show="user.worker"><a href="#!/">Ventas</a></li>
-            <li ng-show="user.salesman"><a href="#!/">Produccion</a></li>
+            <li ng-show="user.admin"><a href="#!/admin">Administracion</a></li>
+            <li ng-show="user.worker"><a href="#!/sales">Ventas</a></li>
+            <li ng-show="user.salesman"><a href="#!/production">Produccion</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li ng-show="user === null"><a href="#!/login"><span class="glyphicon glyphicon-log-in"></span> Ingresar</a>

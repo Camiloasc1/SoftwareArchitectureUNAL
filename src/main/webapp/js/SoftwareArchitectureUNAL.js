@@ -27,9 +27,6 @@ app.controller('NavigationController', ['$scope', '$http', '$location', function
     $scope.me();
 }]);
 
-app.controller('HomeController', ['$scope', '$http', function ($scope, $http) {
-}]);
-
 app.controller('LoginController', ['$scope', '$http', '$location', '$timeout', function ($scope, $http, $location, $timeout) {
     $scope.credentials = {};
     $scope.success = false;
@@ -83,6 +80,18 @@ app.controller('UserController', ['$scope', '$http', function ($scope, $http) {
     $scope.me();
 }]);
 
+app.controller('HomeController', ['$scope', '$http', function ($scope, $http) {
+}]);
+
+app.controller('AdminController', ['$scope', '$http', function ($scope, $http) {
+}]);
+
+app.controller('SalesController', ['$scope', '$http', function ($scope, $http) {
+}]);
+
+app.controller('ProductionController', ['$scope', '$http', function ($scope, $http) {
+}]);
+
 app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
     $routeProvider
         .when('/', {
@@ -96,6 +105,18 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
         .when('/me', {
             templateUrl: 'partials/me.html',
             controller: 'UserController'
+        })
+        .when('/admin', {
+            templateUrl: 'partials/admin.html',
+            controller: 'AdminController'
+        })
+        .when('/sales', {
+            templateUrl: 'partials/sales.html',
+            controller: 'SalesController'
+        })
+        .when('/production', {
+            templateUrl: 'partials/production.html',
+            controller: 'ProductionController'
         })
         .otherwise({redirectTo: '/'});
 
