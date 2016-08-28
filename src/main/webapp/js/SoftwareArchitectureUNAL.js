@@ -135,6 +135,7 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
     $scope.material = {};
     $scope.type = "raw";
     $scope.consult = 0;
+    $scope.editing = false;
 
     $scope.materials = {};
 
@@ -153,6 +154,7 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
         $http.post('materials', $scope.material)
             .then(function (response) {
                 if (response.status === 200) {
+                    $scope.materialToEdit = {};
                     alert("Agregado correctamente");
                 }
                 else {
@@ -204,9 +206,11 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
                     if($scope.materialToEdit.supply) $scope.type_edit = "supply";
                     else $scope.type_edit = "raw";
 
+                    $scope.editing = true;
                     //document.getElementById("editMaterial").setAttribute("hidden","false");
                 } else {
                     alert("Producto no encontrado");
+                    $scope.editing = false;
                     //document.getElementById("editMaterial").setAttribute("hidden","true");
                 }
             })
@@ -234,7 +238,7 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
 
             });
 
-        $scope.getMaterials();
+        $scope.editing = false;
     }
     
 
