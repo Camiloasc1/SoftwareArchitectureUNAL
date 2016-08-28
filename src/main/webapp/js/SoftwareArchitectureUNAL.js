@@ -134,17 +134,18 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
 app.controller('MaterialController', ['$scope', '$http', function ($scope, $http) {
     $scope.material = {};
     $scope.type = "raw";
+    $scope.consult = 0;
 
     $scope.materials = {};
 
     $scope.submit = function () {
 
-        if(!$scope.material.hasOwnProperty('inventory')) return;
+        if (!$scope.material.hasOwnProperty('inventory')) return;
 
-        if($scope.type === "raw"){
+        if ($scope.type === "raw") {
             $scope.material.rawMaterial = true;
             $scope.material.supply = false;
-        }else{
+        } else {
             $scope.material.rawMaterial = false;
             $scope.material.supply = true;
         }
@@ -154,7 +155,7 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
                 if (response.status === 200) {
                     alert("Agregado correctamente");
                 }
-                else{
+                else {
 
                 }
             });
@@ -166,11 +167,11 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
                 if (response.status === 200) {
                     //console.log(response.data);
 
-                    for(var x in response.data){
+                    for (var x in response.data) {
                         var reg = response.data[x];
-                        if(reg.supply){
+                        if (reg.supply) {
                             reg.my_type = "Insumo";
-                        }else{
+                        } else {
                             reg.my_type = "Materia prima";
                         }
                     }
@@ -178,18 +179,31 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
                     $scope.materials = response.data;
 
                     $scope.columns = [
-                        { title: 'Nombre', field: 'name', visible: true },
-                        { title: 'Existencias', field: 'inventory', visible: true },
-                        { title: 'Precio unitario', field: 'price', visible: true },
-                        { title: 'Tipo', field: 'my_type', visible: true },
-                        { title: 'Proveedor', field: 'provider', visible: true }
+                        {title: 'Nombre', field: 'name', visible: true},
+                        {title: 'Existencias', field: 'inventory', visible: true},
+                        {title: 'Precio unitario', field: 'price', visible: true},
+                        {title: 'Tipo', field: 'my_type', visible: true},
+                        {title: 'Proveedor', field: 'provider', visible: true}
                     ];
 
                 }
-                else{
+                else {
 
                 }
             });
     }
+
+    $scope.getMaterialID = function () {
+        $http.get('materials/' + $scope.consult)
+            .then(function (response) {
+
+                if (response.status === 200) {
+                    console.log(response.data);
+                } else {
+                    alert("Producto no encontrado");
+                }
+            })
+    }
+
 
 }]);

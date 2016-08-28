@@ -27,6 +27,32 @@
     <div class="jumbotron">
         <form class="form-horizontal">
             <fieldset>
+                <legend>Consultar material específico</legend>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="control-label col-sm-2" for="username">Referencia de producto:</label>
+                        <div class="col-sm-9">
+                            <input type="number" name="material_id" class="form-control" id="material_id"
+                                   placeholder="0" required="required"
+                                   ng-model="consult"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-offset-1" align="center">
+                        <button type="submit" class="btn btn-primary btn-raised" ng-click="getMaterialID()">Consultar
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        </div>
+    </div>
+
+
+    <div class="jumbotron">
+        <form class="form-horizontal">
+            <fieldset>
                 <legend>Crear Material</legend>
                 <div class="form-group">
                     <div class="row">
