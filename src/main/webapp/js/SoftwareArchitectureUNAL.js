@@ -1,23 +1,22 @@
 "use strict";
 var app = angular.module('SoftwareArchitectureUNAL', ['ngRoute']);
 
-app.controller('NavigationController', ['$scope', '$http', function ($scope, $http) {
+app.controller('NavigationController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
     $scope.user = null;
 
     $scope.me = function () {
         $http.get('auth/me')
             .then(function (response) {
-                if (response.status === 200)
-                    $scope.user = response.data;
-                else
-                    $scope.user = null;
+                $scope.user = response.data;
+            }, function () {
+                $location.path('/');
+                $scope.user = null;
             });
     };
     $scope.logout = function () {
         $http.post('auth/logout', {})
-            .then(function (response) {
-                if (response.status === 204)
-                    $scope.user = null;
+            .then(function () {
+                $scope.user = null;
             });
     };
 
@@ -39,19 +38,16 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$timeout', f
     $scope.submit = function () {
         $http.post('auth/login', $scope.credentials)
             .then(function (response) {
-                if (response.status === 200) {
-                    $scope.success = true;
-                    $scope.error = false;
-                    $scope.$emit('OnLogin', response.data);
-                    $timeout(function () {
-                        $location.path('/');
-                    }, 2500);
-                }
-                else // 204 Error
-                {
-                    $scope.success = false;
-                    $scope.error = true;
-                }
+                $scope.success = true;
+                $scope.error = false;
+                $scope.$emit('OnLogin', response.data);
+                $timeout(function () {
+                    $location.path('/');
+                }, 2500);
+                $scope.credentials = {};
+            }, function () {
+                $scope.success = false;
+                $scope.error = true;
                 $scope.credentials = {};
             });
     };
@@ -59,14 +55,28 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$timeout', f
 
 app.controller('UserController', ['$scope', '$http', function ($scope, $http) {
     $scope.user = {};
+    $scope.success = false;
+    $scope.error = false;
 
     $scope.me = function () {
         $http.get('auth/me')
             .then(function (response) {
-                if (response.status === 200)
-                    $scope.user = response.data;
-                else
-                    $scope.user = null;
+                $scope.user = response.data;
+            }, function () {
+                $scope.user = {};
+            });
+    };
+    $scope.submit = function () {
+        $http.put('users/' + $scope.user.username, $scope.user)
+            .then(function (response) {
+                $scope.success = true;
+                $scope.error = false;
+                $scope.user = response.data;
+                $scope.$emit('OnLogin', response.data);
+            }, function () {
+                $scope.success = false;
+                $scope.error = true;
+                $scope.me();
             });
     };
 

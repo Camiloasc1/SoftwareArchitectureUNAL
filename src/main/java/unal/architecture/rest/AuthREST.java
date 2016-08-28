@@ -21,8 +21,11 @@ public class AuthREST {
 
     @Path("me")
     @GET
-    public Object me(@Context HttpServletRequest request) {
-        return request.getSession().getAttribute("user");
+    public User me(@Context HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null)
+            throw new NotAuthorizedException("");
+        return userService.findByUsername(user.getUsername());
     }
 
     @Path("login")
@@ -31,7 +34,7 @@ public class AuthREST {
                       @Context HttpServletRequest request) {
         User user = userService.findByUsername(credentials.getUsername());
         if (user == null || !userService.checkUserPassword(user, credentials.getPassword())) {
-            return null;
+            throw new NotAuthorizedException("");
         }
         request.getSession().setAttribute("user", user);
         return user;
