@@ -4,8 +4,8 @@
     <form class="ng-dirty ng-valid-parse ng-valid-number ng-submitted ng-valid ng-valid-required">
         Nombre:         <input type="text" name="n" placeholder="Nombre" required="required" ng-model="material.name" class="ng-dirty ng-valid-parse ng-touched ng-not-empty ng-valid ng-valid-required"><br>
         Cantidad:       <input type="number" name="i" placeholder="0" required="required" ng-model="material.inventory" class="ng-not-empty ng-dirty ng-valid-number ng-valid ng-valid-required ng-touched"><br>
-        Materia Prima:  <input type="radio" name="its_type" ng-model="material.rawMaterial" ng-value="true" ng-change="notRaw()" class="ng-valid ng-not-empty ng-dirty ng-touched ng-valid-parse" value="true">Materia Prima<br>
-        Insumo:         <input type="radio" name="its_type" ng-model="material.supply" ng-value="true" ng-change="notSupply()" class="ng-valid ng-not-empty ng-dirty ng-touched" value="true">Insumo<br>
+        Materia Prima:  <input type="radio" name="its_type" required="required" ng-model="type" value="raw" class="ng-valid ng-not-empty ng-dirty ng-touched ng-valid-parse">Materia Prima<br>
+        Insumo:         <input type="radio" name="its_type" required="required" ng-model="type" value="supply" class="ng-valid ng-not-empty ng-dirty ng-touched">Insumo<br>
         Proveedor:      <input type="text" name="p" placeholder="Proveedor" required="required" ng-model="material.provider" class="ng-not-empty ng-dirty ng-valid-parse ng-valid ng-valid-required ng-touched">
 
         <button ng-click="submit()" class="btn btn-primary btn-block btn-large">Ingresar</button>

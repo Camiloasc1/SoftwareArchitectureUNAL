@@ -133,19 +133,22 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
 
 app.controller('MaterialController', ['$scope', '$http', function ($scope, $http) {
     $scope.material = {};
+    $scope.type = "raw";
+
     $scope.materials = {};
 
-    $scope.notRaw = function () {
-        $scope.material.rawMaterial = true;
-        $scope.material.supply = false;
-    };
-
-    $scope.notSupply = function () {
-        $scope.material.supply = true;
-        $scope.material.rawMaterial = false;
-    };
-
     $scope.submit = function () {
+
+        if(!$scope.material.hasOwnProperty('inventory')) return;
+
+        if($scope.type === "raw"){
+            $scope.material.rawMaterial = true;
+            $scope.material.supply = false;
+        }else{
+            $scope.material.rawMaterial = false;
+            $scope.material.supply = true;
+        }
+
         $http.post('materials', $scope.material)
             .then(function (response) {
                 if (response.status === 200) {
