@@ -28,11 +28,15 @@
                 <th>Borrar</th>
 
                 <tr ng-repeat="p in products">
-                    <td>{{p.name}}</td>
-                    <td>{{p.inventory}}</td>
-                    <td>$ {{p.price}}</td>
-                    <td><button type="button" ><i class="glyphicon glyphicon-edit"></i></button></td>
-                    <td><button type="button" ><i class="glyphicon glyphicon-remove"></i></button></td>
+                    <td><span data-ng-hide="editMode">{{p.name}}</span><input type="text" data-ng-show="editMode" data-ng-model="p.name" data-ng-required /></td>
+                    <td><span data-ng-hide="editMode">{{p.inventory}}</span><input type="text" data-ng-show="editMode" data-ng-model="p.inventory" data-ng-required /></td>
+                    <td><span data-ng-hide="editMode">{{p.price}}</span><input type="text" data-ng-show="editMode" data-ng-model="p.price" data-ng-required /></td>
+                    <td>
+                        <button type="submit"   data-ng-hide="editMode" data-ng-click="editMode = true;" class="btn btn-default glyphicon glyphicon-edit"></button>
+                        <button type="submit" data-ng-show="editMode" data-ng-click="editMode = false" class="btn btn-default glyphicon glyphicon-ok"></button>
+                        <button type="submit" data-ng-show="editMode" data-ng-click="editMode = false;" class="btn btn-default glyphicon glyphicon-remove"></button>
+                    </td>
+                    <td><button type="button" ><i class="btn btn-default glyphicon glyphicon-remove"></i></button></td>
                 </tr>
             </table>
         </div>
