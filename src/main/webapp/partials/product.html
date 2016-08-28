@@ -28,12 +28,14 @@
                 <th>Borrar</th>
 
                 <tr ng-repeat="p in products">
-                    <td>{{p.id}}</td>
-                    <td>{{p.name}}</td>
-                    <td>{{p.inventory}}</td>
-                    <td>$ {{p.price}}</td>
-                    <td><button ng-click="getP(p.id)" type="button" class="glyphicon glyphicon-edit"></button></td>
-                    <td><button ng-click="deleteProduct(p.id)" type="button" class="glyphicon glyphicon-remove"></button></td>
+                    <div class="pToUpdate">
+                        <td>{{p.id}}</td>
+                        <td><input type="text"   placeholder="{{p.name}}" ng-model="pToUpdate.name"/></td>
+                        <td><input type="number" placeholder="{{p.inventory}}" ng-model="pToUpdate.inventory"/></td>
+                        <td><input type="number"  placeholder="{{p.price}}" ng-model="pToUpdate.price"/></td>
+                        <td><button ng-click="updateProduct(p.id)" type="button" class="glyphicon glyphicon-edit"></button></td>
+                        <td><button ng-click="deleteProduct(p.id)" type="button" class="glyphicon glyphicon-remove"></button></td>
+                    </div>
                 </tr>
             </table>
         </div>

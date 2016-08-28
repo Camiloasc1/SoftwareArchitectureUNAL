@@ -68,6 +68,7 @@ app.controller('UserController', ['$scope', '$http', function ($scope, $http) {
 app.controller('ProductController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
     $scope.product = {};
     $scope.products = {};
+    $scope.pToUpdate = {};
     $scope.submit = function () {
         $http.post('products', $scope.product)
             .then(function (response) {
@@ -96,13 +97,15 @@ app.controller('ProductController', ['$scope', '$http', '$location', function ($
                 }
             });
     }
-    $scope.getP = function (pId) {
-        $http.get('products/'+pId)
+    $scope.updateProduct = function (pId) {
+        $http.put('products/'+pId, $scope.pToUpdate)
             .then(function (response) {
                 if (response.status === 200) {
-                   alert(response.data);
+                    $scope.pToUpdate = {};
+                    alert("Producto actualizado");
                 }
                 else{
+                    alert("No se pudo editar el producto");
                 }
             });
     }
