@@ -32,23 +32,31 @@ app.controller('LoginController', ['$scope', '$http', '$location', function ($sc
 app.controller('UsersController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
     $scope.userPassword = {};
     $scope.typeUser = "";
+    $scope.existUser = false;
     $scope.password = "";
     $scope.checkPassword = "";
 
-
     $scope.submit = function () {
-        $scope.userPassword.user.admin = ($scope.typeUser === "admin");
-        $scope.userPassword.user.worker = ($scope.typeUser === "worker");
-        $scope.userPassword.user.salesman = ($scope.typeUser === "salesman");
-        $http.post('users', $scope.userPassword)
+        $http.get('users/'+$scope.userPassword.user.name)
             .then(function (response) {
-                if (response.status === 200) {
-                    alert("El usuario se creo correctamente")
-                }
-                else {
+                $scope.existUser = response != null;
+                if( !$scope.existUser ) {
+                    alert("entro");
+                    $scope.userPassword.user.admin = ($scope.typeUser === "admin");
+                    $scope.userPassword.user.worker = ($scope.typeUser === "worker");
+                    $scope.userPassword.user.salesman = ($scope.typeUser === "salesman");
+                    $http.post('users', $scope.userPassword)
+                        .then(function (response) {
+                            if (response.status === 200) {
+                                alert("El usuario se creo correctamente")
+                            }
+                            else {
+                            }
+                        });
                 }
             });
-    }
+
+        }
 }]);
 
 app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
@@ -71,3 +79,5 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
     //$locationProvider.html5Mode(true);
     $locationProvider.hashPrefix('!');
 }]);
+
+

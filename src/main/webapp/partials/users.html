@@ -9,26 +9,32 @@
             <div class="form-group">
                 <h4>Username:</h4>
                 <input type="text" name="username" placeholder="Nombre de usuario" required="required" ng-model="userPassword.user.username"/>
+                <span ng-show="existUser">El usuario ya existe</span>
             </div>
             <div class="form-group">
                 <h4>Password:</h4>
                 <input type="password" name="password" placeholder="Password" required="required" ng-model="userPassword.password"/>
                 <h4>Confirmar Password:</h4>
                 <input type="password" name="checkPassword" placeholder="Confirmar Password" required="required" ng-model="checkPassword"/>
+                <span ng-show="userPassword.password != checkPassword" class="error"> Passwords do not match. </span>
+
             </div>
             <div class="form-group">
                 <h4>e-mail:</h4>
-                <input type="text" name="email" placeholder="e-mail" ng-model="userPassword.user.email"/>
+                <input type="email" name="email" placeholder="e-mail" ng-model="userPassword.user.email"/>
+                <span class="error" ng-show="newuser.email.$error.email"> Email invalido</span>
             </div>
             <br><h4>Tipo de usuario</h4> <br>
             <input type="radio" name="userType" ng-model="typeUser" value="admin" required="required">Administrador
             <input type="radio" name="userType" ng-model="typeUser" value="worker">Empleado
             <input type="radio" name="userType" ng-model="typeUser" value="salesman">Vendedor
             <br><br>
-            <button ng-click="submit()" ng-disabled="newuser.$invalid" class="btn btn-primary btn-block btn-lg">Crear Usuario</button>
-            {{userPassword}}
+            <button ng-click="submit()" ng-disabled="newuser.$invalid || (userPassword.password != checkPassword) " class="btn btn-primary btn-block btn-lg">Crear Usuario</button>
         </form>
         <br>
     </div>
 
+
+
 </div>
+
