@@ -29,6 +29,26 @@ app.controller('LoginController', ['$scope', '$http', '$location', function ($sc
     }
 }]);
 
+app.controller('UsersController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+    $scope.user = {};
+    $scope.typeUser = "";
+    $scope.Password = "";
+
+    $scope.submit = function () {
+        $scope.user.admin = ($scope.typeUser === "admin");
+        $scope.user.worker = ($scope.typeUser === "worker");
+        $scope.user.salesman = ($scope.typeUser === "salesman");
+        $http.post('users', $scope.user)
+             .then(function (response) {
+             if (response.status === 200) {
+                 alert("El usuario se creo correctamente")
+             }
+             else {
+             }
+         });
+    }
+}]);
+
 app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
     $routeProvider
         .when('/', {
@@ -38,6 +58,10 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
         .when('/login', {
             templateUrl: 'partials/login.html',
             controller: 'LoginController'
+        })
+        .when('/newuser', {
+            templateUrl: 'partials/users.html',
+            controller: 'UsersController'
         })
         .otherwise({redirectTo: '/'});
 
