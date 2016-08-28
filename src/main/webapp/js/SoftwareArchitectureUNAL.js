@@ -170,6 +170,7 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
                     $scope.columns = [
                         { title: 'Nombre', field: 'name', visible: true },
                         { title: 'Existencias', field: 'inventory', visible: true },
+                        { title: 'Precio', field: 'price', visible: true },
                         { title: 'Es insumo?', field: 'supply', visible: true },
                         { title: 'Es materia prima?', field: 'rawMaterial', visible: true },
                         { title: 'Proveedor', field: 'provider', visible: true }

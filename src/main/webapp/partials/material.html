@@ -24,6 +24,16 @@
                 </div>
                 <div class="form-group">
                     <div class="row">
+                        <label class="control-label col-sm-2" for="username">Precio:</label>
+                        <div class="col-sm-9">
+                            <input type="number" name="price" class="form-control" id="price"
+                                   placeholder="0" required="required"
+                                   ng-model="material.price"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
                         <label class="control-label col-sm-2" for="email">Proveedor:</label>
                         <div class="col-sm-9">
                             <input type="text" name="username" class="form-control" id="email"
@@ -72,6 +82,7 @@
                 <tr ng-repeat="x in materials">
                     <td>{{x.name}}</td>
                     <td>{{x.inventory}}</td>
+                    <td>{{x.price}}</td>
                     <td>{{x.supply}}</td>
                     <td>{{x.rawMaterial}}</td>
                     <td>{{x.provider}}</td>
