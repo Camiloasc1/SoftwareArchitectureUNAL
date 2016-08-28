@@ -31,18 +31,26 @@ app.controller('NavigationController', ['$scope', '$http', function ($scope, $ht
 app.controller('HomeController', ['$scope', '$http', function ($scope, $http) {
 }]);
 
-app.controller('LoginController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+app.controller('LoginController', ['$scope', '$http', '$location', '$timeout', function ($scope, $http, $location, $timeout) {
     $scope.credentials = {};
-    
+    $scope.success = false;
+    $scope.error = false;
+
     $scope.submit = function () {
         $http.post('auth/login', $scope.credentials)
             .then(function (response) {
                 if (response.status === 200) {
+                    $scope.success = true;
+                    $scope.error = false;
                     $scope.$emit('OnLogin', response.data);
-                    $location.path('/');
+                    $timeout(function () {
+                        $location.path('/');
+                    }, 2500);
                 }
                 else // 204 Error
                 {
+                    $scope.success = false;
+                    $scope.error = true;
                 }
                 $scope.credentials = {};
             });
@@ -50,7 +58,7 @@ app.controller('LoginController', ['$scope', '$http', '$location', function ($sc
 }]);
 
 app.controller('UserController', ['$scope', '$http', function ($scope, $http) {
-    $scope.user = null;
+    $scope.user = {};
 
     $scope.me = function () {
         $http.get('auth/me')
