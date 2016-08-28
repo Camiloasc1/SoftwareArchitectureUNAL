@@ -99,11 +99,10 @@ app.controller('controlUsersController', ['$scope', '$http', '$location', functi
     $scope.checkPassword = "";
 
     $scope.submit = function () {
-        $http.get('users/'+$scope.userPassword.user.name)
-            .then(function (response) {
-                $scope.existUser = response != null;
+        $http.get('users/'+$scope.userPassword.user.username)
+            .then(function (userResponse) {
+                $scope.existUser = userResponse.status === 200;
                 if( !$scope.existUser ) {
-                    alert("entro");
                     $scope.userPassword.user.admin = ($scope.typeUser === "admin");
                     $scope.userPassword.user.worker = ($scope.typeUser === "worker");
                     $scope.userPassword.user.salesman = ($scope.typeUser === "salesman");
@@ -111,8 +110,11 @@ app.controller('controlUsersController', ['$scope', '$http', '$location', functi
                         .then(function (response) {
                             if (response.status === 200) {
                                 alert("El usuario se creo correctamente")
-                            }
-                            else {
+                                $scope.newuser.$setPristine();
+                                $scope.userPassword = {password:""};
+                                $scope.typeUser = "";
+                                $scope.checkPassword = "";
+                            }else {
                             }
                         });
                 }
