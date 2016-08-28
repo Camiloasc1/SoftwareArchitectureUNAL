@@ -165,14 +165,23 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
             .then(function (response) {
                 if (response.status === 200) {
                     //console.log(response.data);
+
+                    for(var x in response.data){
+                        var reg = response.data[x];
+                        if(reg.supply){
+                            reg.my_type = "Insumo";
+                        }else{
+                            reg.my_type = "Materia prima";
+                        }
+                    }
+
                     $scope.materials = response.data;
 
                     $scope.columns = [
                         { title: 'Nombre', field: 'name', visible: true },
                         { title: 'Existencias', field: 'inventory', visible: true },
                         { title: 'Precio unitario', field: 'price', visible: true },
-                        { title: 'Es insumo?', field: 'supply', visible: true },
-                        { title: 'Es materia prima?', field: 'rawMaterial', visible: true },
+                        { title: 'Tipo', field: 'my_type', visible: true },
                         { title: 'Proveedor', field: 'provider', visible: true }
                     ];
 
