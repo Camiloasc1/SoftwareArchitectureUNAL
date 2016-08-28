@@ -68,7 +68,9 @@ app.controller('UserController', ['$scope', '$http', function ($scope, $http) {
 app.controller('ProductController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
     $scope.product = {};
     $scope.products = {};
-    $scope.pToUpdate = {};
+    $scope.consult = 0;
+    $scope.editing = false;
+
     $scope.submit = function () {
         $http.post('products', $scope.product)
             .then(function (response) {
@@ -97,8 +99,21 @@ app.controller('ProductController', ['$scope', '$http', '$location', function ($
                 }
             });
     }
-    $scope.updateProduct = function (pId) {
-        $http.put('products/'+pId, $scope.pToUpdate)
+    $scope.getProduct = function () {
+        $http.get('products/' + $scope.consult)
+            .then(function (response) {
+
+                if (response.status === 200) {
+                    $scope.pToUpdate = response.data;
+                    $scope.editing = true;
+                } else {
+                    alert("Producto no encontrado");
+                    $scope.editing = false;
+                }
+            })
+    }
+    $scope.updateProduct = function () {
+        $http.put('products/'+ $scope.pToUpdate.id, $scope.pToUpdate)
             .then(function (response) {
                 if (response.status === 200) {
                     $scope.pToUpdate = {};
@@ -109,10 +124,17 @@ app.controller('ProductController', ['$scope', '$http', '$location', function ($
                 }
             });
     }
-    $scope.deleteProduct = function (pId) {
-        $http.delete('products/'+pId)
+    $scope.deleteProduct = function () {
+        $http.delete('products/' + $scope.pToUpdate.id)
             .then(function (response) {
-                alert("Producto borrado");
+                if (response.status === 204) {
+                    $scope.pToUpdate = {};
+                    alert("Producto borrado");
+                    $scope.editing = false;
+                } else {
+                    alert("No se pudo borrar el producto");
+                }
+
             });
     }
 }]);

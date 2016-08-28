@@ -1,21 +1,9 @@
-<div class="col-lg-12">
-    <div class="jumbotron">
-        <h2 style="color:#60a37e;">Crear producto</h2>
-        <div class="products">
-            <input type="text" name="n" placeholder="Nombre del producto" required="required" ng-model="product.name" />
-            <input type="text" name="i" placeholder="Cantidad disponible" required="required" ng-model="product.inventory" />
-            <i> $ </i><input type="text" name="p" placeholder="Precio" required="required" ng-model="product.price" />
-            <button type="button" ng-click="submit()" class="btn btn-raised btn-primary" ><i class="glyphicon glyphicon-plus"></i> Crear </button>
-        </div>
-    </div>
-</div>
+<div>
 
-<div class="col-lg-12">
     <div class="jumbotron">
-        <h2 style="color:#60a37e;">Ver productos</h2>
-
-        <div>
-            <button ng-click="getProducts()" class="btn btn-primary btn-block btn-large">Ver productos</button>
+        <legend>Consultar productos</legend>
+        <div align="center">
+            <button ng-click="getProducts()" class="btn btn-primary btn-raised">Ver productos</button>
         </div>
 
         <div>
@@ -24,21 +12,135 @@
                 <th ng-repeat="column in columns" ng-show="column.visible">
                     {{column.title}}
                 </th>
-                <th>Editar</th>
-                <th>Borrar</th>
 
                 <tr ng-repeat="p in products">
-                    <div class="pToUpdate">
-                        <td>{{p.id}}</td>
-                        <td><input type="text"   placeholder="{{p.name}}" ng-model="pToUpdate.name"/></td>
-                        <td><input type="number" placeholder="{{p.inventory}}" ng-model="pToUpdate.inventory"/></td>
-                        <td><input type="number"  placeholder="{{p.price}}" ng-model="pToUpdate.price"/></td>
-                        <td><button ng-click="updateProduct(p.id)" type="button" class="glyphicon glyphicon-edit"></button></td>
-                        <td><button ng-click="deleteProduct(p.id)" type="button" class="glyphicon glyphicon-remove"></button></td>
-                    </div>
+                    <td>{{p.id}}</td>
+                    <td>{{p.name}}</td>
+                    <td>{{p.inventory}}</td>
+                    <td>{{p.price}}</td>
                 </tr>
             </table>
         </div>
-
     </div>
+
+    <div class="jumbotron">
+        <form class="form-horizontal">
+            <fieldset>
+                <legend>Consultar o editar un producto específico</legend>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="control-label col-sm-2" for="username">Referencia de producto:</label>
+                        <div class="col-sm-9">
+                            <input type="number" name="product_id" class="form-control" id="product_id"
+                                   placeholder="0" required="required"
+                                   ng-model="consult"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-offset-1" align="center">
+                        <button type="submit" class="btn btn-primary btn-raised glyphicon glyphicon-search" ng-click="getProduct()"> Consultar
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        <form class="form-horizontal" id="editProduct" ng-show="editing">
+            <fieldset>
+                <legend>Editar producto consultado:</legend>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="control-label col-sm-2" for="name">Refrencia:</label>
+                        <div class="col-sm-9">
+                            <input disabled="disabled" type="text" name="id" class="form-control" id="id_edit"
+                                   placeholder="0" required="required" ng-model="pToUpdate.id"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="control-label col-sm-2" for="username">Nombre:</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="username" class="form-control" id="edit_name"
+                                   placeholder="Nombre" required="required" ng-model="pToUpdate.name"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="control-label col-sm-2" for="username">Cantidad Inicial:</label>
+                        <div class="col-sm-9">
+                            <input type="number" name="username" class="form-control" id="edit_username"
+                                   placeholder="0" required="required"
+                                   ng-model="pToUpdate.inventory"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="control-label col-sm-2" for="username">Precio unitario:</label>
+                        <div class="col-sm-9">
+                            <input type="number" name="price" class="form-control" id="edit_price"
+                                   placeholder="0" required="required"
+                                   ng-model="pToUpdate.price"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-offset-1" align="center">
+                        <button type="submit" class="btn btn-primary btn-raised glyphicon glyphicon-remove" ng-click="deleteProduct()"> Borrar producto
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-raised glyphicon glyphicon-edit" ng-click="updateProduct()"> Guardar cambios
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+
+<div class="jumbotron">
+    <form class="form-horizontal">
+        <fieldset>
+            <legend>Crear Producto</legend>
+            <div class="form-group">
+                <div class="row">
+                    <label class="control-label col-sm-2" for="name">Nombre:</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="username" class="form-control" id="name"
+                               placeholder="Nombre" required="required" ng-model="product.name"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <label class="control-label col-sm-2" for="username">Cantidad Inicial:</label>
+                    <div class="col-sm-9">
+                        <input type="number" name="username" class="form-control" id="username"
+                               placeholder="0" required="required"
+                               ng-model="product.inventory"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <label class="control-label col-sm-2" for="username">Precio unitario:</label>
+                    <div class="col-sm-9">
+                        <input type="number" name="price" class="form-control" id="price"
+                               placeholder="0" required="required"
+                               ng-model="product.price"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-offset-1" align="center">
+                    <button type="submit" class="btn btn-primary btn-raised glyphicon glyphicon-plus " ng-click="submit()"> Crear
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
 </div>
