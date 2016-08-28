@@ -85,6 +85,7 @@ app.controller('ProductController', ['$scope', '$http', '$location', function ($
                 if (response.status === 200) {
                     $scope.products = response.data;
                     $scope.columns = [
+                        { title: 'id', field: 'id', visible: true },
                         { title: 'Nombre', field: 'name', visible: true },
                         { title: 'Existencias', field: 'inventory', visible: true },
                         { title: 'Precio', field: 'price', visible: true }
@@ -93,6 +94,22 @@ app.controller('ProductController', ['$scope', '$http', '$location', function ($
                 else{
                     alert("No existen productos en el sistema");
                 }
+            });
+    }
+    $scope.getP = function (pId) {
+        $http.get('products/'+pId)
+            .then(function (response) {
+                if (response.status === 200) {
+                   alert(response.data);
+                }
+                else{
+                }
+            });
+    }
+    $scope.deleteProduct = function (pId) {
+        $http.delete('products/'+pId)
+            .then(function (response) {
+                alert("Producto borrado");
             });
     }
 }]);
