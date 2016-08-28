@@ -179,6 +179,7 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
                     $scope.materials = response.data;
 
                     $scope.columns = [
+                        {title: 'Referencia', field: 'id', visible: true},
                         {title: 'Nombre', field: 'name', visible: true},
                         {title: 'Existencias', field: 'inventory', visible: true},
                         {title: 'Precio unitario', field: 'price', visible: true},
@@ -198,12 +199,43 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
             .then(function (response) {
 
                 if (response.status === 200) {
-                    console.log(response.data);
+                    $scope.materialToEdit = response.data;
+
+                    if($scope.materialToEdit.supply) $scope.type_edit = "supply";
+                    else $scope.type_edit = "raw";
+
+                    //document.getElementById("editMaterial").setAttribute("hidden","false");
                 } else {
                     alert("Producto no encontrado");
+                    //document.getElementById("editMaterial").setAttribute("hidden","true");
                 }
             })
     }
+    
+    $scope.edit = function () {
 
+        if($scope.type_edit === "raw"){
+            $scope.materialToEdit.supply = false;
+            $scope.materialToEdit.rawMaterial = true;
+        }else{
+            $scope.materialToEdit.supply = true;
+            $scope.materialToEdit.rawMaterial = false;
+        }
+
+        $http.put('materials/' + $scope.materialToEdit.id, $scope.materialToEdit)
+            .then(function (response) {
+
+                if (response.status === 200) {
+                    $scope.materialToEdit = {};
+                    alert("Producto editado correctamente");
+                } else {
+                    alert("No se pudo editar el producto");
+                }
+
+            });
+
+        $scope.getMaterials();
+    }
+    
 
 }]);
