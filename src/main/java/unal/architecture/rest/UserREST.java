@@ -1,6 +1,7 @@
 package unal.architecture.rest;
 
 import unal.architecture.entity.User;
+import unal.architecture.entity.UserPassword;
 import unal.architecture.service.UserService;
 
 import javax.ejb.EJB;
@@ -27,10 +28,11 @@ public class UserREST {
     }
 
     @POST
-    public User create(User user) {
-        user.setId(0);
-        em.persist(user);
-        return user;
+    public UserPassword create(UserPassword userPassword) {
+        userPassword.setId(0);
+        em.persist(userPassword.getUser());
+        em.persist(userPassword);
+        return userPassword;
     }
 
     @GET
