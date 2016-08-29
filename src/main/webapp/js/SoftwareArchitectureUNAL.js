@@ -93,6 +93,7 @@ app.controller('ProductionController', ['$scope', '$http', function ($scope, $ht
 }]);
 
 app.controller('controlUsersController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+    $scope.allUsers = {};
     $scope.userPassword = {password:""};
     $scope.typeUser = "";
     $scope.existUser = false;
@@ -121,47 +122,30 @@ app.controller('controlUsersController', ['$scope', '$http', '$location', functi
             });
 
         }
-}]);
+    $scope.getUsers = function () {
+        $http.get('users')
+            .then(function (response) {
+                if (response.status === 200) {
+                    //console.log(response.data);
+                    $scope.allUsers = response.data;
 
-app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
-    $routeProvider
-        .when('/', {
-            templateUrl: 'partials/home.html',
-            controller: 'HomeController'
-        })
-        .when('/login', {
-            templateUrl: 'partials/login.html',
-            controller: 'LoginController'
-        })
-        .when('/me', {
-            templateUrl: 'partials/me.html',
-            controller: 'UserController'
-        })
-        .when('/admin', {
-            templateUrl: 'partials/admin.html',
-            controller: 'AdminController'
-        })
-        .when('/sales', {
-            templateUrl: 'partials/sales.html',
-            controller: 'SalesController'
-        })
-        .when('/production', {
-            templateUrl: 'partials/production.html',
-            controller: 'ProductionController'
-        })
-        .when('/material', {
-            templateUrl: 'partials/material.html',
-            controller: 'MaterialController'
-        })
-        .when('/users', {
-            templateUrl: 'partials/users.html',
-            controller: 'controlUsersController'
-        })
-        .otherwise({redirectTo: '/'});
+                    $scope.columns = [
+                        { title: 'Borrar', field: 'delete', visible: true },
+                        { title: 'Id', field: 'id', visible: true },
+                        { title: 'Nombre', field: 'name', visible: true },
+                        { title: 'Nombre de usuario', field: 'username', visible: true },
+                        { title: 'Correo electronico', field: 'email', visible: true },
+                        { title: 'Cuenta de administrador', field: 'isAdmin', visible: true },
+                        { title: 'Cuenta de empleado', field: 'isWorker', visible: true },
+                        { title: 'Cuenta de vendedor', field: 'isSalesman', visible: true }
+                    ];
 
-    //html5mode causes several issues when the front end is embedded with the web service.
-    //$locationProvider.html5Mode(true);
-    $locationProvider.hashPrefix('!');
+                }
+                else{
+
+                }
+            });
+    }
 }]);
 
 app.controller('MaterialController', ['$scope', '$http', function ($scope, $http) {
@@ -212,4 +196,45 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
             });
     }
 
+}]);
+
+app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
+    $routeProvider
+        .when('/', {
+            templateUrl: 'partials/home.html',
+            controller: 'HomeController'
+        })
+        .when('/login', {
+            templateUrl: 'partials/login.html',
+            controller: 'LoginController'
+        })
+        .when('/me', {
+            templateUrl: 'partials/me.html',
+            controller: 'UserController'
+        })
+        .when('/admin', {
+            templateUrl: 'partials/admin.html',
+            controller: 'AdminController'
+        })
+        .when('/sales', {
+            templateUrl: 'partials/sales.html',
+            controller: 'SalesController'
+        })
+        .when('/production', {
+            templateUrl: 'partials/production.html',
+            controller: 'ProductionController'
+        })
+        .when('/material', {
+            templateUrl: 'partials/material.html',
+            controller: 'MaterialController'
+        })
+        .when('/users', {
+            templateUrl: 'partials/users.html',
+            controller: 'controlUsersController'
+        })
+        .otherwise({redirectTo: '/'});
+
+    //html5mode causes several issues when the front end is embedded with the web service.
+    //$locationProvider.html5Mode(true);
+    $locationProvider.hashPrefix('!');
 }]);
