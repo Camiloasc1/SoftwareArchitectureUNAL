@@ -40,27 +40,11 @@ public class UserServiceTest {
 
         boolean found = false;
         for (User u : users) {
-            if (u.getUsername().equals("admin")) {
+            if (u.getName().equals("admin")) {
                 found = true;
                 break;
             }
         }
         assertTrue(found);
-    }
-
-    @Test
-    public void findAdmin() {
-        User admin = userService.findByUsername("admin");
-        assertNotNull(admin);
-        assertTrue(admin.isAdmin());
-    }
-
-    @Test
-    public void findAndCompareUserPassword() {
-        User admin = userService.findByUsername("admin");
-        String password = userService.findUserPassword(admin);
-        assertNotNull(password);
-        assertEquals(password, "admin");
-        assertTrue(userService.checkUserPassword(admin, "admin"));
     }
 }

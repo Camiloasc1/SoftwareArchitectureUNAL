@@ -1,7 +1,7 @@
 package unal.architecture.rest;
 
 import unal.architecture.entity.User;
-import unal.architecture.service.UserService;
+import unal.architecture.dao.UserService;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
