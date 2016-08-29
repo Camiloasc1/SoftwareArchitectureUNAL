@@ -3,8 +3,8 @@ package unal.architecture.entity;
 import javax.persistence.*;
 
 @Entity
-@NamedQuery(name = "UserPassword.findByUser", query = "Select p.password from UserPassword p where p.user = :user")
-public class UserPassword {
+@NamedQuery(name = "UserCredentials.findByUsername", query = "Select uc from UserCredentials uc where uc.username = :username")
+public class UserCredentials {
     @Id
     @GeneratedValue
     private long id;
@@ -50,9 +50,9 @@ public class UserPassword {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserPassword)) return false;
+        if (!(o instanceof UserCredentials)) return false;
 
-        UserPassword password1 = (UserPassword) o;
+        UserCredentials password1 = (UserCredentials) o;
 
         if (id != password1.id) return false;
         if (user != null ? !user.equals(password1.user) : password1.user != null) return false;
