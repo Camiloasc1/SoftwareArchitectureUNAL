@@ -61,7 +61,6 @@ app.controller('UserController', ['$scope', '$http', function ($scope, $http) {
                 $scope.success = true;
                 $scope.error = false;
                 $scope.user = response.data;
-                $scope.$emit('OnLogin', response.data);
             }, function () {
                 $scope.success = false;
                 $scope.error = true;
