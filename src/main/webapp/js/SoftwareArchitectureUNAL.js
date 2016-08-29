@@ -92,6 +92,62 @@ app.controller('SalesController', ['$scope', '$http', function ($scope, $http) {
 app.controller('ProductionController', ['$scope', '$http', function ($scope, $http) {
 }]);
 
+app.controller('controlUsersController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+    $scope.allUsers = {};
+    $scope.userPassword = {password:""};
+    $scope.typeUser = "";
+    $scope.existUser = false;
+    $scope.checkPassword = "";
+
+    $scope.submit = function () {
+        $http.get('users/'+$scope.userPassword.user.username)
+            .then(function (userResponse) {
+                $scope.existUser = userResponse.status === 200;
+                if( !$scope.existUser ) {
+                    $scope.userPassword.user.admin = ($scope.typeUser === "admin");
+                    $scope.userPassword.user.worker = ($scope.typeUser === "worker");
+                    $scope.userPassword.user.salesman = ($scope.typeUser === "salesman");
+                    $http.post('users', $scope.userPassword)
+                        .then(function (response) {
+                            if (response.status === 200) {
+                                alert("El usuario se creo correctamente")
+                                $scope.newuser.$setPristine();
+                                $scope.userPassword = {password:""};
+                                $scope.typeUser = "";
+                                $scope.checkPassword = "";
+                            }else {
+                            }
+                        });
+                }
+            });
+
+    }
+    $scope.getUsers = function () {
+        $http.get('users')
+            .then(function (response) {
+                if (response.status === 200) {
+                    //console.log(response.data);
+                    $scope.allUsers = response.data;
+
+                    $scope.columns = [
+                        { title: 'Borrar', field: 'delete', visible: true },
+                        { title: 'Id', field: 'id', visible: true },
+                        { title: 'Nombre', field: 'name', visible: true },
+                        { title: 'Nombre de usuario', field: 'username', visible: true },
+                        { title: 'Correo electronico', field: 'email', visible: true },
+                        { title: 'Cuenta de administrador', field: 'isAdmin', visible: true },
+                        { title: 'Cuenta de empleado', field: 'isWorker', visible: true },
+                        { title: 'Cuenta de vendedor', field: 'isSalesman', visible: true }
+                    ];
+
+                }
+                else{
+
+                }
+            });
+    }
+}]);
+
 app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
     $routeProvider
         .when('/', {
@@ -109,6 +165,10 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
         .when('/admin', {
             templateUrl: 'partials/admin.html',
             controller: 'AdminController'
+        })
+        .when('/users', {
+            templateUrl: 'partials/users.html',
+            controller: 'controlUsersController'
         })
         .when('/sales', {
             templateUrl: 'partials/sales.html',
