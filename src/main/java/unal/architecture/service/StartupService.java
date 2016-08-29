@@ -1,7 +1,9 @@
 package unal.architecture.service;
 
+import unal.architecture.dao.AuthService;
+import unal.architecture.dao.UserService;
 import unal.architecture.entity.User;
-import unal.architecture.entity.UserPassword;
+import unal.architecture.entity.UserCredentials;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -13,10 +15,10 @@ import javax.persistence.PersistenceContext;
 @Singleton
 @Startup
 public class StartupService {
-    @EJB
-    private UserService userService;
     @PersistenceContext
     private EntityManager em;
+    @EJB
+    private AuthService authService;
 
     @PostConstruct
     public void init() {
@@ -24,11 +26,10 @@ public class StartupService {
     }
 
     public void createAdmin() {
-        if (userService.findByUsername("admin") != null)
+        if (authService.findByUsername("admin") != null)
             return;
 
         User admin = new User();
-        admin.setUsername("admin");
         admin.setName("admin");
         admin.setEmail("admin@architecture.unal");
         admin.setAdmin(true);
@@ -36,9 +37,10 @@ public class StartupService {
         admin.setSalesman(true);
         em.persist(admin);
 
-        UserPassword password = new UserPassword();
-        password.setUser(admin);
-        password.setPassword("admin");
-        em.persist(password);
+        UserCredentials credentials = new UserCredentials();
+        credentials.setUser(admin);
+        credentials.setUsername("admin");
+        credentials.setPassword("admin");
+        em.persist(credentials);
     }
 }
