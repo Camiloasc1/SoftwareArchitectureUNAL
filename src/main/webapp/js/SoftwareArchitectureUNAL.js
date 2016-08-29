@@ -1,8 +1,11 @@
 "use strict";
 var app = angular.module('SoftwareArchitectureUNAL', ['ngRoute']);
 
-app.controller('NavigationController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+app.controller('NavigationController', ['$scope', '$http', '$location', '$timeout', function ($scope, $http, $location, $timeout) {
     $scope.user = null;
+    $scope.credentials = {};
+    $scope.success = false;
+    $scope.error = false;
 
     $scope.me = function () {
         $http.get('auth/me')
@@ -13,6 +16,22 @@ app.controller('NavigationController', ['$scope', '$http', '$location', function
                 $scope.user = null;
             });
     };
+    $scope.login = function () {
+        $http.post('auth/login', $scope.credentials)
+            .then(function (response) {
+                $scope.success = true;
+                $scope.error = false;
+                $scope.credentials = {};
+                $scope.user = response.data;
+                $timeout(function () {
+                    $("#login").modal("hide");
+                }, 1000);
+            }, function () {
+                $scope.success = false;
+                $scope.error = true;
+                $scope.credentials = {};
+            });
+    };
     $scope.logout = function () {
         $http.post('auth/logout', {})
             .then(function () {
@@ -20,34 +39,7 @@ app.controller('NavigationController', ['$scope', '$http', '$location', function
             });
     };
 
-    $scope.$on('OnLogin', function (event, user) {
-        $scope.user = user;
-    });
-
     $scope.me();
-}]);
-
-app.controller('LoginController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
-    $scope.credentials = {};
-    $scope.success = false;
-    $scope.error = false;
-
-    $scope.submit = function () {
-        $http.post('auth/login', $scope.credentials)
-            .then(function (response) {
-                $scope.success = true;
-                $scope.error = false;
-                $scope.$emit('OnLogin', response.data);
-                $timeout(function () {
-                    $location.path('/');
-                }, 2500);
-                $scope.credentials = {};
-            }, function () {
-                $scope.success = false;
-                $scope.error = true;
-                $scope.credentials = {};
-            });
-    };
 }]);
 
 app.controller('UserController', ['$scope', '$http', function ($scope, $http) {
@@ -64,7 +56,7 @@ app.controller('UserController', ['$scope', '$http', function ($scope, $http) {
             });
     };
     $scope.submit = function () {
-        $http.put('users/' + $scope.user.username, $scope.user)
+        $http.put('users/' + $scope.user.id, $scope.user)
             .then(function (response) {
                 $scope.success = true;
                 $scope.error = false;
@@ -94,16 +86,16 @@ app.controller('ProductionController', ['$scope', '$http', function ($scope, $ht
 
 app.controller('controlUsersController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
     $scope.allUsers = {};
-    $scope.userPassword = {password:""};
+    $scope.userPassword = {password: ""};
     $scope.typeUser = "";
     $scope.existUser = false;
     $scope.checkPassword = "";
 
     $scope.submit = function () {
-        $http.get('users/'+$scope.userPassword.user.username)
+        $http.get('users/' + $scope.userPassword.user.username)
             .then(function (userResponse) {
                 $scope.existUser = userResponse.status === 200;
-                if( !$scope.existUser ) {
+                if (!$scope.existUser) {
                     $scope.userPassword.user.admin = ($scope.typeUser === "admin");
                     $scope.userPassword.user.worker = ($scope.typeUser === "worker");
                     $scope.userPassword.user.salesman = ($scope.typeUser === "salesman");
@@ -112,10 +104,10 @@ app.controller('controlUsersController', ['$scope', '$http', '$location', functi
                             if (response.status === 200) {
                                 alert("El usuario se creo correctamente")
                                 $scope.newuser.$setPristine();
-                                $scope.userPassword = {password:""};
+                                $scope.userPassword = {password: ""};
                                 $scope.typeUser = "";
                                 $scope.checkPassword = "";
-                            }else {
+                            } else {
                             }
                         });
                 }
@@ -130,18 +122,18 @@ app.controller('controlUsersController', ['$scope', '$http', '$location', functi
                     $scope.allUsers = response.data;
 
                     $scope.columns = [
-                        { title: 'Borrar', field: 'delete', visible: true },
-                        { title: 'Id', field: 'id', visible: true },
-                        { title: 'Nombre', field: 'name', visible: true },
-                        { title: 'Nombre de usuario', field: 'username', visible: true },
-                        { title: 'Correo electronico', field: 'email', visible: true },
-                        { title: 'Cuenta de administrador', field: 'isAdmin', visible: true },
-                        { title: 'Cuenta de empleado', field: 'isWorker', visible: true },
-                        { title: 'Cuenta de vendedor', field: 'isSalesman', visible: true }
+                        {title: 'Borrar', field: 'delete', visible: true},
+                        {title: 'Id', field: 'id', visible: true},
+                        {title: 'Nombre', field: 'name', visible: true},
+                        {title: 'Nombre de usuario', field: 'username', visible: true},
+                        {title: 'Correo electronico', field: 'email', visible: true},
+                        {title: 'Cuenta de administrador', field: 'isAdmin', visible: true},
+                        {title: 'Cuenta de empleado', field: 'isWorker', visible: true},
+                        {title: 'Cuenta de vendedor', field: 'isSalesman', visible: true}
                     ];
 
                 }
-                else{
+                else {
 
                 }
             });
@@ -153,10 +145,6 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
         .when('/', {
             templateUrl: 'partials/home.html',
             controller: 'HomeController'
-        })
-        .when('/login', {
-            templateUrl: 'partials/login.html',
-            controller: 'LoginController'
         })
         .when('/me', {
             templateUrl: 'partials/me.html',
@@ -263,7 +251,7 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
                 if (response.status === 200) {
                     $scope.materialToEdit = response.data;
 
-                    if($scope.materialToEdit.supply) $scope.type_edit = "supply";
+                    if ($scope.materialToEdit.supply) $scope.type_edit = "supply";
                     else $scope.type_edit = "raw";
 
                     $scope.editing = true;
@@ -273,13 +261,13 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
                 }
             })
     }
-    
+
     $scope.edit = function () {
 
-        if($scope.type_edit === "raw"){
+        if ($scope.type_edit === "raw") {
             $scope.materialToEdit.supply = false;
             $scope.materialToEdit.rawMaterial = true;
-        }else{
+        } else {
             $scope.materialToEdit.supply = true;
             $scope.materialToEdit.rawMaterial = false;
         }
@@ -326,7 +314,7 @@ app.controller('ProductController', ['$scope', '$http', '$location', function ($
                 if (response.status === 200) {
                     alert("producto creado");
                 }
-                else{
+                else {
                     alert("No se pudo crear el producto");
                 }
             });
@@ -337,13 +325,13 @@ app.controller('ProductController', ['$scope', '$http', '$location', function ($
                 if (response.status === 200) {
                     $scope.products = response.data;
                     $scope.columns = [
-                        { title: 'id', field: 'id', visible: true },
-                        { title: 'Nombre', field: 'name', visible: true },
-                        { title: 'Existencias', field: 'inventory', visible: true },
-                        { title: 'Precio', field: 'price', visible: true }
+                        {title: 'id', field: 'id', visible: true},
+                        {title: 'Nombre', field: 'name', visible: true},
+                        {title: 'Existencias', field: 'inventory', visible: true},
+                        {title: 'Precio', field: 'price', visible: true}
                     ];
                 }
-                else{
+                else {
                     alert("No existen productos en el sistema");
                 }
             });
@@ -362,13 +350,13 @@ app.controller('ProductController', ['$scope', '$http', '$location', function ($
             })
     }
     $scope.updateProduct = function () {
-        $http.put('products/'+ $scope.pToUpdate.id, $scope.pToUpdate)
+        $http.put('products/' + $scope.pToUpdate.id, $scope.pToUpdate)
             .then(function (response) {
                 if (response.status === 200) {
                     $scope.pToUpdate = {};
                     alert("Producto actualizado");
                 }
-                else{
+                else {
                     alert("No se pudo editar el producto");
                 }
             });
