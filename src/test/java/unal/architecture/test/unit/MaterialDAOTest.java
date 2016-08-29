@@ -1,8 +1,8 @@
 package unal.architecture.test.unit;
 
 import org.junit.*;
-import unal.architecture.entity.Material;
 import unal.architecture.dao.MaterialDAO;
+import unal.architecture.entity.Material;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;

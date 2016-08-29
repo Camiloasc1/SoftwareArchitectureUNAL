@@ -1,9 +1,9 @@
 package unal.architecture.rest;
 
 import unal.architecture.dao.AuthDAO;
+import unal.architecture.entity.User;
 import unal.architecture.entity.UserCredentials;
 import unal.architecture.rest.schemas.Credentials;
-import unal.architecture.entity.User;
 import unal.architecture.rest.schemas.PasswordChange;
 
 import javax.ejb.EJB;

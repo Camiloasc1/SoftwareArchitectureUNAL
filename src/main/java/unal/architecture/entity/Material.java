@@ -1,7 +1,5 @@
 package unal.architecture.entity;
 
-import org.hibernate.annotations.Check;
-
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 

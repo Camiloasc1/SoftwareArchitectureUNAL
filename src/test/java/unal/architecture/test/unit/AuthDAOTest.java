@@ -2,13 +2,10 @@ package unal.architecture.test.unit;
 
 import org.junit.*;
 import unal.architecture.dao.AuthDAO;
-import unal.architecture.dao.SaleDAO;
-import unal.architecture.entity.Sale;
 import unal.architecture.entity.UserCredentials;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
-import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

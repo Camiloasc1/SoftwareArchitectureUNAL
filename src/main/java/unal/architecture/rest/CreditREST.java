@@ -1,7 +1,7 @@
 package unal.architecture.rest;
 
-import unal.architecture.entity.Credit;
 import unal.architecture.dao.CreditDAO;
+import unal.architecture.entity.Credit;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

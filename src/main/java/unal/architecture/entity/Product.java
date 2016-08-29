@@ -38,7 +38,7 @@ public class Product {
     }
 
     public void setInventory(int inventory) {
-        if(inventory<0) inventory = 0;
+        if (inventory < 0) inventory = 0;
         this.inventory = inventory;
     }
 
@@ -47,7 +47,7 @@ public class Product {
     }
 
     public void setPrice(float price) {
-        if(price < 0.0) price = 0.0f;
+        if (price < 0.0) price = 0.0f;
         this.price = price;
     }
 
