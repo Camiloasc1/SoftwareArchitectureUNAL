@@ -1,7 +1,7 @@
 package unal.architecture.rest;
 
 import unal.architecture.entity.Fabrication;
-import unal.architecture.service.FabricationService;
+import unal.architecture.dao.FabricationService;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

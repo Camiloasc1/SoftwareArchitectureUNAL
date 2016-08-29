@@ -2,7 +2,7 @@ package unal.architecture.test.unit;
 
 import org.junit.*;
 import unal.architecture.entity.Sale;
-import unal.architecture.service.SaleService;
+import unal.architecture.dao.SaleService;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;

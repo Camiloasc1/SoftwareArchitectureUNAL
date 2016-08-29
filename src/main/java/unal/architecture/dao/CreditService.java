@@ -1,4 +1,4 @@
-package unal.architecture.service;
+package unal.architecture.dao;
 
 import unal.architecture.entity.Credit;
 

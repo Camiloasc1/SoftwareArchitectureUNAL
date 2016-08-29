@@ -1,7 +1,7 @@
 package unal.architecture.rest;
 
 import unal.architecture.entity.Material;
-import unal.architecture.service.MaterialService;
+import unal.architecture.dao.MaterialService;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

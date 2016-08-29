@@ -2,7 +2,7 @@ package unal.architecture.test.unit;
 
 import org.junit.*;
 import unal.architecture.entity.Credit;
-import unal.architecture.service.CreditService;
+import unal.architecture.dao.CreditService;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;

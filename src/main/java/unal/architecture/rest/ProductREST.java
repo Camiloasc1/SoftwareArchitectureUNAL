@@ -1,7 +1,7 @@
 package unal.architecture.rest;
 
 import unal.architecture.entity.Product;
-import unal.architecture.service.ProductService;
+import unal.architecture.dao.ProductService;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
