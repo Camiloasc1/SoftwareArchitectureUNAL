@@ -3,7 +3,7 @@ package unal.architecture.test.integration;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
-import unal.architecture.entity.Credentials;
+import unal.architecture.rest.schemas.Credentials;
 import unal.architecture.entity.User;
 
 import javax.naming.NamingException;

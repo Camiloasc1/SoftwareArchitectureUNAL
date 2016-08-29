@@ -1,6 +1,6 @@
 package unal.architecture.rest;
 
-import unal.architecture.entity.Credentials;
+import unal.architecture.rest.schemas.Credentials;
 import unal.architecture.entity.User;
 import unal.architecture.service.UserService;
 
