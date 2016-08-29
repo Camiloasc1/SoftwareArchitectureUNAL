@@ -1,5 +1,7 @@
 package unal.architecture.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 
@@ -7,6 +9,7 @@ import javax.validation.constraints.Min;
 @NamedQueries({
         @NamedQuery(name = "Material.findAll", query = "Select m from Material m")
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Material {
     @Id
     @GeneratedValue

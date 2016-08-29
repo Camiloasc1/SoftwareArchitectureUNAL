@@ -31,11 +31,17 @@
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a href="#!/">Inicio</a></li>
-            <li ng-show="user.admin"><a href="#!/admin">Administracion</a></li>
+            <li ng-show="user.admin" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button">Administracion
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li ng-show="user.admin"><a href="#!/admin">Administracion</a></li>
+                    <li ng-show="user.admin"><a href="#!/materials">Materias Primas</a></li>
+                    <li ng-show="user.admin"><a href="#!/users">Usuarios</a></li>
+                </ul>
+            </li>
             <li ng-show="user.worker"><a href="#!/sales">Ventas</a></li>
-            <li ng-show="user.salesman"><a href="#!/product">Gestion de produccion</a></li>
-            <li ng-show="user.worker"><a href="#!/material">Gestion de materias primas</a></li>
-            <li ng-show="user.worker"><a href="#!/users">Gestion de usuarios</a></li>
+            <li ng-show="user.salesman"><a href="#!/products">Produccion</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li ng-show="user === null">
@@ -98,7 +104,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-offset-1">
-                                    <button type="submit" class="btn btn-primary btn-raised" ng-click="login()">
+                                    <button ng-click="login()" type="submit" class="btn btn-primary btn-raised">
                                         Ingresar
                                     </button>
                                 </div>

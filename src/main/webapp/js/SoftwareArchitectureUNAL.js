@@ -77,6 +77,71 @@ app.controller('HomeController', ['$scope', '$http', function ($scope, $http) {
 app.controller('AdminController', ['$scope', '$http', function ($scope, $http) {
 }]);
 
+app.controller('MaterialController', ['$scope', '$http', function ($scope, $http) {
+    $scope.materials = {};
+    $scope.material = {};
+
+    const RAW = "Materia Prima";
+    const SUPPLY = "Insumo";
+    $scope.columns = ['Nombre', 'Existencias', 'Precio unitario', 'Tipo', 'Proveedor', 'a', 'b'];
+
+    $scope.get = function () {
+        $http.get('materials')
+            .then(function (response) {
+                $scope.materials = response.data;
+                for (var m in $scope.materials) {
+                    if ($scope.materials[m].supply)
+                        $scope.materials[m].type = SUPPLY;
+                    else
+                        $scope.materials[m].type = RAW;
+                }
+            });
+    };
+    $scope.edit = function (material) {
+        $scope.material = material;
+
+        if ($scope.material.rawMaterial)
+            $scope.material.selectedType = "raw";
+        else
+            $scope.material.selectedType = "supply";
+
+
+        $("#material").modal("show");
+    };
+    $scope.submit = function () {
+        if ($scope.material.selectedType === "raw") {
+            $scope.material.rawMaterial = true;
+            $scope.material.supply = false;
+            $scope.material.type = RAW;
+        } else {
+            $scope.material.rawMaterial = false;
+            $scope.material.supply = true;
+            $scope.material.type = SUPPLY;
+        }
+
+        if ($scope.material.id)
+            $http.put('materials/' + $scope.material.id, $scope.material)
+                .then(function (response) {
+                    $("#material").modal("hide");
+                    $scope.get();
+                });
+        else
+            $http.post('materials', $scope.material)
+                .then(function (response) {
+                    $("#material").modal("hide");
+                    $scope.get();
+                });
+    };
+    $scope.delete = function (material) {
+        $http.delete('materials/' + material.id)
+            .then(function (response) {
+                $scope.get();
+            });
+    };
+
+    $scope.get();
+}]);
+
 app.controller('SalesController', ['$scope', '$http', function ($scope, $http) {
 }]);
 
@@ -161,12 +226,12 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
             templateUrl: 'partials/sales.html',
             controller: 'SalesController'
         })
-        .when('/product', {
-            templateUrl: 'partials/product.html',
+        .when('/products', {
+            templateUrl: 'partials/products.html',
             controller: 'ProductController'
         })
-        .when('/material', {
-            templateUrl: 'partials/material.html',
+        .when('/materials', {
+            templateUrl: 'partials/materials.html',
             controller: 'MaterialController'
         })
 
@@ -176,129 +241,6 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
     //html5mode causes several issues when the front end is embedded with the web service.
     //$locationProvider.html5Mode(true);
     $locationProvider.hashPrefix('!');
-}]);
-
-app.controller('MaterialController', ['$scope', '$http', function ($scope, $http) {
-    $scope.material = {};
-    $scope.type = "raw";
-    $scope.consult = 0;
-    $scope.editing = false;
-
-    $scope.materials = {};
-
-    $scope.submit = function () {
-
-        if (!$scope.material.hasOwnProperty('inventory')) return;
-
-        if ($scope.type === "raw") {
-            $scope.material.rawMaterial = true;
-            $scope.material.supply = false;
-        } else {
-            $scope.material.rawMaterial = false;
-            $scope.material.supply = true;
-        }
-
-        $http.post('materials', $scope.material)
-            .then(function (response) {
-                if (response.status === 200) {
-                    $scope.material = {};
-                    alert("Agregado correctamente");
-                }
-                else {
-
-                }
-            });
-    }
-
-    $scope.getMaterials = function () {
-        $http.get('materials')
-            .then(function (response) {
-                if (response.status === 200) {
-                    //console.log(response.data);
-
-                    for (var x in response.data) {
-                        var reg = response.data[x];
-                        if (reg.supply) {
-                            reg.my_type = "Insumo";
-                        } else {
-                            reg.my_type = "Materia prima";
-                        }
-                    }
-
-                    $scope.materials = response.data;
-
-                    $scope.columns = [
-                        {title: 'Referencia', field: 'id', visible: true},
-                        {title: 'Nombre', field: 'name', visible: true},
-                        {title: 'Existencias', field: 'inventory', visible: true},
-                        {title: 'Precio unitario', field: 'price', visible: true},
-                        {title: 'Tipo', field: 'my_type', visible: true},
-                        {title: 'Proveedor', field: 'provider', visible: true}
-                    ];
-
-                }
-                else {
-
-                }
-            });
-    }
-
-    $scope.getMaterialID = function () {
-        $http.get('materials/' + $scope.consult)
-            .then(function (response) {
-
-                if (response.status === 200) {
-                    $scope.materialToEdit = response.data;
-
-                    if ($scope.materialToEdit.supply) $scope.type_edit = "supply";
-                    else $scope.type_edit = "raw";
-
-                    $scope.editing = true;
-                } else {
-                    alert("Material no encontrado");
-                    $scope.editing = false;
-                }
-            })
-    }
-
-    $scope.edit = function () {
-
-        if ($scope.type_edit === "raw") {
-            $scope.materialToEdit.supply = false;
-            $scope.materialToEdit.rawMaterial = true;
-        } else {
-            $scope.materialToEdit.supply = true;
-            $scope.materialToEdit.rawMaterial = false;
-        }
-
-        $http.put('materials/' + $scope.materialToEdit.id, $scope.materialToEdit)
-            .then(function (response) {
-
-                if (response.status === 200) {
-                    $scope.materialToEdit = {};
-                    alert("Material editado correctamente");
-                    $scope.editing = false;
-                } else {
-                    alert("No se pudieron guardar los cambios");
-                }
-
-            });
-    }
-
-
-    $scope.delete = function () {
-        $http.delete('materials/' + $scope.materialToEdit.id)
-            .then(function (response) {
-                if (response.status === 204) {
-                    $scope.materialToEdit = {};
-                    alert("Material borrado correctamente");
-                    $scope.editing = false;
-                } else {
-                    alert("No se pudo borrar el material");
-                }
-
-            });
-    }
 }]);
 
 app.controller('ProductController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
