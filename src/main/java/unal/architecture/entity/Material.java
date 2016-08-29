@@ -1,6 +1,9 @@
 package unal.architecture.entity;
 
+import org.hibernate.annotations.Check;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 @NamedQueries({
@@ -13,10 +16,12 @@ public class Material {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
+    @Min(0)
     private int inventory;
     @Column(nullable = false)
     private boolean supply;
     @Column(nullable = false)
+    @Min(0)
     private long price;
     @Column(nullable = false)
     private boolean rawMaterial;
@@ -44,7 +49,6 @@ public class Material {
     }
 
     public void setInventory(int inventory) {
-        if(inventory<0) inventory = 0;
         this.inventory = inventory;
     }
 
@@ -72,14 +76,11 @@ public class Material {
         this.provider = provider;
     }
 
-
     public long getPrice() {
         return price;
     }
 
     public void setPrice(long price) {
-        if(price<0)
-            price = 0;
         this.price = price;
     }
 

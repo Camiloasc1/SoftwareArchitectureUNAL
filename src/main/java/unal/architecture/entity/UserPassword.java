@@ -10,6 +10,8 @@ public class UserPassword {
     private long id;
     @OneToOne(optional = false)
     private User user;
+    @Column(unique = true, nullable = false)
+    private String username;
     @Column(nullable = false)
     private String password;
 
@@ -29,6 +31,14 @@ public class UserPassword {
         this.user = user;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -46,6 +56,7 @@ public class UserPassword {
 
         if (id != password1.id) return false;
         if (user != null ? !user.equals(password1.user) : password1.user != null) return false;
+        if (username != null ? !username.equals(password1.username) : password1.username != null) return false;
         return password != null ? password.equals(password1.password) : password1.password == null;
 
     }
@@ -54,6 +65,7 @@ public class UserPassword {
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
     }
