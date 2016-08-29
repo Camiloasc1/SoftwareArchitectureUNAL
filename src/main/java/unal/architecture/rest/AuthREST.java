@@ -46,7 +46,7 @@ public class AuthREST {
     @Path("me")
     @GET
     public User me(@Context HttpServletRequest request) {
-        Integer userId = (Integer) request.getSession().getAttribute("user");
+        Long userId = (Long) request.getSession().getAttribute("user");
         if (userId == null)
             throw new NotAuthorizedException("");
         return em.find(User.class, userId);
@@ -61,5 +61,6 @@ public class AuthREST {
         }
         userCredentials.setPassword(change.getNewPassword());
         em.merge(userCredentials);
+        return;
     }
 }
