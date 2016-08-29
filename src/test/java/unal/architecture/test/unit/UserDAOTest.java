@@ -2,7 +2,7 @@ package unal.architecture.test.unit;
 
 import org.junit.*;
 import unal.architecture.entity.User;
-import unal.architecture.dao.UserService;
+import unal.architecture.dao.UserDAO;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
@@ -10,15 +10,15 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class UserServiceTest {
-    private static final String JNDI = "java:global/SoftwareArchitectureUNAL/UserService";
-    private static UserService userService;
+public class UserDAOTest {
+    private static final String JNDI = "java:global/SoftwareArchitectureUNAL/UserDAO";
+    private static UserDAO userDAO;
 
     @BeforeClass
     public static void beforeClass() throws NamingException {
         Object lookup = EJBContainer.createEJBContainer().getContext().lookup(JNDI);
-        assertTrue(lookup instanceof UserService);
-        userService = (UserService) lookup;
+        assertTrue(lookup instanceof UserDAO);
+        userDAO = (UserDAO) lookup;
     }
 
     @AfterClass
@@ -35,7 +35,7 @@ public class UserServiceTest {
 
     @Test
     public void findAll() {
-        List<User> users = userService.findAll();
+        List<User> users = userDAO.findAll();
         assertTrue(!users.isEmpty());
 
         boolean found = false;

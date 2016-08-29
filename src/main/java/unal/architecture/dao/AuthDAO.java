@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Stateless
-public class AuthService {
+public class AuthDAO {
     @PersistenceContext
     private EntityManager em;
 

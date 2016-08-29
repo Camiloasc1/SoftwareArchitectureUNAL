@@ -1,7 +1,7 @@
 package unal.architecture.rest;
 
 import unal.architecture.entity.Sale;
-import unal.architecture.dao.SaleService;
+import unal.architecture.dao.SaleDAO;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -20,11 +20,11 @@ public class SaleREST {
     @PersistenceContext
     private EntityManager em;
     @EJB
-    SaleService saleService;
+    SaleDAO saleDAO;
 
     @GET
     public List<Sale> list() {
-        return saleService.findAll();
+        return saleDAO.findAll();
     }
 
     @POST

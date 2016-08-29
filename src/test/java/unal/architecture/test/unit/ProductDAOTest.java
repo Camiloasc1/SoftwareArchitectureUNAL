@@ -1,8 +1,8 @@
 package unal.architecture.test.unit;
 
 import org.junit.*;
-import unal.architecture.entity.Credit;
-import unal.architecture.dao.CreditService;
+import unal.architecture.dao.ProductDAO;
+import unal.architecture.entity.Product;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
@@ -10,15 +10,15 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
-public class CreditServiceTest {
-    private static final String JNDI = "java:global/SoftwareArchitectureUNAL/CreditService";
-    private static CreditService creditService;
+public class ProductDAOTest {
+    private static final String JNDI = "java:global/SoftwareArchitectureUNAL/ProductDAO";
+    private static ProductDAO productDAO;
 
     @BeforeClass
     public static void beforeClass() throws NamingException {
         Object lookup = EJBContainer.createEJBContainer().getContext().lookup(JNDI);
-        assertTrue(lookup instanceof CreditService);
-        creditService = (CreditService) lookup;
+        assertTrue(lookup instanceof ProductDAO);
+        productDAO = (ProductDAO) lookup;
     }
 
     @AfterClass
@@ -35,7 +35,7 @@ public class CreditServiceTest {
 
     @Test
     public void findAll() {
-        List<Credit> products = creditService.findAll();
+        List<Product> products = productDAO.findAll();
         assertTrue(products.isEmpty());
     }
 }

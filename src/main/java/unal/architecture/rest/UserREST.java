@@ -1,7 +1,7 @@
 package unal.architecture.rest;
 
 import unal.architecture.entity.User;
-import unal.architecture.dao.UserService;
+import unal.architecture.dao.UserDAO;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -19,11 +19,11 @@ public class UserREST {
     @PersistenceContext
     private EntityManager em;
     @EJB
-    UserService userService;
+    UserDAO userDAO;
 
     @GET
     public List<User> list() {
-        return userService.findAll();
+        return userDAO.findAll();
     }
 
     @POST

@@ -1,7 +1,6 @@
 package unal.architecture.service;
 
-import unal.architecture.dao.AuthService;
-import unal.architecture.dao.UserService;
+import unal.architecture.dao.AuthDAO;
 import unal.architecture.entity.User;
 import unal.architecture.entity.UserCredentials;
 
@@ -18,7 +17,7 @@ public class StartupService {
     @PersistenceContext
     private EntityManager em;
     @EJB
-    private AuthService authService;
+    private AuthDAO authDAO;
 
     @PostConstruct
     public void init() {
@@ -26,7 +25,7 @@ public class StartupService {
     }
 
     public void createAdmin() {
-        if (authService.findByUsername("admin") != null)
+        if (authDAO.findByUsername("admin") != null)
             return;
 
         User admin = new User();

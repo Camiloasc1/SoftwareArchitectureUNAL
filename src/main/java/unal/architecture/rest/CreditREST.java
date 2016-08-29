@@ -1,7 +1,7 @@
 package unal.architecture.rest;
 
 import unal.architecture.entity.Credit;
-import unal.architecture.dao.CreditService;
+import unal.architecture.dao.CreditDAO;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -20,11 +20,11 @@ public class CreditREST {
     @PersistenceContext
     private EntityManager em;
     @EJB
-    CreditService creditService;
+    CreditDAO creditDAO;
 
     @GET
     public List<Credit> list() {
-        return creditService.findAll();
+        return creditDAO.findAll();
     }
 
     @POST
