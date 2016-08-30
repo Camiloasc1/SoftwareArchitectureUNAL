@@ -1,146 +1,97 @@
-<div>
-
-    <div class="jumbotron">
-        <legend>Consultar productos</legend>
-        <div align="center">
-            <button ng-click="getProducts()" class="btn btn-primary btn-raised">Ver productos</button>
-        </div>
-
-        <div>
-            <table id='table' class="table table-striped table-hover ">
-
-                <th ng-repeat="column in columns" ng-show="column.visible">
-                    {{column.title}}
-                </th>
-
-                <tr ng-repeat="p in products">
-                    <td>{{p.id}}</td>
-                    <td>{{p.name}}</td>
-                    <td>{{p.inventory}}</td>
-                    <td>{{p.price}}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <div class="jumbotron">
-        <form class="form-horizontal">
-            <fieldset>
-                <legend>Consultar o editar un producto específico</legend>
-                <div class="form-group">
-                    <div class="row">
-                        <label class="control-label col-sm-2" for="username">Referencia de producto:</label>
-                        <div class="col-sm-9">
-                            <input type="number" name="product_id" class="form-control" id="product_id"
-                                   placeholder="0" required="required"
-                                   ng-model="consult"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-offset-1" align="center">
-                        <button type="submit" class="btn btn-primary btn-raised glyphicon glyphicon-search" ng-click="getProduct()"> Consultar
-                        </button>
-                    </div>
-                </div>
-            </fieldset>
-        </form>
-
-        <form class="form-horizontal" id="editProduct" ng-show="editing">
-            <fieldset>
-                <legend>Editar producto consultado:</legend>
-                <div class="form-group">
-                    <div class="row">
-                        <label class="control-label col-sm-2" for="name">Refrencia:</label>
-                        <div class="col-sm-9">
-                            <input disabled="disabled" type="text" name="id" class="form-control" id="id_edit"
-                                   placeholder="0" required="required" ng-model="pToUpdate.id"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <label class="control-label col-sm-2" for="username">Nombre:</label>
-                        <div class="col-sm-9">
-                            <input type="text" name="username" class="form-control" id="edit_name"
-                                   placeholder="Nombre" required="required" ng-model="pToUpdate.name"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <label class="control-label col-sm-2" for="username">Cantidad Inicial:</label>
-                        <div class="col-sm-9">
-                            <input type="number" name="username" class="form-control" id="edit_username"
-                                   placeholder="0" required="required"
-                                   ng-model="pToUpdate.inventory"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <label class="control-label col-sm-2" for="username">Precio unitario:</label>
-                        <div class="col-sm-9">
-                            <input type="number" name="price" class="form-control" id="edit_price"
-                                   placeholder="0" required="required"
-                                   ng-model="pToUpdate.price"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-offset-1" align="center">
-                        <button type="submit" class="btn btn-primary btn-raised glyphicon glyphicon-remove" ng-click="deleteProduct()"> Borrar producto
-                        </button>
-                        <button type="submit" class="btn btn-primary btn-raised glyphicon glyphicon-edit" ng-click="updateProduct()"> Guardar cambios
-                        </button>
-                    </div>
-                </div>
-            </fieldset>
-        </form>
-    </div>
-</div>
-
-
 <div class="jumbotron">
-    <form class="form-horizontal">
-        <fieldset>
-            <legend>Crear Producto</legend>
-            <div class="form-group">
-                <div class="row">
-                    <label class="control-label col-sm-2" for="name">Nombre:</label>
-                    <div class="col-sm-9">
-                        <input type="text" name="username" class="form-control" id="name"
-                               placeholder="Nombre" required="required" ng-model="product.name"/>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="row">
-                    <label class="control-label col-sm-2" for="username">Cantidad Inicial:</label>
-                    <div class="col-sm-9">
-                        <input type="number" name="username" class="form-control" id="username"
-                               placeholder="0" required="required"
-                               ng-model="product.inventory"/>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="row">
-                    <label class="control-label col-sm-2" for="username">Precio unitario:</label>
-                    <div class="col-sm-9">
-                        <input type="number" name="price" class="form-control" id="price"
-                               placeholder="0" required="required"
-                               ng-model="product.price"/>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-offset-1" align="center">
-                    <button type="submit" class="btn btn-primary btn-raised glyphicon glyphicon-plus " ng-click="submit()"> Crear
+    <legend>Consultar Productos</legend>
+    <div align="right">
+        <button ng-click="edit({})" class="btn btn-primary btn-raised">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+        <button ng-click="reload()" class="btn btn-primary btn-raised">
+            <span class="glyphicon glyphicon-refresh"></span>
+        </button>
+    </div>
+
+    <div>
+        <table id="table" class="table table-striped table-hover">
+
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Existencias</th>
+                <th>Precio</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+
+            <tr ng-repeat="p in products">
+                <td>{{p.name}}</td>
+                <td>{{p.inventory}}</td>
+                <td>{{p.price}}</td>
+                <td>
+                    <button ng-click="edit(p)" class="btn btn-primary btn-raised">
+                        <span class="glyphicon glyphicon-pencil"></span>
                     </button>
-                </div>
-            </div>
-        </fieldset>
-    </form>
+                </td>
+                <td>
+                    <button ng-click="delete(p)" class="btn btn-primary btn-raised">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
+
+
+<div id="product" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Editar Producto</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-sm-2" for="name">Nombre:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="name" class="form-control" id="name"
+                                           placeholder="Nombre" required="required" ng-model="product.name"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-sm-2" for="inventory">Existencias:</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="inventory" class="form-control" id="inventory"
+                                           placeholder="0" required="required" ng-model="product.inventory"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-sm-2" for="price">Precio:</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="price" class="form-control" id="price"
+                                           placeholder="0" ng-model="product.price"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-offset-1">
+                                <button ng-click="submit()" type="submit" class="btn btn-primary btn-raised">Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
 </div>

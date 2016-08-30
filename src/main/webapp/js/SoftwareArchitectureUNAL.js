@@ -81,11 +81,13 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
     $scope.materials = {};
     $scope.material = {};
 
+    const URI = 'materials';
+    const MODAL = '#material';
     const RAW = "Materia Prima";
     const SUPPLY = "Insumo";
 
     $scope.reload = function () {
-        $http.get('materials')
+        $http.get(URI)
             .then(function (response) {
                 $scope.materials = response.data;
                 for (var m in $scope.materials) {
@@ -104,7 +106,7 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
         else
             $scope.material.selectedType = "supply";
 
-        $("#material").modal("show");
+        $(MODAL).modal('show');
     };
     $scope.submit = function () {
         if ($scope.material.selectedType === "raw") {
@@ -118,21 +120,21 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
         }
 
         if ($scope.material.id)
-            $http.put('materials/' + $scope.material.id, $scope.material)
-                .then(function (response) {
-                    $("#material").modal("hide");
+            $http.put(URI + '/' + $scope.material.id, $scope.material)
+                .then(function () {
+                    $(MODAL).modal('hide');
                     $scope.reload();
                 });
         else
-            $http.post('materials', $scope.material)
-                .then(function (response) {
-                    $("#material").modal("hide");
+            $http.post(URI, $scope.material)
+                .then(function () {
+                    $(MODAL).modal('hide');
                     $scope.reload();
                 });
     };
     $scope.delete = function (material) {
-        $http.delete('materials/' + material.id)
-            .then(function (response) {
+        $http.delete(URI + '/' + material.id)
+            .then(function () {
                 $scope.reload();
             });
     };
@@ -140,78 +142,45 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
     $scope.reload();
 }]);
 
-app.controller('ProductsController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+app.controller('ProductsController', ['$scope', '$http', function ($scope, $http) {
     $scope.products = {};
     $scope.product = {};
-    $scope.consult = 0;
-    $scope.editing = false;
 
+    const URI = 'products';
+    const MODAL = '#product';
+
+    $scope.reload = function () {
+        $http.get(URI)
+            .then(function (response) {
+                $scope.products = response.data;
+            });
+    };
+    $scope.edit = function (product) {
+        $scope.product = product;
+        $(MODAL).modal('show');
+    };
     $scope.submit = function () {
-        $http.post('products', $scope.product)
-            .then(function (response) {
-                if (response.status === 200) {
-                    alert("producto creado");
-                }
-                else {
-                    alert("No se pudo crear el producto");
-                }
+        if ($scope.product.id)
+            $http.put(URI + '/' + $scope.product.id, $scope.product)
+                .then(function () {
+                    $(MODAL).modal('hide');
+                    $scope.reload();
+                });
+        else
+            $http.post(URI, $scope.product)
+                .then(function () {
+                    $(MODAL).modal('hide');
+                    $scope.reload();
+                });
+    };
+    $scope.delete = function (product) {
+        $http.delete(URI + '/' + product.id)
+            .then(function () {
+                $scope.reload();
             });
-    }
-    $scope.getProducts = function () {
-        $http.get('products')
-            .then(function (response) {
-                if (response.status === 200) {
-                    $scope.products = response.data;
-                    $scope.columns = [
-                        {title: 'id', field: 'id', visible: true},
-                        {title: 'Nombre', field: 'name', visible: true},
-                        {title: 'Existencias', field: 'inventory', visible: true},
-                        {title: 'Precio', field: 'price', visible: true}
-                    ];
-                }
-                else {
-                    alert("No existen productos en el sistema");
-                }
-            });
-    }
-    $scope.getProduct = function () {
-        $http.get('products/' + $scope.consult)
-            .then(function (response) {
+    };
 
-                if (response.status === 200) {
-                    $scope.pToUpdate = response.data;
-                    $scope.editing = true;
-                } else {
-                    alert("Producto no encontrado");
-                    $scope.editing = false;
-                }
-            })
-    }
-    $scope.updateProduct = function () {
-        $http.put('products/' + $scope.pToUpdate.id, $scope.pToUpdate)
-            .then(function (response) {
-                if (response.status === 200) {
-                    $scope.pToUpdate = {};
-                    alert("Producto actualizado");
-                }
-                else {
-                    alert("No se pudo editar el producto");
-                }
-            });
-    }
-    $scope.deleteProduct = function () {
-        $http.delete('products/' + $scope.pToUpdate.id)
-            .then(function (response) {
-                if (response.status === 204) {
-                    $scope.pToUpdate = {};
-                    alert("Producto borrado");
-                    $scope.editing = false;
-                } else {
-                    alert("No se pudo borrar el producto");
-                }
-
-            });
-    }
+    $scope.reload();
 }]);
 
 app.controller('SalesController', ['$scope', '$http', function ($scope, $http) {
