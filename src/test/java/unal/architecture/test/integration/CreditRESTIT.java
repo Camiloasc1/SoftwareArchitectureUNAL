@@ -4,6 +4,7 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
 import unal.architecture.entity.Credit;
 import unal.architecture.entity.User;
+import unal.architecture.rest.schemas.Credentials;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
@@ -40,23 +41,29 @@ public class CreditRESTIT {
     public void crudProduct() {
         Response response;
         Credit credit;
+        User user;
 
-        User admin = new User();
-        admin.setName("Test User");
-        admin.setAdmin(true);
-        admin = client.target("http://localhost:8080/SoftwareArchitectureUNAL/users")
+        //Login.
+        Credentials credentials = new Credentials();
+        credentials.setUsername("admin");
+        credentials.setPassword("admin");
+        response = client.target("http://localhost:8080/SoftwareArchitectureUNAL/auth")
+                .path("login")
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json(admin), User.class);
-        assertNotNull(admin);
+                .post(Entity.json(credentials));
+        String session = response.getCookies().get("JSESSIONID").getValue();
+        user = response.readEntity(User.class);
+        assertNotNull(user);
 
         //Create
         credit = new Credit();
+        credit.setAmount(1);
         credit.setInterest(0.1f);
         credit.setPaid(false);
-        credit.setUser(admin);
 
         credit = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .post(Entity.json(credit), Credit.class);
         assertNotNull(credit);
 

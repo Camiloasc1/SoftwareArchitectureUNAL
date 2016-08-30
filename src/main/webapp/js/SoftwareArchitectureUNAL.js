@@ -183,6 +183,47 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
     $scope.reload();
 }]);
 
+app.controller('CreditsController', ['$scope', '$http', function ($scope, $http) {
+    $scope.credits = {};
+    $scope.credit = {};
+
+    const URI = 'credits';
+    const MODAL = '#credit';
+
+    $scope.reload = function () {
+        $http.get(URI)
+            .then(function (response) {
+                $scope.credits = response.data;
+            });
+    };
+    $scope.edit = function (credit) {
+        $scope.credit = credit;
+        $(MODAL).modal('show');
+    };
+    $scope.submit = function () {
+        if ($scope.credit.id)
+            $http.put(URI + '/' + $scope.credit.id, $scope.credit)
+                .then(function () {
+                    $(MODAL).modal('hide');
+                    $scope.reload();
+                });
+        else
+            $http.post(URI, $scope.credit)
+                .then(function () {
+                    $(MODAL).modal('hide');
+                    $scope.reload();
+                });
+    };
+    $scope.delete = function (credit) {
+        $http.delete(URI + '/' + credit.id)
+            .then(function () {
+                $scope.reload();
+            });
+    };
+
+    $scope.reload();
+}]);
+
 app.controller('SalesController', ['$scope', '$http', function ($scope, $http) {
 }]);
 
@@ -270,6 +311,10 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
         .when('/users', {
             templateUrl: 'partials/users.html',
             controller: 'controlUsersController'
+        })
+        .when('/credits', {
+            templateUrl: 'partials/credits.html',
+            controller: 'CreditsController'
         })
         .when('/sales', {
             templateUrl: 'partials/sales.html',
