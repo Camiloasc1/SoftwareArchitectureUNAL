@@ -51,7 +51,7 @@
                 <h4 class="modal-title">Editar Producto</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal">
+                <form name="form" class="form-horizontal" ng-submit="submit()">
                     <fieldset>
                         <div class="form-group">
                             <div class="row">
@@ -67,7 +67,7 @@
                                 <label class="control-label col-sm-2" for="inventory">Existencias:</label>
                                 <div class="col-sm-9">
                                     <input type="number" name="inventory" class="form-control" id="inventory"
-                                           placeholder="0" required="required" ng-model="product.inventory"/>
+                                           placeholder="-" min="0" required="required" ng-model="product.inventory"/>
                                 </div>
                             </div>
                         </div>
@@ -76,13 +76,14 @@
                                 <label class="control-label col-sm-2" for="price">Precio:</label>
                                 <div class="col-sm-9">
                                     <input type="number" name="price" class="form-control" id="price"
-                                           placeholder="0" ng-model="product.price"/>
+                                           placeholder="-" min="0" ng-model="product.price"/>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-offset-1">
-                                <button ng-click="submit()" type="submit" class="btn btn-primary btn-raised">Guardar
+                                <button ng-disabled="form.$invalid" type="submit" class="btn btn-primary btn-raised">
+                                    Guardar
                                 </button>
                             </div>
                         </div>

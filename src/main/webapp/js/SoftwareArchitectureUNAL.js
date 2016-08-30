@@ -271,6 +271,10 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
             templateUrl: 'partials/users.html',
             controller: 'controlUsersController'
         })
+        .when('/credits', {
+            templateUrl: 'partials/credits.html',
+            controller: 'CreditsController'
+        })
         .when('/sales', {
             templateUrl: 'partials/sales.html',
             controller: 'SalesController'
