@@ -22,30 +22,32 @@ import javax.ws.rs.core.MediaType;
 public class AuthREST {
     @PersistenceContext
     private EntityManager em;
+    @Context
+    HttpServletRequest ctx;
     @EJB
     AuthDAO authDAO;
 
     @Path("login")
     @POST
-    public User login(Credentials credentials, @Context HttpServletRequest request) {
+    public User login(Credentials credentials) {
         UserCredentials userCredentials = authDAO.findByUsername(credentials.getUsername());
         if (userCredentials == null || !userCredentials.getPassword().equals(credentials.getPassword())) {
             throw new NotAuthorizedException("");
         }
-        request.getSession().setAttribute("user", userCredentials.getUser().getId());
+        ctx.getSession().setAttribute("user", userCredentials.getUser().getId());
         return userCredentials.getUser();
     }
 
     @Path("logout")
     @POST
-    public void logout(@Context HttpServletRequest request) {
-        request.getSession().setAttribute("user", null);
+    public void logout() {
+        ctx.getSession().setAttribute("user", null);
     }
 
     @Path("me")
     @GET
-    public User me(@Context HttpServletRequest request) {
-        Long userId = (Long) request.getSession().getAttribute("user");
+    public User me() {
+        Long userId = (Long) ctx.getSession().getAttribute("user");
         if (userId == null)
             throw new NotAuthorizedException("");
         return em.find(User.class, userId);
