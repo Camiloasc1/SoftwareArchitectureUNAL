@@ -83,9 +83,8 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
 
     const RAW = "Materia Prima";
     const SUPPLY = "Insumo";
-    $scope.columns = ['Nombre', 'Existencias', 'Precio unitario', 'Tipo', 'Proveedor', 'a', 'b'];
 
-    $scope.get = function () {
+    $scope.reload = function () {
         $http.get('materials')
             .then(function (response) {
                 $scope.materials = response.data;
@@ -122,23 +121,23 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
             $http.put('materials/' + $scope.material.id, $scope.material)
                 .then(function (response) {
                     $("#material").modal("hide");
-                    $scope.get();
+                    $scope.reload();
                 });
         else
             $http.post('materials', $scope.material)
                 .then(function (response) {
                     $("#material").modal("hide");
-                    $scope.get();
+                    $scope.reload();
                 });
     };
     $scope.delete = function (material) {
         $http.delete('materials/' + material.id)
             .then(function (response) {
-                $scope.get();
+                $scope.reload();
             });
     };
 
-    $scope.get();
+    $scope.reload();
 }]);
 
 app.controller('ProductsController', ['$scope', '$http', '$location', function ($scope, $http, $location) {

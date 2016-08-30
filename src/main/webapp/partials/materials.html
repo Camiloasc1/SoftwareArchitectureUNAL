@@ -1,19 +1,28 @@
 <div class="jumbotron">
     <legend>Consultar materiales</legend>
     <div align="right">
-        <button ng-click="edit({})" class="btn btn-primary btn-raised"><span
-                class="glyphicon glyphicon-plus"></span>
+        <button ng-click="edit({})" class="btn btn-primary btn-raised">
+            <span class="glyphicon glyphicon-plus"></span>
         </button>
-        <button ng-click="get()" class="btn btn-primary btn-raised"><span class="glyphicon glyphicon-refresh"></span>
+        <button ng-click="reload()" class="btn btn-primary btn-raised">
+            <span class="glyphicon glyphicon-refresh"></span>
         </button>
     </div>
 
     <div>
         <table id="table" class="table table-striped table-hover">
 
-            <th ng-repeat="column in columns">
-                {{column}}
-            </th>
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Existencias</th>
+                <th>Precio Unitario</th>
+                <th>Tipo</th>
+                <th>Proveedor</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
 
             <tr ng-repeat="m in materials">
                 <td>{{m.name}}</td>
