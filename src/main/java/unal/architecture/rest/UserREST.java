@@ -1,69 +1,56 @@
 package unal.architecture.rest;
 
+import unal.architecture.dao.UserDAO;
 import unal.architecture.entity.User;
-import unal.architecture.service.UserService;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 @Stateless
-@Path("user")
+@Path("users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserREST {
-    @EJB
-    UserService userService;
     @PersistenceContext
-    private EntityManager entityManager;
+    private EntityManager em;
+    @EJB
+    UserDAO userDAO;
 
-    @Path("me")
     @GET
-    public Object me(@Context HttpServletRequest request) {
-        return request.getSession().getAttribute("user");
+    public List<User> list() {
+        return userDAO.findAll();
     }
 
-    @Path("login")
     @POST
-    public User login(Credentials credentials,
-                      @Context HttpServletRequest request) {
-        User user = userService.findByUsername(credentials.username);
-        if (user == null || user.getPassword().compareTo(credentials.password) != 0) {
-            return null;
-        }
-        request.getSession().setAttribute("user", user);
+    public User create(User user) {
+        user.setId(0);
+        em.persist(user);
         return user;
     }
 
-    @Path("logout")
-    @POST
-    public void logout(@Context HttpServletRequest request) {
-        request.getSession().setAttribute("user", null);
-    }
-}
-
-class Credentials {
-    public String username;
-    public String password;
-
-    public String getUsername() {
-        return username;
+    @GET
+    @Path("{id}")
+    public User show(@PathParam("id") long id) {
+        return em.find(User.class, id);
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    @PUT
+    @Path("{id}")
+    public User update(@PathParam("id") long id, User user) {
+        user.setId(id);
+        em.merge(user);
+        return user;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    @DELETE
+    @Path("{id}")
+    public void delete(@PathParam("id") long id) {
+        em.remove(em.find(User.class, id));
+        return;
     }
 }

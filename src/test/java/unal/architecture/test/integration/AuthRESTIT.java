@@ -1,8 +1,10 @@
-package unal.architecture.test;
+package unal.architecture.test.integration;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
+import org.junit.rules.ExpectedException;
 import unal.architecture.entity.User;
+import unal.architecture.rest.schemas.Credentials;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
@@ -14,9 +16,12 @@ import javax.ws.rs.core.Response;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-public class UserRESTIT {
-    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/user";
+public class AuthRESTIT {
+    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/auth";
     private static Client client;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @BeforeClass
     public static void beforeClass() throws NamingException {
@@ -37,25 +42,30 @@ public class UserRESTIT {
     }
 
     @Test
-    public void testLogin() {
-        Response response;
+    public void testNotLoggedin() {
         User user;
 
-        //Not logged in yet.
+        thrown.expect(javax.ws.rs.ProcessingException.class);
         user = client.target(URI)
                 .path("me")
                 .request(MediaType.APPLICATION_JSON)
                 .get(User.class);
         assertNull(user);
+    }
+
+    @Test
+    public void testLogin() {
+        Response response;
+        User user;
 
         //Login.
-        User admin = new User();
-        admin.setUsername("admin");
-        admin.setPassword("admin");
+        Credentials credentials = new Credentials();
+        credentials.setUsername("admin");
+        credentials.setPassword("admin");
         response = client.target(URI)
                 .path("login")
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json(admin));
+                .post(Entity.json(credentials));
         String session = response.getCookies().get("JSESSIONID").getValue();
         user = response.readEntity(User.class);
         assertNotNull(user);
@@ -76,6 +86,7 @@ public class UserRESTIT {
                 .post(Entity.json(""));
 
         //Not logged in again.
+        thrown.expect(javax.ws.rs.ProcessingException.class);
         user = client.target(URI)
                 .path("me")
                 .request(MediaType.APPLICATION_JSON)

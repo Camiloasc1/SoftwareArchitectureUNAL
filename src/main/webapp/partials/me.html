@@ -1,0 +1,62 @@
+<div class="alert alert-dismissible alert-success" ng-show="success">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>Exito!</strong><br>Datos actualizados.
+</div>
+<div class="alert alert-dismissible alert-danger" ng-show="error">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>Error!</strong>
+</div>
+
+<div class="jumbotron">
+    <form class="form-horizontal">
+        <fieldset>
+            <legend>Datos personales</legend>
+            <div class="form-group">
+                <div class="row">
+                    <label class="control-label col-sm-2" for="name">Nombre:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="name" class="form-control" id="name"
+                               placeholder="Nombre" required="required" ng-model="user.name"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <label class="control-label col-sm-2" for="email">Email:</label>
+                    <div class="col-sm-10">
+                        <input type="email" name="email" class="form-control" id="email"
+                               placeholder="Email" required="required" ng-model="user.email"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <label class="control-label col-sm-2" for="admin">Administrador</label>
+                    <div class="col-sm-2">
+                        <input type="checkbox" name="admin" class="form-control" id="admin"
+                               placeholder="Administrador" required="required" disabled="disabled"
+                               ng-model="user.admin"/>
+                    </div>
+                    <label class="control-label col-sm-2" for="worker">Trabajador</label>
+                    <div class="col-sm-2">
+                        <input type="checkbox" name="worker" class="form-control" id="worker"
+                               placeholder="Trabajador" required="required" disabled="disabled"
+                               ng-model="user.worker"/>
+                    </div>
+                    <label class="control-label col-sm-2" for="salesman">Vendedor</label>
+                    <div class="col-sm-2">
+                        <input type="checkbox" name="salesman" class="form-control" id="salesman"
+                               placeholder="Vendedor" required="required" disabled="disabled"
+                               ng-model="user.salesman"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-offset-1">
+                    <button type="submit" class="btn btn-primary btn-raised" ng-click="submit()">Actualizar datos
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

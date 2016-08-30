@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>MyPage</title>
+
+    <base href="/SoftwareArchitectureUNAL/">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <!-- Material Design fonts -->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- Bootstrap Material Design -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/bootstrap.material-design/0.5.10/css/bootstrap-material-design.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.material-design/0.5.10/css/ripples.min.css">
+</head>
+<body ng-app="SoftwareArchitectureUNAL" ng-controller="NavigationController" ng-cloak>
+
+<nav class="navbar">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#!/">CarAPP</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#!/">Inicio</a></li>
+            <li ng-show="user.admin" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button">Administracion
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li ng-show="user.admin"><a href="#!/admin">Administracion</a></li>
+                    <li ng-show="user.admin"><a href="#!/materials">Materias Primas</a></li>
+                    <li ng-show="user.admin"><a href="#!/users">Usuarios</a></li>
+                    <li ng-show="user.admin"><a href="#!/products">Productos</a></li>
+                </ul>
+            </li>
+            <li ng-show="user.worker"><a href="#!/sales">Ventas</a></li>
+            <li ng-show="user.salesman"><a href="#!/production">Produccion</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li ng-show="user === null">
+                <!-- Trigger the login modal -->
+                <a data-toggle="modal" data-target="#login" role="button">
+                    <span class="glyphicon glyphicon-log-in"></span> Ingresar
+                </a>
+            </li>
+            <li ng-show="user !== null">
+                <a href="#!/me"><span class="glyphicon glyphicon-user"></span> {{user.name}}</a>
+            <li ng-show="user !== null">
+                <a href="#!/" ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span> Salir</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <!-- Login modal -->
+    <div id="login" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Ingresar</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-dismissible alert-success" ng-show="success">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>Bienvenido {{user.name}}!</strong><br>Bienvenido al sistema.
+                    </div>
+                    <div class="alert alert-dismissible alert-danger" ng-show="error">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>Error!</strong><br>Usuario o Contraseña incorrectos.
+                    </div>
+
+                    <form class="form-horizontal">
+                        <fieldset>
+                            <!-- <legend>Ingresar</legend> -->
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="control-label col-sm-2" for="username">Nombre de usuario:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="username" class="form-control" id="username"
+                                               placeholder="Nombre de usuario" required="required"
+                                               ng-model="credentials.username"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="control-label col-sm-2" for="password">Contraseña:</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" name="password" class="form-control" id="password"
+                                               placeholder="Contraseña" required="required"
+                                               ng-model="credentials.password"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-offset-1">
+                                    <button ng-click="login()" type="submit" class="btn btn-primary btn-raised">
+                                        Ingresar
+                                    </button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div ng-view></div>
+</div>
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- AngularJS -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
+<!-- AngularJS i18n es-CO -->
+<script src="https://code.angularjs.org/1.5.8/i18n/angular-locale_es-co.js"></script>
+<!-- Bootstrap Material Design -->
+<script src="https://cdn.jsdelivr.net/bootstrap.material-design/0.5.10/js/material.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap.material-design/0.5.10/js/ripples.min.js"></script>
+<script>
+    $.material.init();
+</script>
+<!-- SoftwareArchitectureUNAL -->
+<script src="js/SoftwareArchitectureUNAL.js"></script>
+</body>
+</html>
+
