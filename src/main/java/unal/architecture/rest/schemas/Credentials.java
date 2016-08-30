@@ -1,4 +1,4 @@
-package unal.architecture.entity;
+package unal.architecture.rest.schemas;
 
 public class Credentials {
     private String username;

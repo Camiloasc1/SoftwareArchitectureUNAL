@@ -3,7 +3,6 @@ package unal.architecture.test.integration;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
 import unal.architecture.entity.User;
-import unal.architecture.entity.UserPassword;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
@@ -51,7 +50,7 @@ public class UserRESTIT {
 
         boolean found = false;
         for (User u : users) {
-            if (u.getUsername().equals("admin")) {
+            if (u.getName().equals("admin")) {
                 found = true;
                 break;
             }
@@ -60,54 +59,31 @@ public class UserRESTIT {
     }
 
     @Test
-    public void findAdmin() {
-        User user;
-
-        user = client.target(URI)
-                .path("admin")
-                .request(MediaType.APPLICATION_JSON)
-                .get(User.class);
-        assertNotNull(user);
-    }
-
-    @Test
     public void crudUser() {
-        /*Response response;
+        Response response;
         User user;
-        UserPassword userPassword;
 
         //Create
         user = new User();
         user.setName("Test User");
-        user.setUsername("testuser");
-        user.setSalesman(false);
-        user.setWorker(false);
-        user.setAdmin(false);
-        user.setEmail("amrondonp@carapp.com");
 
-        userPassword = new UserPassword();
-        userPassword.setPassword("pass");
-        userPassword.setUser(user);
-
-
-        userPassword = client.target(URI)
+        user = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json(userPassword), UserPassword.class);
-        assertNotNull(userPassword);
+                .post(Entity.json(user), User.class);
+        assertNotNull(user);
 
         //Read
         user = client.target(URI)
-                .path(user.getUsername())
+                .path(user.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
                 .get(User.class);
         assertNotNull(user);
         assertEquals("Test User", user.getName());
-        assertEquals("testuser", user.getUsername());
 
         //Update
         user.setEmail("testuser@architecure.unal");
         user = client.target(URI)
-                .path(user.getUsername())
+                .path(user.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
                 .put(Entity.json(user), User.class);
         assertNotNull(user);
@@ -115,15 +91,15 @@ public class UserRESTIT {
 
         //Delete
         response = client.target(URI)
-                .path(user.getUsername())
+                .path(user.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
                 .delete();
         assertEquals(204, response.getStatus());
 
         user = client.target(URI)
-                .path(user.getUsername())
+                .path(user.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
                 .get(User.class);
-        assertNull(user);*/
+        assertNull(user);
     }
 }

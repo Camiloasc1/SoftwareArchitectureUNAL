@@ -1,7 +1,7 @@
 package unal.architecture.rest;
 
+import unal.architecture.dao.MaterialDAO;
 import unal.architecture.entity.Material;
-import unal.architecture.service.MaterialService;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -19,11 +19,11 @@ public class MaterialREST {
     @PersistenceContext
     private EntityManager em;
     @EJB
-    MaterialService materialService;
+    MaterialDAO materialDAO;
 
     @GET
     public List<Material> list() {
-        return materialService.findAll();
+        return materialDAO.findAll();
     }
 
     @POST

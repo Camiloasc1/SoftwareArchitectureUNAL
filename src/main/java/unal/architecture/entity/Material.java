@@ -1,11 +1,15 @@
 package unal.architecture.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Material.findAll", query = "Select m from Material m")
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Material {
     @Id
     @GeneratedValue
@@ -13,11 +17,13 @@ public class Material {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
+    @Min(0)
     private int inventory;
     @Column(nullable = false)
     private boolean supply;
     @Column(nullable = false)
-    private long price;
+    @Min(0)
+    private float price;
     @Column(nullable = false)
     private boolean rawMaterial;
     @Column(nullable = false)
@@ -44,7 +50,6 @@ public class Material {
     }
 
     public void setInventory(int inventory) {
-        if(inventory<0) inventory = 0;
         this.inventory = inventory;
     }
 
@@ -72,28 +77,25 @@ public class Material {
         this.provider = provider;
     }
 
-
-    public long getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(long price) {
-        if(price<0)
-            price = 0;
+    public void setPrice(float price) {
         this.price = price;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Material)) return false;
 
         Material material = (Material) o;
 
         if (id != material.id) return false;
         if (inventory != material.inventory) return false;
         if (supply != material.supply) return false;
-        if (price != material.price) return false;
+        if (Float.compare(material.price, price) != 0) return false;
         if (rawMaterial != material.rawMaterial) return false;
         if (name != null ? !name.equals(material.name) : material.name != null) return false;
         return provider != null ? provider.equals(material.provider) : material.provider == null;
@@ -106,7 +108,7 @@ public class Material {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + inventory;
         result = 31 * result + (supply ? 1 : 0);
-        result = 31 * result + (int) (price ^ (price >>> 32));
+        result = 31 * result + (price != +0.0f ? Float.floatToIntBits(price) : 0);
         result = 31 * result + (rawMaterial ? 1 : 0);
         result = 31 * result + (provider != null ? provider.hashCode() : 0);
         return result;

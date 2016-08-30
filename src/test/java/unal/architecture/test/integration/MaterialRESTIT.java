@@ -2,7 +2,6 @@ package unal.architecture.test.integration;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import unal.architecture.entity.Material;
 
 import javax.naming.NamingException;

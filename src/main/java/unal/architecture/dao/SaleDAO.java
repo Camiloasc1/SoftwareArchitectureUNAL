@@ -1,6 +1,6 @@
-package unal.architecture.service;
+package unal.architecture.dao;
 
-import unal.architecture.entity.Fabrication;
+import unal.architecture.entity.Sale;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -9,12 +9,12 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Stateless
-public class FabricationService {
+public class SaleDAO {
     @PersistenceContext
     private EntityManager em;
 
-    public List<Fabrication> findAll() {
-        TypedQuery<Fabrication> query = em.createNamedQuery("Fabrication.findAll", Fabrication.class);
+    public List<Sale> findAll() {
+        TypedQuery<Sale> query = em.createNamedQuery("Sale.findAll", Sale.class);
         return query.getResultList();
     }
 }

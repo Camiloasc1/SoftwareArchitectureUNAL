@@ -3,8 +3,8 @@ package unal.architecture.test.integration;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
-import unal.architecture.entity.Credentials;
 import unal.architecture.entity.User;
+import unal.architecture.rest.schemas.Credentials;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
@@ -21,7 +21,7 @@ public class AuthRESTIT {
     private static Client client;
 
     @Rule
-    public ExpectedException thrown= ExpectedException.none();
+    public ExpectedException thrown = ExpectedException.none();
 
     @BeforeClass
     public static void beforeClass() throws NamingException {
@@ -42,7 +42,7 @@ public class AuthRESTIT {
     }
 
     @Test
-    public void testNotLoggedin(){
+    public void testNotLoggedin() {
         User user;
 
         thrown.expect(javax.ws.rs.ProcessingException.class);

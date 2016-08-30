@@ -50,10 +50,12 @@ public class FabricationRESTIT {
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.json(product), Product.class);
         assertNotNull(product);
-        User worker = client.target("http://localhost:8080/SoftwareArchitectureUNAL/users")
-                .path("admin")
+        User worker = new User();
+        worker.setName("Test User");
+        worker.setWorker(true);
+        worker = client.target("http://localhost:8080/SoftwareArchitectureUNAL/users")
                 .request(MediaType.APPLICATION_JSON)
-                .get(User.class);
+                .post(Entity.json(worker), User.class);
         assertNotNull(worker);
 
         //Create

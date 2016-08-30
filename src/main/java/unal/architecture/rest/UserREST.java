@@ -1,8 +1,7 @@
 package unal.architecture.rest;
 
+import unal.architecture.dao.UserDAO;
 import unal.architecture.entity.User;
-import unal.architecture.entity.UserPassword;
-import unal.architecture.service.UserService;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -20,40 +19,38 @@ public class UserREST {
     @PersistenceContext
     private EntityManager em;
     @EJB
-    UserService userService;
+    UserDAO userDAO;
 
     @GET
     public List<User> list() {
-        return userService.findAll();
+        return userDAO.findAll();
     }
 
     @POST
-    public UserPassword create(UserPassword userPassword) {
-        userPassword.setId(0);
-        em.persist(userPassword.getUser());
-        em.persist(userPassword);
-        return userPassword;
+    public User create(User user) {
+        user.setId(0);
+        em.persist(user);
+        return user;
     }
 
     @GET
-    @Path("{username}")
-    public User show(@PathParam("username") String username) {
-        return userService.findByUsername(username);
+    @Path("{id}")
+    public User show(@PathParam("id") long id) {
+        return em.find(User.class, id);
     }
 
     @PUT
-    @Path("{username}")
-    public User update(@PathParam("username") String username, User user) {
-        user.setId(userService.findByUsername(username).getId());
-        user.setUsername(username);
+    @Path("{id}")
+    public User update(@PathParam("id") long id, User user) {
+        user.setId(id);
         em.merge(user);
         return user;
     }
 
     @DELETE
-    @Path("{username}")
-    public void delete(@PathParam("username") String username) {
-        em.remove(userService.findByUsername(username));
+    @Path("{id}")
+    public void delete(@PathParam("id") long id) {
+        em.remove(em.find(User.class, id));
         return;
     }
 }

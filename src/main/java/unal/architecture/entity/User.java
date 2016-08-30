@@ -1,20 +1,20 @@
 package unal.architecture.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
 @NamedQueries({
         @NamedQuery(name = "User.findAll", query = "Select u from User u"),
-        @NamedQuery(name = "User.findByUsername", query = "Select u from User u where u.username = :username")
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
     @Id
     @GeneratedValue
     private long id;
     @Column(nullable = false)
     private String name;
-    @Column(unique = true, nullable = false)
-    private String username;
     @Column()
     private String email;
     @Column(nullable = false)
@@ -23,9 +23,6 @@ public class User {
     private boolean worker;
     @Column(nullable = false)
     private boolean salesman;
-
-    public User() {
-    }
 
     public long getId() {
         return id;
@@ -41,14 +38,6 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getEmail() {
@@ -95,7 +84,6 @@ public class User {
         if (worker != user.worker) return false;
         if (salesman != user.salesman) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (username != null ? !username.equals(user.username) : user.username != null) return false;
         return email != null ? email.equals(user.email) : user.email == null;
 
     }
@@ -104,7 +92,6 @@ public class User {
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (admin ? 1 : 0);
         result = 31 * result + (worker ? 1 : 0);

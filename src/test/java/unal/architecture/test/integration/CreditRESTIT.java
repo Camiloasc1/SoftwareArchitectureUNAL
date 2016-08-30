@@ -41,17 +41,19 @@ public class CreditRESTIT {
         Response response;
         Credit credit;
 
-        User user = client.target("http://localhost:8080/SoftwareArchitectureUNAL/users")
-                .path("admin")
+        User admin = new User();
+        admin.setName("Test User");
+        admin.setAdmin(true);
+        admin = client.target("http://localhost:8080/SoftwareArchitectureUNAL/users")
                 .request(MediaType.APPLICATION_JSON)
-                .get(User.class);
-        assertNotNull(user);
+                .post(Entity.json(admin), User.class);
+        assertNotNull(admin);
 
         //Create
         credit = new Credit();
         credit.setInterest(0.1f);
         credit.setPaid(false);
-        credit.setUser(user);
+        credit.setUser(admin);
 
         credit = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)

@@ -1,6 +1,6 @@
-package unal.architecture.service;
+package unal.architecture.dao;
 
-import unal.architecture.entity.Sale;
+import unal.architecture.entity.User;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -9,12 +9,12 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Stateless
-public class SaleService {
+public class UserDAO {
     @PersistenceContext
     private EntityManager em;
 
-    public List<Sale> findAll() {
-        TypedQuery<Sale> query = em.createNamedQuery("Sale.findAll", Sale.class);
+    public List<User> findAll() {
+        TypedQuery<User> query = em.createNamedQuery("User.findAll", User.class);
         return query.getResultList();
     }
 }
