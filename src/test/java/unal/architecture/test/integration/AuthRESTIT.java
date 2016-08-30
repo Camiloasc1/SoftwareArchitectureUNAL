@@ -5,6 +5,7 @@ import org.junit.*;
 import org.junit.rules.ExpectedException;
 import unal.architecture.entity.User;
 import unal.architecture.rest.schemas.Credentials;
+import unal.architecture.rest.schemas.PasswordChange;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
@@ -93,5 +94,76 @@ public class AuthRESTIT {
                 .cookie("JSESSIONID", session)
                 .get(User.class);
         assertNull(user);
+    }
+
+    @Test
+    public void testPasswd() {
+        Response response;
+        User user;
+        Credentials credentials;
+        String session;
+        PasswordChange passwordChange;
+
+        //Login.
+        credentials = new Credentials();
+        credentials.setUsername("admin");
+        credentials.setPassword("admin");
+        response = client.target(URI)
+                .path("login")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.json(credentials));
+        session = response.getCookies().get("JSESSIONID").getValue();
+        user = response.readEntity(User.class);
+        assertNotNull(user);
+
+        //Change Password.
+        passwordChange = new PasswordChange();
+        passwordChange.setUsername("admin");
+        passwordChange.setOldPassword("admin");
+        passwordChange.setNewPassword("nimda");
+        client.target(URI)
+                .path("passwd")
+                .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
+                .put(Entity.json(passwordChange));
+
+        //Logout.
+        client.target(URI)
+                .path("logout")
+                .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
+                .post(Entity.json(""));
+
+        //Login again.
+        credentials = new Credentials();
+        credentials.setUsername("admin");
+        credentials.setPassword("nimda");
+        response = client.target(URI)
+                .path("login")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.json(credentials));
+        session = response.getCookies().get("JSESSIONID").getValue();
+        user = response.readEntity(User.class);
+        assertNotNull(user);
+
+        //Logout again.
+        client.target(URI)
+                .path("logout")
+                .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
+                .post(Entity.json(""));
+
+        //Login failed.
+        credentials = new Credentials();
+        credentials.setUsername("admin");
+        credentials.setPassword("admin");
+        thrown.expect(javax.ws.rs.ProcessingException.class);
+        response = client.target(URI)
+                .path("login")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.json(credentials));
+        session = response.getCookies().get("JSESSIONID").getValue();
+        user = response.readEntity(User.class);
+        assertNotNull(user);
     }
 }
