@@ -1,24 +1,24 @@
 package unal.architecture.test.unit;
 
 import org.junit.*;
-import unal.architecture.entity.Product;
-import unal.architecture.service.ProductService;
+import unal.architecture.dao.AuthDAO;
+import unal.architecture.entity.UserCredentials;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
-import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class ProductServiceTest {
-    private static final String JNDI = "java:global/SoftwareArchitectureUNAL/ProductService";
-    private static ProductService productService;
+public class AuthDAOTest {
+    private static final String JNDI = "java:global/SoftwareArchitectureUNAL/AuthDAO";
+    private static AuthDAO authDAO;
 
     @BeforeClass
     public static void beforeClass() throws NamingException {
         Object lookup = EJBContainer.createEJBContainer().getContext().lookup(JNDI);
-        assertTrue(lookup instanceof ProductService);
-        productService = (ProductService) lookup;
+        assertTrue(lookup instanceof AuthDAO);
+        authDAO = (AuthDAO) lookup;
     }
 
     @AfterClass
@@ -34,8 +34,8 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void findAll() {
-        List<Product> products = productService.findAll();
-        assertTrue(products.isEmpty());
+    public void findAdmin() {
+        UserCredentials credentials = authDAO.findByUsername("admin");
+        assertNotNull(credentials);
     }
 }

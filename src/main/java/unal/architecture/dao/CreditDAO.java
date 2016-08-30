@@ -1,4 +1,4 @@
-package unal.architecture.service;
+package unal.architecture.dao;
 
 import unal.architecture.entity.Credit;
 
@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Stateless
-public class CreditService {
+public class CreditDAO {
     @PersistenceContext
     private EntityManager em;
 

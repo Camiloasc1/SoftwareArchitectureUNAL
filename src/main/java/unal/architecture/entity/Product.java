@@ -1,11 +1,14 @@
 package unal.architecture.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Product.findAll", query = "Select p from Product p")
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Product {
     @Id
     @GeneratedValue
@@ -38,6 +41,7 @@ public class Product {
     }
 
     public void setInventory(int inventory) {
+        if (inventory < 0) inventory = 0;
         this.inventory = inventory;
     }
 
@@ -46,6 +50,7 @@ public class Product {
     }
 
     public void setPrice(float price) {
+        if (price < 0.0) price = 0.0f;
         this.price = price;
     }
 

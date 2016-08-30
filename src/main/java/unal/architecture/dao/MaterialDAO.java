@@ -1,4 +1,4 @@
-package unal.architecture.service;
+package unal.architecture.dao;
 
 import unal.architecture.entity.Material;
 
@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Stateless
-public class MaterialService {
+public class MaterialDAO {
     @PersistenceContext
     private EntityManager em;
 

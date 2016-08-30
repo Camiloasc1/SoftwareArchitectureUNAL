@@ -1,7 +1,7 @@
 package unal.architecture.rest;
 
+import unal.architecture.dao.FabricationDAO;
 import unal.architecture.entity.Fabrication;
-import unal.architecture.service.FabricationService;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -20,11 +20,11 @@ public class FabricationREST {
     @PersistenceContext
     private EntityManager em;
     @EJB
-    FabricationService fabricationService;
+    FabricationDAO fabricationDAO;
 
     @GET
     public List<Fabrication> list() {
-        return fabricationService.findAll();
+        return fabricationDAO.findAll();
     }
 
     @POST

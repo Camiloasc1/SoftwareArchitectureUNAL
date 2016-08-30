@@ -50,23 +50,12 @@ public class UserRESTIT {
 
         boolean found = false;
         for (User u : users) {
-            if (u.getUsername().equals("admin")) {
+            if (u.getName().equals("admin")) {
                 found = true;
                 break;
             }
         }
         assertTrue(found);
-    }
-
-    @Test
-    public void findAdmin() {
-        User user;
-
-        user = client.target(URI)
-                .path("admin")
-                .request(MediaType.APPLICATION_JSON)
-                .get(User.class);
-        assertNotNull(user);
     }
 
     @Test
@@ -77,7 +66,6 @@ public class UserRESTIT {
         //Create
         user = new User();
         user.setName("Test User");
-        user.setUsername("testuser");
 
         user = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
@@ -86,17 +74,16 @@ public class UserRESTIT {
 
         //Read
         user = client.target(URI)
-                .path(user.getUsername())
+                .path(user.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
                 .get(User.class);
         assertNotNull(user);
         assertEquals("Test User", user.getName());
-        assertEquals("testuser", user.getUsername());
 
         //Update
         user.setEmail("testuser@architecure.unal");
         user = client.target(URI)
-                .path(user.getUsername())
+                .path(user.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
                 .put(Entity.json(user), User.class);
         assertNotNull(user);
@@ -104,13 +91,13 @@ public class UserRESTIT {
 
         //Delete
         response = client.target(URI)
-                .path(user.getUsername())
+                .path(user.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
                 .delete();
         assertEquals(204, response.getStatus());
 
         user = client.target(URI)
-                .path(user.getUsername())
+                .path(user.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
                 .get(User.class);
         assertNull(user);

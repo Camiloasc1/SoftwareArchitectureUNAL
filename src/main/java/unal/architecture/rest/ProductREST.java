@@ -1,7 +1,7 @@
 package unal.architecture.rest;
 
+import unal.architecture.dao.ProductDAO;
 import unal.architecture.entity.Product;
-import unal.architecture.service.ProductService;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -19,11 +19,11 @@ public class ProductREST {
     @PersistenceContext
     private EntityManager em;
     @EJB
-    ProductService productService;
+    ProductDAO productDAO;
 
     @GET
     public List<Product> list() {
-        return productService.findAll();
+        return productDAO.findAll();
     }
 
     @POST

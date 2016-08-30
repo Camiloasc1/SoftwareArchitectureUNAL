@@ -47,6 +47,7 @@ public class MaterialRESTIT {
         material.setSupply(false);
         material.setRawMaterial(false);
         material.setProvider("Test Provider");
+        material.setPrice(0);
 
         material = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
