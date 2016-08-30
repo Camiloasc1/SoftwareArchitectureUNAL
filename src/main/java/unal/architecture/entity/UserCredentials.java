@@ -1,9 +1,14 @@
 package unal.architecture.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
-@NamedQuery(name = "UserCredentials.findByUsername", query = "Select uc from UserCredentials uc where uc.username = :username")
+@NamedQueries({
+        @NamedQuery(name = "UserCredentials.findByUsername", query = "Select uc from UserCredentials uc where uc.username = :username")
+})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserCredentials {
     @Id
     @GeneratedValue

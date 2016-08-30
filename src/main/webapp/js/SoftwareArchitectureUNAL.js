@@ -105,7 +105,6 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
         else
             $scope.material.selectedType = "supply";
 
-
         $("#material").modal("show");
     };
     $scope.submit = function () {
@@ -140,6 +139,80 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
     };
 
     $scope.get();
+}]);
+
+app.controller('ProductsController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+    $scope.products = {};
+    $scope.product = {};
+    $scope.consult = 0;
+    $scope.editing = false;
+
+    $scope.submit = function () {
+        $http.post('products', $scope.product)
+            .then(function (response) {
+                if (response.status === 200) {
+                    alert("producto creado");
+                }
+                else {
+                    alert("No se pudo crear el producto");
+                }
+            });
+    }
+    $scope.getProducts = function () {
+        $http.get('products')
+            .then(function (response) {
+                if (response.status === 200) {
+                    $scope.products = response.data;
+                    $scope.columns = [
+                        {title: 'id', field: 'id', visible: true},
+                        {title: 'Nombre', field: 'name', visible: true},
+                        {title: 'Existencias', field: 'inventory', visible: true},
+                        {title: 'Precio', field: 'price', visible: true}
+                    ];
+                }
+                else {
+                    alert("No existen productos en el sistema");
+                }
+            });
+    }
+    $scope.getProduct = function () {
+        $http.get('products/' + $scope.consult)
+            .then(function (response) {
+
+                if (response.status === 200) {
+                    $scope.pToUpdate = response.data;
+                    $scope.editing = true;
+                } else {
+                    alert("Producto no encontrado");
+                    $scope.editing = false;
+                }
+            })
+    }
+    $scope.updateProduct = function () {
+        $http.put('products/' + $scope.pToUpdate.id, $scope.pToUpdate)
+            .then(function (response) {
+                if (response.status === 200) {
+                    $scope.pToUpdate = {};
+                    alert("Producto actualizado");
+                }
+                else {
+                    alert("No se pudo editar el producto");
+                }
+            });
+    }
+    $scope.deleteProduct = function () {
+        $http.delete('products/' + $scope.pToUpdate.id)
+            .then(function (response) {
+                if (response.status === 204) {
+                    $scope.pToUpdate = {};
+                    alert("Producto borrado");
+                    $scope.editing = false;
+                } else {
+                    alert("No se pudo borrar el producto");
+                }
+
+            });
+    }
 }]);
 
 app.controller('SalesController', ['$scope', '$http', function ($scope, $http) {
@@ -218,6 +291,14 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
             templateUrl: 'partials/admin.html',
             controller: 'AdminController'
         })
+        .when('/materials', {
+            templateUrl: 'partials/materials.html',
+            controller: 'MaterialController'
+        })
+        .when('/products', {
+            templateUrl: 'partials/products.html',
+            controller: 'ProductsController'
+        })
         .when('/users', {
             templateUrl: 'partials/users.html',
             controller: 'controlUsersController'
@@ -226,14 +307,6 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
             templateUrl: 'partials/sales.html',
             controller: 'SalesController'
         })
-        .when('/products', {
-            templateUrl: 'partials/products.html',
-            controller: 'ProductController'
-        })
-        .when('/materials', {
-            templateUrl: 'partials/materials.html',
-            controller: 'MaterialController'
-        })
 
 
         .otherwise({redirectTo: '/'});
@@ -241,78 +314,4 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
     //html5mode causes several issues when the front end is embedded with the web service.
     //$locationProvider.html5Mode(true);
     $locationProvider.hashPrefix('!');
-}]);
-
-app.controller('ProductController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
-    $scope.product = {};
-    $scope.products = {};
-    $scope.consult = 0;
-    $scope.editing = false;
-
-    $scope.submit = function () {
-        $http.post('products', $scope.product)
-            .then(function (response) {
-                if (response.status === 200) {
-                    alert("producto creado");
-                }
-                else {
-                    alert("No se pudo crear el producto");
-                }
-            });
-    }
-    $scope.getProducts = function () {
-        $http.get('products')
-            .then(function (response) {
-                if (response.status === 200) {
-                    $scope.products = response.data;
-                    $scope.columns = [
-                        {title: 'id', field: 'id', visible: true},
-                        {title: 'Nombre', field: 'name', visible: true},
-                        {title: 'Existencias', field: 'inventory', visible: true},
-                        {title: 'Precio', field: 'price', visible: true}
-                    ];
-                }
-                else {
-                    alert("No existen productos en el sistema");
-                }
-            });
-    }
-    $scope.getProduct = function () {
-        $http.get('products/' + $scope.consult)
-            .then(function (response) {
-
-                if (response.status === 200) {
-                    $scope.pToUpdate = response.data;
-                    $scope.editing = true;
-                } else {
-                    alert("Producto no encontrado");
-                    $scope.editing = false;
-                }
-            })
-    }
-    $scope.updateProduct = function () {
-        $http.put('products/' + $scope.pToUpdate.id, $scope.pToUpdate)
-            .then(function (response) {
-                if (response.status === 200) {
-                    $scope.pToUpdate = {};
-                    alert("Producto actualizado");
-                }
-                else {
-                    alert("No se pudo editar el producto");
-                }
-            });
-    }
-    $scope.deleteProduct = function () {
-        $http.delete('products/' + $scope.pToUpdate.id)
-            .then(function (response) {
-                if (response.status === 204) {
-                    $scope.pToUpdate = {};
-                    alert("Producto borrado");
-                    $scope.editing = false;
-                } else {
-                    alert("No se pudo borrar el producto");
-                }
-
-            });
-    }
 }]);

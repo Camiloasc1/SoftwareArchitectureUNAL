@@ -1,11 +1,14 @@
 package unal.architecture.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
 @NamedQueries({
         @NamedQuery(name = "User.findAll", query = "Select u from User u"),
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
     @Id
     @GeneratedValue

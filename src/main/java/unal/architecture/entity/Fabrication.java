@@ -1,6 +1,7 @@
 package unal.architecture.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name = "Fabrication.findAll", query = "Select f from Fabrication f")
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Fabrication {
     @Id
     @GeneratedValue

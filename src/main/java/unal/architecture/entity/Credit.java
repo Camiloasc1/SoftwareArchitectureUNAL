@@ -1,6 +1,7 @@
 package unal.architecture.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name = "Credit.findAll", query = "Select c from Credit c")
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Credit {
     @Id
     @GeneratedValue
