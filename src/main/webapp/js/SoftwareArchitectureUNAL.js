@@ -275,6 +275,10 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
             templateUrl: 'partials/sales.html',
             controller: 'SalesController'
         })
+        .when('/production', {
+            templateUrl: 'partials/production.html',
+            controller: 'ProductionController'
+        })
 
 
         .otherwise({redirectTo: '/'});

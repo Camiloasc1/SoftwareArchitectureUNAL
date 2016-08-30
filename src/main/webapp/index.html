@@ -38,10 +38,11 @@
                     <li ng-show="user.admin"><a href="#!/admin">Administracion</a></li>
                     <li ng-show="user.admin"><a href="#!/materials">Materias Primas</a></li>
                     <li ng-show="user.admin"><a href="#!/users">Usuarios</a></li>
+                    <li ng-show="user.admin"><a href="#!/products">Productos</a></li>
                 </ul>
             </li>
             <li ng-show="user.worker"><a href="#!/sales">Ventas</a></li>
-            <li ng-show="user.salesman"><a href="#!/products">Produccion</a></li>
+            <li ng-show="user.salesman"><a href="#!/production">Produccion</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li ng-show="user === null">
