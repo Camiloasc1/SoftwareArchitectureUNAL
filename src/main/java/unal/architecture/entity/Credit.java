@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.Date;
 
 @Entity
@@ -19,6 +20,10 @@ public class Credit {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date date;
     @Column(nullable = false)
+    @Min(0)
+    private float amount;
+    @Column(nullable = false)
+    @Min(0)
     private float interest;
     @Column(nullable = false)
     private boolean paid;
@@ -39,6 +44,14 @@ public class Credit {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public float getAmount() {
+        return amount;
+    }
+
+    public void setAmount(float amount) {
+        this.amount = amount;
     }
 
     public float getInterest() {
@@ -73,6 +86,7 @@ public class Credit {
         Credit credit = (Credit) o;
 
         if (id != credit.id) return false;
+        if (Float.compare(credit.amount, amount) != 0) return false;
         if (Float.compare(credit.interest, interest) != 0) return false;
         if (paid != credit.paid) return false;
         if (date != null ? !date.equals(credit.date) : credit.date != null) return false;
@@ -84,6 +98,7 @@ public class Credit {
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (amount != +0.0f ? Float.floatToIntBits(amount) : 0);
         result = 31 * result + (interest != +0.0f ? Float.floatToIntBits(interest) : 0);
         result = 31 * result + (paid ? 1 : 0);
         result = 31 * result + (user != null ? user.hashCode() : 0);

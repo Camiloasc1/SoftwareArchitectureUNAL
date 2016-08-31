@@ -2,12 +2,15 @@ package unal.architecture.rest;
 
 import unal.architecture.dao.CreditDAO;
 import unal.architecture.entity.Credit;
+import unal.architecture.entity.User;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +22,8 @@ import java.util.List;
 public class CreditREST {
     @PersistenceContext
     private EntityManager em;
+    @Context
+    HttpServletRequest ctx;
     @EJB
     CreditDAO creditDAO;
 
@@ -31,6 +36,7 @@ public class CreditREST {
     public Credit create(Credit credit) {
         credit.setId(0);
         credit.setDate(new Date());
+        credit.setUser(em.find(User.class, ctx.getSession().getAttribute("user")));
         em.persist(credit);
         return credit;
     }
