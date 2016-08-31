@@ -4,6 +4,7 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
 import unal.architecture.entity.Sale;
 import unal.architecture.entity.User;
+import unal.architecture.rest.schemas.Credentials;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
@@ -28,8 +29,18 @@ public class SaleRESTIT {
         client.close();
     }
 
+    private String session;
+
     @Before
     public void before() {
+        Credentials credentials = new Credentials();
+        credentials.setUsername("admin");
+        credentials.setPassword("admin");
+        Response response = client.target("http://localhost:8080/SoftwareArchitectureUNAL/auth")
+                .path("login")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.json(credentials));
+        session = response.getCookies().get("JSESSIONID").getValue();
     }
 
     @After
@@ -41,20 +52,13 @@ public class SaleRESTIT {
         Response response;
         Sale sale;
 
-        User seller = new User();
-        seller.setName("Test User");
-        seller = client.target("http://localhost:8080/SoftwareArchitectureUNAL/users")
-                .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json(seller), User.class);
-        assertNotNull(seller);
-
         //Create
         sale = new Sale();
         sale.setClient("Test Client");
-        sale.setSeller(seller);
 
         sale = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .post(Entity.json(sale), Sale.class);
         assertNotNull(sale);
 
@@ -65,7 +69,6 @@ public class SaleRESTIT {
                 .get(Sale.class);
         assertNotNull(sale);
         assertEquals("Test Client", sale.getClient());
-        assertEquals(seller, sale.getSeller());
 
         //Update
         sale.setClient("Test Client 2");
