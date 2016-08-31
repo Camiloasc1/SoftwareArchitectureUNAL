@@ -23,14 +23,4 @@ public class AuthDAO {
         else
             return credentials.get(0);
     }
-
-    public UserCredentials findByUser(User user) {
-        TypedQuery<UserCredentials> query = em.createNamedQuery("UserCredentials.findByUser", UserCredentials.class);
-        query.setParameter("user", user);
-        List<UserCredentials> credentials = query.getResultList();
-        if (credentials.size() == 0)
-            return null;
-        else
-            return credentials.get(0);
-    }
 }

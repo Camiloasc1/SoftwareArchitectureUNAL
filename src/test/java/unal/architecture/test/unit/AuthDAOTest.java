@@ -39,11 +39,4 @@ public class AuthDAOTest {
         UserCredentials credentials = authDAO.findByUsername("admin");
         assertNotNull(credentials);
     }
-    @Test
-    public void testFindByUser() {
-        User user = new User();
-        user.setId(1);
-        UserCredentials credentials = authDAO.findByUser(user);
-        assertNotNull(credentials);
-    }
 }
