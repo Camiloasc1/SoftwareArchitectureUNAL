@@ -8,7 +8,7 @@
 </div>
 
 <div class="jumbotron">
-    <form class="form-horizontal">
+    <form name="form" class="form-horizontal" ng-submit="submit()">
         <fieldset>
             <legend>Datos personales</legend>
             <div class="form-group">
@@ -25,7 +25,7 @@
                     <label class="control-label col-sm-2" for="email">Email:</label>
                     <div class="col-sm-10">
                         <input type="email" name="email" class="form-control" id="email"
-                               placeholder="Email" required="required" ng-model="user.email"/>
+                               placeholder="Email" ng-model="user.email"/>
                     </div>
                 </div>
             </div>
@@ -34,26 +34,27 @@
                     <label class="control-label col-sm-2" for="admin">Administrador</label>
                     <div class="col-sm-2">
                         <input type="checkbox" name="admin" class="form-control" id="admin"
-                               placeholder="Administrador" required="required" disabled="disabled"
+                               placeholder="Administrador" disabled="disabled"
                                ng-model="user.admin"/>
                     </div>
                     <label class="control-label col-sm-2" for="worker">Trabajador</label>
                     <div class="col-sm-2">
                         <input type="checkbox" name="worker" class="form-control" id="worker"
-                               placeholder="Trabajador" required="required" disabled="disabled"
+                               placeholder="Trabajador" disabled="disabled"
                                ng-model="user.worker"/>
                     </div>
                     <label class="control-label col-sm-2" for="seller">Vendedor</label>
                     <div class="col-sm-2">
                         <input type="checkbox" name="seller" class="form-control" id="seller"
-                               placeholder="Vendedor" required="required" disabled="disabled"
+                               placeholder="Vendedor" disabled="disabled"
                                ng-model="user.seller"/>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-offset-1">
-                    <button type="submit" class="btn btn-primary btn-raised" ng-click="submit()">Actualizar datos
+                    <button ng-disabled="form.$invalid" type="submit" class="btn btn-primary btn-raised">Actualizar
+                        datos
                     </button>
                 </div>
             </div>

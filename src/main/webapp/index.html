@@ -80,7 +80,7 @@
                         <strong>Error!</strong><br>Usuario o Contraseña incorrectos.
                     </div>
 
-                    <form class="form-horizontal">
+                    <form name="loginForm" class="form-horizontal" ng-submit="login()">
                         <fieldset>
                             <!-- <legend>Ingresar</legend> -->
                             <div class="form-group">
@@ -105,7 +105,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-offset-1">
-                                    <button ng-click="login()" type="submit" class="btn btn-primary btn-raised">
+                                    <button ng-disabled="loginForm.$invalid" type="submit" class="btn btn-primary btn-raised">
                                         Ingresar
                                     </button>
                                 </div>

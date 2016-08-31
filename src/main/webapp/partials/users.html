@@ -26,15 +26,15 @@
             <tr ng-repeat="u in users">
                 <td>{{u.username}}</td>
                 <td>
-                    <span ng-show="u.admin"class="glyphicon glyphicon-ok"></span>
-                    <span ng-show="!u.admin"class="glyphicon glyphicon-remove"></span></td>
+                    <span ng-show="u.admin" class="glyphicon glyphicon-ok"></span>
+                    <span ng-show="!u.admin" class="glyphicon glyphicon-remove"></span></td>
                 <td>
-                    <span ng-show="u.worker"class="glyphicon glyphicon-ok"></span>
-                    <span ng-show="!u.worker"class="glyphicon glyphicon-remove"></span>
+                    <span ng-show="u.worker" class="glyphicon glyphicon-ok"></span>
+                    <span ng-show="!u.worker" class="glyphicon glyphicon-remove"></span>
                 </td>
                 <td>
-                    <span ng-show="u.seller"class="glyphicon glyphicon-ok"></span>
-                    <span ng-show="!u.seller"class="glyphicon glyphicon-remove"></span></td>
+                    <span ng-show="u.seller" class="glyphicon glyphicon-ok"></span>
+                    <span ng-show="!u.seller" class="glyphicon glyphicon-remove"></span></td>
                 <td>
                     <button ng-click="edit(u)" class="btn btn-primary btn-raised">
                         <span class="glyphicon glyphicon-pencil"></span>
@@ -67,7 +67,7 @@
                                 <label class="control-label col-sm-2" for="username">Nombre de Usuario:</label>
                                 <div class="col-sm-10">
                                     <input type="text" name="username" class="form-control" id="username"
-                                           placeholder="Nombre de Usuario" required="required"
+                                           placeholder="Nombre de Usuario" required="required" disabled="disabled"
                                            ng-model="user.username"/>
                                 </div>
                             </div>
@@ -83,17 +83,17 @@
                         </div>
                         <div class="form-group">
                             <div class="row">
-                                <label class="control-label col-sm-2" for="admin">Administrador:</label>
+                                <label class="control-label col-sm-2" for="admin">Administrador</label>
                                 <div class="col-sm-2">
                                     <input type="checkbox" name="admin" class="form-control" id="admin"
                                            placeholder="Administrador" ng-model="user.admin"/>
                                 </div>
-                                <label class="control-label col-sm-2" for="worker">Trabajador:</label>
+                                <label class="control-label col-sm-2" for="worker">Trabajador</label>
                                 <div class="col-sm-2">
                                     <input type="checkbox" name="worker" class="form-control" id="worker"
                                            placeholder="Trabajador" ng-model="user.worker"/>
                                 </div>
-                                <label class="control-label col-sm-2" for="seller">Vendedor:</label>
+                                <label class="control-label col-sm-2" for="seller">Vendedor</label>
                                 <div class="col-sm-2">
                                     <input type="checkbox" name="seller" class="form-control" id="seller"
                                            placeholder="Vendedor" ng-model="user.seller"/>

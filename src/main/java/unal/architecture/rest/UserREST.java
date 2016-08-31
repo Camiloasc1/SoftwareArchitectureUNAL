@@ -46,6 +46,8 @@ public class UserREST {
     @PUT
     @Path("{username}")
     public UserCredentials update(@PathParam("username") String username, UserCredentials credentials) {
+//        if(username.equals("admin"))
+//            return credentials;
         credentials.setUsername(username);
         if (credentials.getPassword() == null)
             credentials.setPassword(em.find(UserCredentials.class, username).getPassword());
