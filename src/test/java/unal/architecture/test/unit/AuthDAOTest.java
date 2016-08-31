@@ -2,6 +2,7 @@ package unal.architecture.test.unit;
 
 import org.junit.*;
 import unal.architecture.dao.AuthDAO;
+import unal.architecture.entity.User;
 import unal.architecture.entity.UserCredentials;
 
 import javax.ejb.embeddable.EJBContainer;
@@ -34,8 +35,15 @@ public class AuthDAOTest {
     }
 
     @Test
-    public void findAdmin() {
+    public void testFindByUsername() {
         UserCredentials credentials = authDAO.findByUsername("admin");
+        assertNotNull(credentials);
+    }
+    @Test
+    public void testFindByUser() {
+        User user = new User();
+        user.setId(1);
+        UserCredentials credentials = authDAO.findByUser(user);
         assertNotNull(credentials);
     }
 }
