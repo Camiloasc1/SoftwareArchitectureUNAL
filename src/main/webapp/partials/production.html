@@ -41,22 +41,24 @@
                 <h4 class="modal-title">Editar producto a fabricar</h4>
             </div>
             <div class="modal-body">
-                <form name="form" class="form-horizontal" ng-submit="">
+                <form name="form" class="form-horizontal" ng-submit="submit()">
                     <fieldset>
                         <p>Cantidad de materiales a usar: </p>
-                        <h5>Fabricado por: {{user.name}}</h5>
-                        <div class="row">
-                            <div class="col-sm-offset-1">
-                                <button ng-disabled="form.$invalid" type="submit" class="btn btn-primary btn-raised">
-                                    Fabricar
-                                </button>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-sm-2" for="ntc">Cantidad a fabricar:</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="number_to_create" class="form-control" id="ntc"
+                                           placeholder="-" min="0" ng-model="fabrications.quantity" />
+                                </div>
                             </div>
                         </div>
+                        <h5>Fabricado por: {{user.name}}</h5>
+                        <button ng-disabled="form.$invalid" type="submit" class="btn btn-primary btn-raised">
+                            Fabricar
+                        </button>
                     </fieldset>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

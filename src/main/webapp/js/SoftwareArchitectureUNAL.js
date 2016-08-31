@@ -249,6 +249,7 @@ app.controller('ProductionController', ['$scope', '$http', function ($scope, $ht
 
     $scope.products = {};
     $scope.user ={};
+    $scope.fabrications = {};
     const MODAL = '#product';
 
     $scope.me = function () {
@@ -268,6 +269,13 @@ app.controller('ProductionController', ['$scope', '$http', function ($scope, $ht
     $scope.edit = function (product) {
         $scope.product = product;
         $(MODAL).modal('show');
+    };
+    $scope.submit = function () {
+        $http.post('fabrications', $scope.fabrications)
+            .then(function () {
+                $(MODAL).modal('hide');
+                $scope.reload();
+            });
     };
 
     $scope.reload();
