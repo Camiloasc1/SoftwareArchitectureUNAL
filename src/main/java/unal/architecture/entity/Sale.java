@@ -8,7 +8,9 @@ import java.util.Date;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "Sale.findAll", query = "Select s from Sale s")
+        @NamedQuery(name = "Sale.findAll", query = "Select s from Sale s"),
+        @NamedQuery(name = "Sale.findAllBySeller", query = "Select s from Sale s where s.seller.id = :id")
+
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Sale {

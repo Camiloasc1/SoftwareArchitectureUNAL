@@ -1,7 +1,18 @@
 "use strict";
 var app = angular.module('SoftwareArchitectureUNAL', ['ngRoute']);
 
-app.controller('NavigationController', ['$scope', '$http', '$location', '$timeout', function ($scope, $http, $location, $timeout) {
+app.factory('globalUser', function(){
+    var user = {};
+    return  {setUser: function(currentUser){
+        user = currentUser;
+    },
+        getUser: function(){
+            return user;
+        }
+    };
+});
+
+app.controller('NavigationController', ['$scope', '$http', '$location', '$timeout', 'globalUser', function ($scope, $http, $location, $timeout, globalUser) {
     $scope.user = null;
     $scope.credentials = {};
     $scope.success = false;
@@ -23,6 +34,7 @@ app.controller('NavigationController', ['$scope', '$http', '$location', '$timeou
                 $scope.error = false;
                 $scope.credentials = {};
                 $scope.user = response.data;
+                globalUser.setUser($scope.user);
                 $timeout(function () {
                     $("#login").modal("hide");
                 }, 1000);
@@ -36,6 +48,7 @@ app.controller('NavigationController', ['$scope', '$http', '$location', '$timeou
         $http.post('auth/logout', {})
             .then(function () {
                 $scope.user = null;
+                globalUser.setUser(null);
             });
     };
 
@@ -160,14 +173,15 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
     $scope.reload();
 }]);
 
-app.controller('SalesController', ['$scope', '$http', function ($scope, $http) {
+app.controller('SalesController', ['$scope', '$http', 'globalUser', function ($scope, $http, globalUser) {
     $scope.sales = {};
     $scope.sale = {};
+    $scope.user = globalUser.getUser();
 
     const URI = 'sales';
 
     $scope.reload = function () {
-        $http.get(URI)
+        $http.get(URI+"/seller/"+$scope.user.id)
             .then(function (response) {
                 $scope.sales = response.data;
             });

@@ -17,4 +17,15 @@ public class SaleDAO {
         TypedQuery<Sale> query = em.createNamedQuery("Sale.findAll", Sale.class);
         return query.getResultList();
     }
+
+
+    public List<Sale> findAllBySeller(long id) {
+        TypedQuery<Sale> query = em.createNamedQuery("Sale.findAllBySeller", Sale.class);
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
+
 }
+
+
+

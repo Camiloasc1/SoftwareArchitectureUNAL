@@ -41,6 +41,12 @@ public class SaleREST {
         return em.find(Sale.class, id);
     }
 
+    @GET
+    @Path("seller/{id}")
+    public List<Sale> showSeller(@PathParam("id") long id) {
+        return saleDAO.findAllBySeller(id);
+    }
+
     @PUT
     @Path("{id}")
     public Sale update(@PathParam("id") long id, Sale sale) {
