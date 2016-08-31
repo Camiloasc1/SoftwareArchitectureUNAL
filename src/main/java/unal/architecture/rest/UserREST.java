@@ -1,7 +1,8 @@
 package unal.architecture.rest;
 
-import unal.architecture.dao.UserDAO;
+import unal.architecture.dao.UserCredentialsDAO;
 import unal.architecture.entity.User;
+import unal.architecture.entity.UserCredentials;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -19,38 +20,43 @@ public class UserREST {
     @PersistenceContext
     private EntityManager em;
     @EJB
-    UserDAO userDAO;
+    UserCredentialsDAO userDAO;
 
     @GET
-    public List<User> list() {
+    public List<UserCredentials> list() {
         return userDAO.findAll();
     }
 
     @POST
-    public User create(User user) {
-        user.setId(0);
+    public UserCredentials create(UserCredentials credentials) {
+        em.persist(credentials);
+        User user = new User();
+        user.setName(credentials.getUsername());
+        user.setCredentials(credentials);
         em.persist(user);
-        return user;
+        return credentials;
     }
 
     @GET
-    @Path("{id}")
-    public User show(@PathParam("id") long id) {
-        return em.find(User.class, id);
+    @Path("{username}")
+    public UserCredentials show(@PathParam("username") String username) {
+        return em.find(UserCredentials.class, username);
     }
 
     @PUT
-    @Path("{id}")
-    public User update(@PathParam("id") long id, User user) {
-        user.setId(id);
-        em.merge(user);
-        return user;
+    @Path("{username}")
+    public UserCredentials update(@PathParam("username") String username, UserCredentials credentials) {
+        credentials.setUsername(username);
+        em.merge(credentials);
+        return credentials;
     }
 
     @DELETE
-    @Path("{id}")
-    public void delete(@PathParam("id") long id) {
-        em.remove(em.find(User.class, id));
+    @Path("{username}")
+    public void delete(@PathParam("username") String username) {
+        UserCredentials credentials = em.find(UserCredentials.class, username);
+        em.remove(credentials.getUser());
+        em.remove(credentials);
         return;
     }
 }

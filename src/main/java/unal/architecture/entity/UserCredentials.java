@@ -1,6 +1,8 @@
 package unal.architecture.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -20,10 +22,12 @@ public class UserCredentials {
     @Id
     private String username;
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @OneToOne(optional = false, mappedBy = "credentials")
+    @JsonBackReference
     private User user;
-    @ElementCollection(targetClass = Roles.class)
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @JoinTable(name = "UserRoles", joinColumns = @JoinColumn(name = "username"))
     @Column(name = "role", nullable = false)

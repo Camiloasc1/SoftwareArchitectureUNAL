@@ -2,7 +2,8 @@ package unal.architecture.test.integration;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
-import unal.architecture.entity.User;
+import unal.architecture.entity.UserCredentials;
+import unal.architecture.rest.schemas.Credentials;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
@@ -39,18 +40,19 @@ public class UserRESTIT {
 
     @Test
     public void findAdminFromList() {
-        List<User> users;
+        List<UserCredentials> users;
 
         users = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
-                .get(new GenericType<List<User>>() {
+                .get(new GenericType<List<UserCredentials>>() {
                 });
         assertNotNull(users);
         assertTrue(!users.isEmpty());
 
         boolean found = false;
-        for (User u : users) {
-            if (u.getName().equals("admin")) {
+        for (UserCredentials u : users) {
+            if (u.getUsername().equals("admin")) {
+                assertNull(u.getPassword());
                 found = true;
                 break;
             }
@@ -61,45 +63,44 @@ public class UserRESTIT {
     @Test
     public void crudUser() {
         Response response;
-        User user;
+        UserCredentials user;
 
         //Create
-        user = new User();
-        user.setName("Test User");
 
         user = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json(user), User.class);
+                .post(Entity.json("{\"username\":\"testuser\",\"password\":\"testuser\",\"roles\":[\"GUEST\"]}"), UserCredentials.class);
         assertNotNull(user);
 
         //Read
         user = client.target(URI)
-                .path(user.getId() + "")
+                .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
-                .get(User.class);
+                .get(UserCredentials.class);
         assertNotNull(user);
-        assertEquals("Test User", user.getName());
+        assertEquals("testuser", user.getUsername());
+        assertNull(user.getPassword());
 
         //Update
-        user.setEmail("testuser@architecure.unal");
+        //user.addRole(UserCredentials.Roles.GUEST);
         user = client.target(URI)
-                .path(user.getId() + "")
+                .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
-                .put(Entity.json(user), User.class);
+                .put(Entity.json("{\"username\":\"testuser\",\"password\":\"testuser\",\"roles\":[\"GUEST\"]}"), UserCredentials.class);
         assertNotNull(user);
-        assertEquals("testuser@architecure.unal", user.getEmail());
+        assertTrue(user.getRoles().contains(UserCredentials.Roles.GUEST));
 
         //Delete
         response = client.target(URI)
-                .path(user.getId() + "")
+                .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
                 .delete();
         assertEquals(204, response.getStatus());
 
         user = client.target(URI)
-                .path(user.getId() + "")
+                .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
-                .get(User.class);
+                .get(UserCredentials.class);
         assertNull(user);
     }
 }

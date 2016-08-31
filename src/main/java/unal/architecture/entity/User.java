@@ -1,6 +1,7 @@
 package unal.architecture.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 
@@ -19,6 +20,7 @@ public class User {
     private String email;
     @OneToOne(optional = false)
     @JoinColumn(name = "username")
+    @JsonManagedReference
     private UserCredentials credentials;
 
     public long getId() {
