@@ -47,6 +47,8 @@ public class UserREST {
     @Path("{username}")
     public UserCredentials update(@PathParam("username") String username, UserCredentials credentials) {
         credentials.setUsername(username);
+        if (credentials.getPassword() == null)
+            credentials.setPassword(em.find(UserCredentials.class, username).getPassword());
         em.merge(credentials);
         return credentials;
     }

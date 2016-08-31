@@ -82,13 +82,13 @@ public class UserRESTIT {
         assertNull(user.getPassword());
 
         //Update
-        //user.addRole(UserCredentials.Roles.GUEST);
+        //user.addRole(UserCredentials.Roles.ADMIN);
         user = client.target(URI)
                 .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
-                .put(Entity.json("{\"username\":\"testuser\",\"password\":\"testuser\",\"roles\":[\"GUEST\"]}"), UserCredentials.class);
+                .put(Entity.json("{\"username\":\"testuser\",\"password\":\"testuser\",\"roles\":[\"ADMIN\"]}"), UserCredentials.class);
         assertNotNull(user);
-        assertTrue(user.getRoles().contains(UserCredentials.Roles.GUEST));
+        assertTrue(user.getRoles().contains(UserCredentials.Roles.ADMIN));
 
         //Delete
         response = client.target(URI)
