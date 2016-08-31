@@ -246,6 +246,32 @@ app.controller('SalesController', ['$scope', '$http', function ($scope, $http) {
 }]);
 
 app.controller('ProductionController', ['$scope', '$http', function ($scope, $http) {
+
+    $scope.products = {};
+    $scope.user ={};
+    const MODAL = '#product';
+
+    $scope.me = function () {
+        $http.get('auth/me')
+            .then(function (response) {
+                $scope.user = response.data;
+            }, function () {
+                $scope.user = {};
+            });
+    };
+    $scope.reload = function () {
+        $http.get('products')
+            .then(function (response) {
+                $scope.products = response.data;
+            });
+    };
+    $scope.edit = function (product) {
+        $scope.product = product;
+        $(MODAL).modal('show');
+    };
+
+    $scope.reload();
+    $scope.me();
 }]);
 
 app.controller('controlUsersController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
