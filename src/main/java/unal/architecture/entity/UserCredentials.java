@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "UserCredentials.findByUsername", query = "Select uc from UserCredentials uc where uc.username = :username"),
+        @NamedQuery(name = "UserCredentials.findAll", query = "Select uc from UserCredentials uc")
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserCredentials {

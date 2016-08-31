@@ -1,11 +1,9 @@
 package unal.architecture.service;
 
-import unal.architecture.dao.AuthDAO;
 import unal.architecture.entity.User;
 import unal.architecture.entity.UserCredentials;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
@@ -16,8 +14,6 @@ import javax.persistence.PersistenceContext;
 public class StartupService {
     @PersistenceContext
     private EntityManager em;
-    @EJB
-    private AuthDAO authDAO;
 
     @PostConstruct
     public void init() {
@@ -25,7 +21,7 @@ public class StartupService {
     }
 
     public void createAdmin() {
-        if (authDAO.findByUsername("admin") != null)
+        if (em.find(UserCredentials.class, "admin") != null)
             return;
 
 

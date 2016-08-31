@@ -1,12 +1,10 @@
 package unal.architecture.rest;
 
-import unal.architecture.dao.AuthDAO;
 import unal.architecture.entity.User;
 import unal.architecture.entity.UserCredentials;
 import unal.architecture.rest.schemas.Credentials;
 import unal.architecture.rest.schemas.PasswordChange;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,18 +22,16 @@ public class AuthREST {
     private EntityManager em;
     @Context
     HttpServletRequest ctx;
-    @EJB
-    AuthDAO authDAO;
 
     @Path("login")
     @POST
     public User login(Credentials credentials) {
-        UserCredentials userCredentials = authDAO.findByUsername(credentials.getUsername());
-        if (userCredentials == null || !userCredentials.getPassword().equals(credentials.getPassword())) {
+        UserCredentials foundCredentials = em.find(UserCredentials.class, credentials.getUsername());
+        if (foundCredentials == null || !foundCredentials.getPassword().equals(credentials.getPassword())) {
             throw new NotAuthorizedException("");
         }
-        ctx.getSession().setAttribute("user", userCredentials.getUser().getId());
-        return userCredentials.getUser();
+        ctx.getSession().setAttribute("user", foundCredentials.getUser().getId());
+        return foundCredentials.getUser();
     }
 
     @Path("logout")
@@ -56,7 +52,7 @@ public class AuthREST {
     @Path("passwd")
     @PUT
     public void update(PasswordChange change) {
-        UserCredentials userCredentials = authDAO.findByUsername(change.getUsername());
+        UserCredentials userCredentials = em.find(UserCredentials.class, change.getUsername());
         if (userCredentials == null || !userCredentials.getPassword().equals(change.getOldPassword())) {
             throw new NotAuthorizedException("");
         }
