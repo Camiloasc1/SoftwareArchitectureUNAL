@@ -144,7 +144,11 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
 
 app.controller('ProductsController', ['$scope', '$http', function ($scope, $http) {
     $scope.products = {};
+
     $scope.product = {};
+
+    $scope.material = {};
+    $scope.materials = [];
 
     const URI = 'products';
     const MODAL = '#product';
@@ -177,6 +181,21 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
         $http.delete(URI + '/' + product.id)
             .then(function () {
                 $scope.reload();
+            });
+    };
+
+
+    $scope.searchMaterial = function () {
+        $http.get("materials/name=" + $scope.material.name)
+            .then(function (response) {
+
+               if(response.status === 200){
+                   $scope.materials.push(response.data);
+                   //alert(response.data);
+               }else{
+                   alert("Material no encontrado");
+               }
+
             });
     };
 

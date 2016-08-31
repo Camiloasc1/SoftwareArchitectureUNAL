@@ -17,4 +17,15 @@ public class MaterialDAO {
         TypedQuery<Material> query = em.createNamedQuery("Material.findAll", Material.class);
         return query.getResultList();
     }
+
+    public Material findByName(String name){
+        TypedQuery<Material> query = em.createNamedQuery("Material.findByName", Material.class);
+        query.setParameter("name", name);
+        List<Material> credentials = query.getResultList();
+        if (credentials.size() == 0)
+            return null;
+        else
+            return credentials.get(0);
+    }
+
 }

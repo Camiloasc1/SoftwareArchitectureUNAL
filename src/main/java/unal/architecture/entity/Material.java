@@ -7,7 +7,8 @@ import javax.validation.constraints.Min;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "Material.findAll", query = "Select m from Material m")
+        @NamedQuery(name = "Material.findAll", query = "Select m from Material m"),
+        @NamedQuery(name = "Material.findByName", query = "Select m from Material m where m.name = :name")
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Material {
