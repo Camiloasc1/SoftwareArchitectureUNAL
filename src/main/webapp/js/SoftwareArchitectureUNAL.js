@@ -153,30 +153,7 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
         $http.get(URI)
             .then(function (response) {
                 $scope.products = response.data;
-            });
-    };
-    $scope.edit = function (product) {
-        $scope.product = product;
-        $(MODAL).modal('show');
-    };
-    $scope.submit = function () {
-        if ($scope.product.id)
-            $http.put(URI + '/' + $scope.product.id, $scope.product)
-                .then(function () {
-                    $(MODAL).modal('hide');
-                    $scope.reload();
-                });
-        else
-            $http.post(URI, $scope.product)
-                .then(function () {
-                    $(MODAL).modal('hide');
-                    $scope.reload();
-                });
-    };
-    $scope.delete = function (product) {
-        $http.delete(URI + '/' + product.id)
-            .then(function () {
-                $scope.reload();
+                alert($scope.products);
             });
     };
 
@@ -184,6 +161,21 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
 }]);
 
 app.controller('SalesController', ['$scope', '$http', function ($scope, $http) {
+    $scope.sales = {};
+    $scope.sale = {};
+
+    const URI = 'sales';
+
+    $scope.reload = function () {
+        $http.get(URI)
+            .then(function (response) {
+                $scope.sales = response.data;
+            });
+    };
+    $scope.reload();
+
+
+
 }]);
 
 app.controller('ProductionController', ['$scope', '$http', function ($scope, $http) {
@@ -278,6 +270,10 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
         .when('/production', {
             templateUrl: 'partials/production.html',
             controller: 'ProductionController'
+        })
+        .when('/sales', {
+            templateUrl: 'partials/sales.html',
+            controller: 'SalesController'
         })
 
 
