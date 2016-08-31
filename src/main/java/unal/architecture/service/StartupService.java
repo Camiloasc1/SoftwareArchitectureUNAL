@@ -50,16 +50,25 @@ public class StartupService {
 
 
     public void createProducts(){
-        String name = "material";
-        for(int i=0 ; i<10 ; i++){
+        String [] names = {
+             "Aluminio",
+             "Madera",
+             "Vidrio templado",
+             "Cartón",
+             "Cuero",
+             "Plastico"
+        };
+
+        for(int i=0 ; i<names.length ; i++){
             Material m = new Material();
             m.setId(0);
-            m.setName(name+i);
-            m.setInventory((int)Math.random()*100);
+            m.setName(names[i]);
+            m.setInventory((int)(Math.random()*100));
             m.setProvider("Proveedor "+i);
             m.setRawMaterial(true);
             m.setSupply(false);
-            m.setPrice((int)Math.random()*100000);
+            int aux = (int)(Math.random()*800000);
+            m.setPrice(aux-aux%1000);
 
             if(materialDAO.findByName(m.getName()) == null) {
                 em.persist(m);

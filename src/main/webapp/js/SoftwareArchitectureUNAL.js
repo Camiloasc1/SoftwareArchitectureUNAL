@@ -191,7 +191,6 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
 
                if(response.status === 200){
                    $scope.materials.push(response.data);
-                   //alert(response.data);
                }else{
                    alert("Material no encontrado");
                }

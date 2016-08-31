@@ -91,10 +91,9 @@
                 </form>
 
                 <form class="form-horizontal">
-                        <div>
-                            Agregar materiales
-                        </div>
 
+                    <h3>Agregar materiales</h3>
+                    <fieldset>
                         <div class="form-group">
                             <div class="row">
                                 <label class="control-label col-sm-2" for="name">Nombre del material:</label>
@@ -122,8 +121,9 @@
                                     <td>{{p.id}}</td>
                                     <td>{{p.name}}</td>
                                     <td>
-                                        <input type="number" name="material_quantity" class="form-control" id="material_quantity"
-                                               placeholder="0" required="required" ng-model="p.quantity"/>
+                                        <input type="number" name="material_quantity" class="form-control"
+                                               id="material_quantity"
+                                               placeholder="0" ng-model="p.quantity"/>
                                     </td>
                                 </tr>
                             </table>
@@ -136,12 +136,13 @@
                                 </button>
                             </div>
                         </div>
-                        </fieldset>
+                    </fieldset>
                 </form>
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                <button type="button" onclick="material = {}" class="btn btn-primary" data-dismiss="modal">Cerrar
+                </button>
             </div>
         </div>
     </div>
