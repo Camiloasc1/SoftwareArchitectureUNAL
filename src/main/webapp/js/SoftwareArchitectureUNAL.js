@@ -277,7 +277,7 @@ app.controller('controlUsersController', ['$scope', '$http', '$location', functi
                 }
             });
 
-    }
+    };
     $scope.getUsers = function () {
         $http.get('users')
             .then(function (response) {

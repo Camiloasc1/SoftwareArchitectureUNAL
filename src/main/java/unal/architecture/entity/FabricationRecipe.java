@@ -6,6 +6,11 @@ import javax.persistence.*;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NamedQueries({
+        @NamedQuery(name = "FabricationRecipe.findAll", query = "SELECT f FROM FabricationRecipe f"),
+        @NamedQuery(name = "FabricationRecipe.findAllByProductIDAndMaterialID", query = "SELECT f FROM FabricationRecipe f where f.material.id = :mid and f.product.id = :pid"),
+        @NamedQuery(name = "FabricationRecipe.findAllByProductID", query = "SELECT f FROM FabricationRecipe f where f.product.id = :pid")
+})
 public class FabricationRecipe {
     @Id
     @GeneratedValue
