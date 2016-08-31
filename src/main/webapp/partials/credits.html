@@ -28,7 +28,10 @@
                 <td>{{c.date | date:'mediumDate'}}</td>
                 <td>{{c.amount}}</td>
                 <td>{{c.interest}}</td>
-                <td>{{c.paid}}</td>
+                <td>
+                    <span ng-show="c.paid" class="glyphicon glyphicon-ok"></span>
+                    <span ng-show="!c.paid" class="glyphicon glyphicon-remove"></span>
+                </td>
                 <td>{{c.user.name}}</td>
                 <td>
                     <button ng-click="edit(c)" class="btn btn-primary btn-raised">
