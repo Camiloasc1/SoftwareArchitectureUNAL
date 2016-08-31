@@ -43,7 +43,6 @@ public class SaleRESTIT {
 
         User seller = new User();
         seller.setName("Test User");
-        seller.setSalesman(true);
         seller = client.target("http://localhost:8080/SoftwareArchitectureUNAL/users")
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.json(seller), User.class);

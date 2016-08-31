@@ -43,7 +43,6 @@ public class CreditRESTIT {
 
         User admin = new User();
         admin.setName("Test User");
-        admin.setAdmin(true);
         admin = client.target("http://localhost:8080/SoftwareArchitectureUNAL/users")
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.json(admin), User.class);

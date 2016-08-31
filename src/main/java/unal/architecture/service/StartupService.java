@@ -28,18 +28,22 @@ public class StartupService {
         if (authDAO.findByUsername("admin") != null)
             return;
 
+
+        UserCredentials credentials = new UserCredentials();
+        credentials.setUsername("admin");
+        credentials.setPassword("admin");
+        credentials.addRole(UserCredentials.Roles.ADMIN);
+        credentials.addRole(UserCredentials.Roles.WORKER);
+        credentials.addRole(UserCredentials.Roles.SELLER);
+        credentials.addRole(UserCredentials.Roles.GUEST);
+
+        em.persist(credentials);
+
         User admin = new User();
         admin.setName("admin");
         admin.setEmail("admin@architecture.unal");
-        admin.setAdmin(true);
-        admin.setWorker(true);
-        admin.setSalesman(true);
-        em.persist(admin);
+        admin.setCredentials(credentials);
 
-        UserCredentials credentials = new UserCredentials();
-        credentials.setUser(admin);
-        credentials.setUsername("admin");
-        credentials.setPassword("admin");
-        em.persist(credentials);
+        em.persist(admin);
     }
 }

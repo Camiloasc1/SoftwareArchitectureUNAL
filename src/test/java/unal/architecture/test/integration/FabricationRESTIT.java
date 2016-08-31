@@ -52,7 +52,6 @@ public class FabricationRESTIT {
         assertNotNull(product);
         User worker = new User();
         worker.setName("Test User");
-        worker.setWorker(true);
         worker = client.target("http://localhost:8080/SoftwareArchitectureUNAL/users")
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.json(worker), User.class);
