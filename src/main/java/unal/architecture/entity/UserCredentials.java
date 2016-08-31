@@ -1,40 +1,37 @@
 package unal.architecture.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "UserCredentials.findByUsername", query = "Select uc from UserCredentials uc where uc.username = :username")
+        @NamedQuery(name = "UserCredentials.findAll", query = "Select uc from UserCredentials uc")
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserCredentials {
+
+    public enum Roles {
+        ADMIN, WORKER, SELLER
+    }
+
     @Id
-    @GeneratedValue
-    private long id;
-    @OneToOne(optional = false)
-    private User user;
-    @Column(unique = true, nullable = false)
     private String username;
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+    @OneToOne(optional = false, mappedBy = "credentials")
+    @JsonBackReference
+    private User user;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @JoinTable(name = "UserRoles", joinColumns = @JoinColumn(name = "username"))
+    @Column(name = "role", nullable = false)
+    private Set<Roles> roles = new HashSet<Roles>();
 
     public String getUsername() {
         return username;
@@ -52,25 +49,45 @@ public class UserCredentials {
         this.password = password;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
+    }
+
+    public boolean addRole(Roles roles) {
+        return this.roles.add(roles);
+    }
+
+    public boolean removeRole(Object o) {
+        return roles.remove(o);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserCredentials)) return false;
 
-        UserCredentials password1 = (UserCredentials) o;
+        UserCredentials that = (UserCredentials) o;
 
-        if (id != password1.id) return false;
-        if (user != null ? !user.equals(password1.user) : password1.user != null) return false;
-        if (username != null ? !username.equals(password1.username) : password1.username != null) return false;
-        return password != null ? password.equals(password1.password) : password1.password == null;
+        if (username != null ? !username.equals(that.username) : that.username != null) return false;
+        return password != null ? password.equals(that.password) : that.password == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (username != null ? username.hashCode() : 0);
+        int result = username != null ? username.hashCode() : 0;
         result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
     }

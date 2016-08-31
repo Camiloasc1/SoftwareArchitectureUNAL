@@ -11,6 +11,19 @@ app.controller('NavigationController', ['$scope', '$http', '$location', '$timeou
         $http.get('auth/me')
             .then(function (response) {
                 $scope.user = response.data;
+                for (var r in $scope.user.credentials.roles) {
+                    switch ($scope.user.credentials.roles[r]) {
+                        case 'ADMIN':
+                            $scope.user.admin = true;
+                            break;
+                        case 'WORKER':
+                            $scope.user.worker = true;
+                            break;
+                        case 'SELLER':
+                            $scope.user.seller = true;
+                            break;
+                    }
+                }
             }, function () {
                 $location.path('/');
                 $scope.user = null;
@@ -22,7 +35,7 @@ app.controller('NavigationController', ['$scope', '$http', '$location', '$timeou
                 $scope.success = true;
                 $scope.error = false;
                 $scope.credentials = {};
-                $scope.user = response.data;
+                $scope.me();
                 $timeout(function () {
                     $("#login").modal("hide");
                 }, 1000);
@@ -51,6 +64,19 @@ app.controller('UserController', ['$scope', '$http', function ($scope, $http) {
         $http.get('auth/me')
             .then(function (response) {
                 $scope.user = response.data;
+                for (var r in $scope.user.credentials.roles) {
+                    switch ($scope.user.credentials.roles[r]) {
+                        case 'ADMIN':
+                            $scope.user.admin = true;
+                            break;
+                        case 'WORKER':
+                            $scope.user.worker = true;
+                            break;
+                        case 'SELLER':
+                            $scope.user.seller = true;
+                            break;
+                    }
+                }
             }, function () {
                 $scope.user = {};
             });
@@ -230,61 +256,74 @@ app.controller('SalesController', ['$scope', '$http', function ($scope, $http) {
 app.controller('ProductionController', ['$scope', '$http', function ($scope, $http) {
 }]);
 
-app.controller('controlUsersController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
-    $scope.allUsers = {};
-    $scope.userPassword = {password: ""};
-    $scope.typeUser = "";
-    $scope.existUser = false;
-    $scope.checkPassword = "";
+app.controller('UsersController', ['$scope', '$http', function ($scope, $http) {
+    $scope.users = {};
+    $scope.user = {};
 
-    $scope.submit = function () {
-        $http.get('users/' + $scope.userPassword.user.username)
-            .then(function (userResponse) {
-                $scope.existUser = userResponse.status === 200;
-                if (!$scope.existUser) {
-                    $scope.userPassword.user.admin = ($scope.typeUser === "admin");
-                    $scope.userPassword.user.worker = ($scope.typeUser === "worker");
-                    $scope.userPassword.user.salesman = ($scope.typeUser === "salesman");
-                    $http.post('users', $scope.userPassword)
-                        .then(function (response) {
-                            if (response.status === 200) {
-                                alert("El usuario se creo correctamente")
-                                $scope.newuser.$setPristine();
-                                $scope.userPassword = {password: ""};
-                                $scope.typeUser = "";
-                                $scope.checkPassword = "";
-                            } else {
-                            }
-                        });
-                }
-            });
+    const URI = 'users';
+    const MODAL = '#user';
 
-    }
-    $scope.getUsers = function () {
-        $http.get('users')
+    $scope.reload = function () {
+        $http.get(URI)
             .then(function (response) {
-                if (response.status === 200) {
-                    //console.log(response.data);
-                    $scope.allUsers = response.data;
-
-                    $scope.columns = [
-                        {title: 'Borrar', field: 'delete', visible: true},
-                        {title: 'Id', field: 'id', visible: true},
-                        {title: 'Nombre', field: 'name', visible: true},
-                        {title: 'Nombre de usuario', field: 'username', visible: true},
-                        {title: 'Correo electronico', field: 'email', visible: true},
-                        {title: 'Cuenta de administrador', field: 'isAdmin', visible: true},
-                        {title: 'Cuenta de empleado', field: 'isWorker', visible: true},
-                        {title: 'Cuenta de vendedor', field: 'isSalesman', visible: true}
-                    ];
-
+                    $scope.users = response.data;
+                    for (var u in $scope.users) {
+                        var user = $scope.users[u];
+                        user.id = u;
+                        for (var r in user.roles) {
+                            switch (user.roles[r]) {
+                                case 'ADMIN':
+                                    user.admin = true;
+                                    break;
+                                case 'WORKER':
+                                    user.worker = true;
+                                    break;
+                                case 'SELLER':
+                                    user.seller = true;
+                                    break;
+                            }
+                        }
+                    }
                 }
-                else {
-
-                }
-            });
+            );
     }
-}]);
+    ;
+    $scope.edit = function (user) {
+        $scope.user = user;
+        $(MODAL).modal('show');
+    };
+    $scope.submit = function () {
+        $scope.user.roles=[];
+        if($scope.user.admin)
+            $scope.user.roles.push('ADMIN');
+        if($scope.user.worker)
+            $scope.user.roles.push('WORKER');
+        if($scope.user.seller)
+            $scope.user.roles.push('SELLER');
+        
+        if ($scope.user.id)
+            $http.put(URI + '/' + $scope.user.username, $scope.user)
+                .then(function () {
+                    $(MODAL).modal('hide');
+                    $scope.reload();
+                });
+        else
+            $http.post(URI, $scope.user)
+                .then(function () {
+                    $(MODAL).modal('hide');
+                    $scope.reload();
+                });
+    };
+    $scope.delete = function (user) {
+        $http.delete(URI + '/' + user.username)
+            .then(function () {
+                $scope.reload();
+            });
+    };
+
+    $scope.reload();
+}])
+;
 
 app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
     $routeProvider
@@ -310,7 +349,7 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
         })
         .when('/users', {
             templateUrl: 'partials/users.html',
-            controller: 'controlUsersController'
+            controller: 'UsersController'
         })
         .when('/credits', {
             templateUrl: 'partials/credits.html',

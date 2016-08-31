@@ -1,12 +1,10 @@
 package unal.architecture.rest;
 
-import unal.architecture.dao.AuthDAO;
 import unal.architecture.entity.User;
 import unal.architecture.entity.UserCredentials;
 import unal.architecture.rest.schemas.Credentials;
 import unal.architecture.rest.schemas.PasswordChange;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,30 +20,30 @@ import javax.ws.rs.core.MediaType;
 public class AuthREST {
     @PersistenceContext
     private EntityManager em;
-    @EJB
-    AuthDAO authDAO;
+    @Context
+    HttpServletRequest ctx;
 
     @Path("login")
     @POST
-    public User login(Credentials credentials, @Context HttpServletRequest request) {
-        UserCredentials userCredentials = authDAO.findByUsername(credentials.getUsername());
-        if (userCredentials == null || !userCredentials.getPassword().equals(credentials.getPassword())) {
+    public User login(Credentials credentials) {
+        UserCredentials foundCredentials = em.find(UserCredentials.class, credentials.getUsername());
+        if (foundCredentials == null || !foundCredentials.getPassword().equals(credentials.getPassword())) {
             throw new NotAuthorizedException("");
         }
-        request.getSession().setAttribute("user", userCredentials.getUser().getId());
-        return userCredentials.getUser();
+        ctx.getSession().setAttribute("user", foundCredentials.getUser().getId());
+        return foundCredentials.getUser();
     }
 
     @Path("logout")
     @POST
-    public void logout(@Context HttpServletRequest request) {
-        request.getSession().setAttribute("user", null);
+    public void logout() {
+        ctx.getSession().setAttribute("user", null);
     }
 
     @Path("me")
     @GET
-    public User me(@Context HttpServletRequest request) {
-        Long userId = (Long) request.getSession().getAttribute("user");
+    public User me() {
+        Long userId = (Long) ctx.getSession().getAttribute("user");
         if (userId == null)
             throw new NotAuthorizedException("");
         return em.find(User.class, userId);
@@ -54,7 +52,7 @@ public class AuthREST {
     @Path("passwd")
     @PUT
     public void update(PasswordChange change) {
-        UserCredentials userCredentials = authDAO.findByUsername(change.getUsername());
+        UserCredentials userCredentials = em.find(UserCredentials.class, change.getUsername());
         if (userCredentials == null || !userCredentials.getPassword().equals(change.getOldPassword())) {
             throw new NotAuthorizedException("");
         }

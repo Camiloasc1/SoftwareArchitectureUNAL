@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>MyPage</title>
+    <title>Car Accessories Inc.</title>
 
     <base href="/SoftwareArchitectureUNAL/">
 
@@ -27,7 +27,7 @@
 <nav class="navbar">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#!/">CarAPP</a>
+            <a class="navbar-brand" href="#!/">Car Accessories Inc.</a>
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a href="#!/">Inicio</a></li>
@@ -43,7 +43,7 @@
                 </ul>
             </li>
             <li ng-show="user.worker"><a href="#!/sales">Ventas</a></li>
-            <li ng-show="user.salesman"><a href="#!/production">Produccion</a></li>
+            <li ng-show="user.seller"><a href="#!/production">Produccion</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li ng-show="user === null">
@@ -81,7 +81,7 @@
                         <strong>Error!</strong><br>Usuario o Contraseña incorrectos.
                     </div>
 
-                    <form class="form-horizontal">
+                    <form name="loginForm" class="form-horizontal" ng-submit="login()">
                         <fieldset>
                             <!-- <legend>Ingresar</legend> -->
                             <div class="form-group">
@@ -106,7 +106,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-offset-1">
-                                    <button ng-click="login()" type="submit" class="btn btn-primary btn-raised">
+                                    <button ng-disabled="loginForm.$invalid" type="submit" class="btn btn-primary btn-raised">
                                         Ingresar
                                     </button>
                                 </div>

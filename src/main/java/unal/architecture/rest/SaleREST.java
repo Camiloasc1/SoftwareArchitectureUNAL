@@ -2,12 +2,15 @@ package unal.architecture.rest;
 
 import unal.architecture.dao.SaleDAO;
 import unal.architecture.entity.Sale;
+import unal.architecture.entity.User;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +22,8 @@ import java.util.List;
 public class SaleREST {
     @PersistenceContext
     private EntityManager em;
+    @Context
+    HttpServletRequest ctx;
     @EJB
     SaleDAO saleDAO;
 
@@ -31,6 +36,7 @@ public class SaleREST {
     public Sale create(Sale sale) {
         sale.setId(0);
         sale.setDate(new Date());
+        sale.setSeller(em.find(User.class, ctx.getSession().getAttribute("user")));
         em.persist(sale);
         return sale;
     }

@@ -1,90 +1,118 @@
-<div class="container">
-    <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" data-target="#new-user" >Crear un nuevo usuario</a>
-                </h4>
-            </div>
-            <div id="new-user" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <div class="users">
-                        <div class="container">
-                            <form name="newuser">
-                                <div class="form-group">
-                                    <h4>Nombre:</h4>
-                                    <input type="text" name="name" placeholder="Nombre" required="required" ng-model="userPassword.user.name"/>
-                                </div>
-                                <div class="form-group">
-                                    <h4>Username:</h4>
-                                    <input type="text" name="username" placeholder="Nombre de usuario"  required="required" ng-model="userPassword.user.username"/>
-                                    <span ng-show="existUser">El usuario ya existe</span>
-                                </div>
-                                <div class="form-group">
-                                    <h4>Password:</h4>
-                                    <input type="password" name="password" placeholder="Password"  required="required" ng-model="userPassword.password"/>
-                                    <h4>Confirmar Password:</h4>
-                                    <input type="password" name="checkPassword" placeholder="Confirmar Password" required="required" ng-model="checkPassword"/>
-                                    <span ng-show="userPassword.password != checkPassword" class="error"> Los passwords no coinciden </span>
+<div class="jumbotron">
+    <legend>Consultar Usuarios</legend>
+    <div align="right">
+        <button ng-click="edit({})" class="btn btn-primary btn-raised">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+        <button ng-click="reload()" class="btn btn-primary btn-raised">
+            <span class="glyphicon glyphicon-refresh"></span>
+        </button>
+    </div>
 
-                                </div>
-                                <div class="form-group">
-                                    <h4>e-mail:</h4>
-                                    <input type="email" name="email" placeholder="e-mail" ng-model="userPassword.user.email"/>
-                                    <span class="error" ng-show="newuser.email.$error.email"> Email invalido</span>
-                                </div>
-                                <br><h4>Tipo de usuario</h4> <br>
-                                <input type="radio" name="userType" ng-model="typeUser" value="admin" required="required">Administrador
-                                <input type="radio" name="userType" ng-model="typeUser" value="worker">Empleado
-                                <input type="radio" name="userType" ng-model="typeUser" value="salesman">Vendedor
-                                <br><br>
-                                <button ng-click="submit()" ng-disabled="newuser.$invalid || (userPassword.password != checkPassword) " class="btn btn-primary btn-block btn-lg">Crear Usuario</button>
-                            </form>
-                            <br>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" data-target="#del-user" ng-click="getUsers()" >Borrar usuarios</a>
-                </h4>
-            </div>
-            <div id="del-user" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <div>
-                        <button class="btn btn-primary btn-block btn-large" >Borrar</button>
-                    </div>
-                    <div>
-                        <table id='table' class="table table-striped table-hover ">
+    <div>
+        <table id="table" class="table table-striped table-hover">
 
-                            <th ng-repeat="column in columns" ng-show="column.visible">
-                                {{column.title}}
-                            </th>
+            <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Administrador</th>
+                <th>Trabajador</th>
+                <th>Vendedor</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
 
-                            <tr ng-repeat="x in allUsers">
-                                <td><input type="checkbox" value="{{x.username}}"></td>
-                                <td>{{x.id}}</td>
-                                <td>{{x.name}}</td>
-                                <td>{{x.username}}</td>
-                                <td>{{x.email}}</td>
-                                <td>{{x.admin?'si':'no'}}</td>
-                                <td>{{x.worker?'si':'no'}}</td>
-                                <td>{{x.salesman?'si':'no'}}</td>
-                            </tr>
-                        </table>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
+            <tr ng-repeat="u in users">
+                <td>{{u.username}}</td>
+                <td>
+                    <span ng-show="u.admin" class="glyphicon glyphicon-ok"></span>
+                    <span ng-show="!u.admin" class="glyphicon glyphicon-remove"></span></td>
+                <td>
+                    <span ng-show="u.worker" class="glyphicon glyphicon-ok"></span>
+                    <span ng-show="!u.worker" class="glyphicon glyphicon-remove"></span>
+                </td>
+                <td>
+                    <span ng-show="u.seller" class="glyphicon glyphicon-ok"></span>
+                    <span ng-show="!u.seller" class="glyphicon glyphicon-remove"></span></td>
+                <td>
+                    <button ng-click="edit(u)" class="btn btn-primary btn-raised">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </button>
+                </td>
+                <td>
+                    <button ng-click="delete(u)" class="btn btn-primary btn-raised">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 
 
-
-
-
+<div id="user" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Editar Usuario</h4>
+            </div>
+            <div class="modal-body">
+                <form name="form" class="form-horizontal" ng-submit="submit()">
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-sm-2" for="username">Nombre de Usuario:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="username" class="form-control" id="username"
+                                           placeholder="Nombre de Usuario" required="required" disabled="disabled"
+                                           ng-model="user.username"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-sm-2" for="password">Contraseña:</label>
+                                <div class="col-sm-10">
+                                    <input type="password" name="password" class="form-control" id="password"
+                                           placeholder="Contraseña" ng-model="user.password"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-sm-2" for="admin">Administrador</label>
+                                <div class="col-sm-2">
+                                    <input type="checkbox" name="admin" class="form-control" id="admin"
+                                           placeholder="Administrador" ng-model="user.admin"/>
+                                </div>
+                                <label class="control-label col-sm-2" for="worker">Trabajador</label>
+                                <div class="col-sm-2">
+                                    <input type="checkbox" name="worker" class="form-control" id="worker"
+                                           placeholder="Trabajador" ng-model="user.worker"/>
+                                </div>
+                                <label class="control-label col-sm-2" for="seller">Vendedor</label>
+                                <div class="col-sm-2">
+                                    <input type="checkbox" name="seller" class="form-control" id="seller"
+                                           placeholder="Vendedor" ng-model="user.seller"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-offset-1">
+                                <button ng-disabled="form.$invalid" type="submit" class="btn btn-primary btn-raised">
+                                    Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

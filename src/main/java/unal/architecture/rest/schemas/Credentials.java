@@ -1,5 +1,8 @@
 package unal.architecture.rest.schemas;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Credentials {
     private String username;
     private String password;

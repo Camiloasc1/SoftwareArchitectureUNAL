@@ -5,6 +5,7 @@ import org.junit.*;
 import unal.architecture.entity.Fabrication;
 import unal.architecture.entity.Product;
 import unal.architecture.entity.User;
+import unal.architecture.rest.schemas.Credentials;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
@@ -29,8 +30,18 @@ public class FabricationRESTIT {
         client.close();
     }
 
+    private String session;
+
     @Before
     public void before() {
+        Credentials credentials = new Credentials();
+        credentials.setUsername("admin");
+        credentials.setPassword("admin");
+        Response response = client.target("http://localhost:8080/SoftwareArchitectureUNAL/auth")
+                .path("login")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.json(credentials));
+        session = response.getCookies().get("JSESSIONID").getValue();
     }
 
     @After
@@ -50,22 +61,15 @@ public class FabricationRESTIT {
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.json(product), Product.class);
         assertNotNull(product);
-        User worker = new User();
-        worker.setName("Test User");
-        worker.setWorker(true);
-        worker = client.target("http://localhost:8080/SoftwareArchitectureUNAL/users")
-                .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json(worker), User.class);
-        assertNotNull(worker);
 
         //Create
         fabrication = new Fabrication();
         fabrication.setProduct(product);
         fabrication.setQuantity(1);
-        fabrication.setWorker(worker);
 
         fabrication = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .post(Entity.json(fabrication), Fabrication.class);
         assertNotNull(fabrication);
 
@@ -77,7 +81,6 @@ public class FabricationRESTIT {
         assertNotNull(fabrication);
         assertEquals(product, fabrication.getProduct());
         assertEquals(1, fabrication.getQuantity());
-        assertEquals(worker, fabrication.getWorker());
 
         //Update
         fabrication.setQuantity(10);

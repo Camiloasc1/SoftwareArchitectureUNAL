@@ -1,6 +1,7 @@
 package unal.architecture.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 
@@ -17,12 +18,10 @@ public class User {
     private String name;
     @Column()
     private String email;
-    @Column(nullable = false)
-    private boolean admin;
-    @Column(nullable = false)
-    private boolean worker;
-    @Column(nullable = false)
-    private boolean salesman;
+    @OneToOne(optional = false)
+    @JoinColumn(name = "username")
+    @JsonManagedReference
+    private UserCredentials credentials;
 
     public long getId() {
         return id;
@@ -48,28 +47,12 @@ public class User {
         this.email = email;
     }
 
-    public boolean isAdmin() {
-        return admin;
+    public UserCredentials getCredentials() {
+        return credentials;
     }
 
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
-    }
-
-    public boolean isWorker() {
-        return worker;
-    }
-
-    public void setWorker(boolean worker) {
-        this.worker = worker;
-    }
-
-    public boolean isSalesman() {
-        return salesman;
-    }
-
-    public void setSalesman(boolean salesman) {
-        this.salesman = salesman;
+    public void setCredentials(UserCredentials credentials) {
+        this.credentials = credentials;
     }
 
     @Override
@@ -79,10 +62,6 @@ public class User {
 
         User user = (User) o;
 
-        if (id != user.id) return false;
-        if (admin != user.admin) return false;
-        if (worker != user.worker) return false;
-        if (salesman != user.salesman) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         return email != null ? email.equals(user.email) : user.email == null;
 
@@ -90,12 +69,8 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (admin ? 1 : 0);
-        result = 31 * result + (worker ? 1 : 0);
-        result = 31 * result + (salesman ? 1 : 0);
         return result;
     }
 }

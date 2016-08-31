@@ -2,12 +2,15 @@ package unal.architecture.rest;
 
 import unal.architecture.dao.FabricationDAO;
 import unal.architecture.entity.Fabrication;
+import unal.architecture.entity.User;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +22,8 @@ import java.util.List;
 public class FabricationREST {
     @PersistenceContext
     private EntityManager em;
+    @Context
+    HttpServletRequest ctx;
     @EJB
     FabricationDAO fabricationDAO;
 
@@ -31,6 +36,7 @@ public class FabricationREST {
     public Fabrication create(Fabrication fabrication) {
         fabrication.setId(0);
         fabrication.setDate(new Date());
+        fabrication.setWorker(em.find(User.class, ctx.getSession().getAttribute("user")));
         em.persist(fabrication);
         return fabrication;
     }
