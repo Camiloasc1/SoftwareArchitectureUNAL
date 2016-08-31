@@ -69,7 +69,7 @@ public class UserRESTIT {
 
         user = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json("{\"username\":\"testuser\",\"password\":\"testuser\",\"roles\":[\"GUEST\"]}"), UserCredentials.class);
+                .post(Entity.json("{\"username\":\"testuser\",\"password\":\"testuser\",\"roles\":[]}"), UserCredentials.class);
         assertNotNull(user);
 
         //Read
