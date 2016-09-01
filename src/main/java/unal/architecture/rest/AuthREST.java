@@ -8,10 +8,12 @@ import unal.architecture.rest.schemas.PasswordChange;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Stateless
 @Path("auth")
@@ -25,28 +27,34 @@ public class AuthREST {
 
     @Path("login")
     @POST
-    public User login(Credentials credentials) {
-        UserCredentials foundCredentials = em.find(UserCredentials.class, credentials.getUsername());
-        if (foundCredentials == null || !foundCredentials.getPassword().equals(credentials.getPassword())) {
-            throw new NotAuthorizedException("");
+    public Response login(Credentials credentials) {
+        try {
+            ctx.login(credentials.getUsername(), credentials.getPassword());
+            User user = em.find(UserCredentials.class, credentials.getUsername()).getUser();
+            ctx.getSession().setAttribute("user", user.getId());
+            return Response.ok(user).build();
+        } catch (ServletException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
         }
-        ctx.getSession().setAttribute("user", foundCredentials.getUser().getId());
-        return foundCredentials.getUser();
     }
 
     @Path("logout")
     @POST
     public void logout() {
-        ctx.getSession().setAttribute("user", null);
+        try {
+            ctx.logout();
+            ctx.getSession().setAttribute("user", null);
+        } catch (ServletException e) {
+        }
     }
 
     @Path("me")
     @GET
-    public User me() {
+    public Response me() {
         Long userId = (Long) ctx.getSession().getAttribute("user");
         if (userId == null)
-            throw new NotAuthorizedException("");
-        return em.find(User.class, userId);
+            return Response.status(Response.Status.FORBIDDEN).build();
+        return Response.ok(em.find(User.class, userId)).build();
     }
 
     @Path("passwd")

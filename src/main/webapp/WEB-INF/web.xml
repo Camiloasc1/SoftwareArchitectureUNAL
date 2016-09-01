@@ -10,18 +10,18 @@
             <web-resource-name>REST API</web-resource-name>
             <url-pattern>/*</url-pattern>
         </web-resource-collection>
-        <auth-constraint>
-            <role-name>ADMIN</role-name>
-            <role-name>WORKER</role-name>
-            <role-name>SELLER</role-name>
-        </auth-constraint>
+        <!--<auth-constraint>-->
+        <!--<role-name>ADMIN</role-name>-->
+        <!--<role-name>WORKER</role-name>-->
+        <!--<role-name>SELLER</role-name>-->
+        <!--</auth-constraint>-->
         <user-data-constraint id="UserDataConstraint">
             <transport-guarantee>NONE</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
 
     <login-config>
-        <auth-method>BASIC</auth-method>
+        <auth-method>FORM</auth-method>
     </login-config>
 
     <security-role>
