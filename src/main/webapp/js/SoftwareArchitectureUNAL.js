@@ -273,11 +273,16 @@ app.controller('ProductionController', ['$scope', '$http', function ($scope, $ht
     };
     $scope.submit = function () {
         $scope.fabrications.worker = $scope.user;
+        $scope.product.inventory = $scope.product.inventory + $scope.fabrications.quantity;
         $http.post('fabrications', $scope.fabrications)
             .then(function () {
                 $(MODAL).modal('hide');
                 alert("Fabriacion del producto completa");
                 $scope.fabrications = {};
+                $scope.reload();
+            });
+        $http.put('products/' + $scope.fabrications.product.id, $scope.product)
+            .then(function () {
                 $scope.reload();
             });
     };
