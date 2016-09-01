@@ -23,10 +23,10 @@
                 </tr>
             </thead>
 
-            <tr ng-repeat="m in sales">
-            <td>{{m.id}}</td>
-            <td>{{m.date | date:'dd/MM/yyyy'}}</td>
-            <td>{{m.client}}</td>
+            <tr ng-repeat="s in sales">
+            <td>{{s.id}}</td>
+            <td>{{s.date | date:'yyyy-MM-dd'}}</td>
+            <td>{{s.client}}</td>
             <td>
                 <button ng-click="" class="btn btn-primary btn-raised">
                     <span class="glyphicon glyphicon-list-alt"></span>
@@ -34,12 +34,12 @@
             </td>
             <td></td>
             <td>
-                <button ng-click="" class="btn btn-primary btn-raised">
+                <button ng-click="edit(s)" class="btn btn-primary btn-raised">
                     <span class="glyphicon glyphicon-pencil"></span>
                 </button>
             </td>
             <td>
-                <button ng-click="" class="btn btn-primary btn-raised">
+                <button ng-click="delete(s.id)" class="btn btn-primary btn-raised">
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
             </td>
@@ -49,3 +49,49 @@
     </div>
 </div>
 
+<div id="sales" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Editar Material</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-sm-2" for="client">Cliente:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="client" class="form-control" id="client"
+                                           placeholder="client" required="required" ng-model="sale.client"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-sm-2">Fecha:</label>
+                                <div class="col-sm-9">
+                                    <div class="col-sm-10">
+                                        <input type="text" name="date" class="form-control" id="date"
+                                               placeholder="client" required="required" ng-model="sale.date"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-offset-1">
+                                <button ng-click="update()" type="submit" class="btn btn-primary btn-raised">Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

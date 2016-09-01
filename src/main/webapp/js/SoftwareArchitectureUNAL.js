@@ -173,17 +173,38 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
     $scope.reload();
 }]);
 
-app.controller('SalesController', ['$scope', '$http', 'globalUser', function ($scope, $http, globalUser) {
+app.controller('SalesController', ['$scope', '$http', '$filter', 'globalUser', function ($scope, $http, $filter, globalUser) {
     $scope.sales = {};
     $scope.sale = {};
     $scope.user = globalUser.getUser();
-
     const URI = 'sales';
+    const MODAL = '#sales';
 
     $scope.reload = function () {
-        $http.get(URI+"/seller/"+$scope.user.id)
+        $scope.uriUser = ($scope.user.salesman) && !($scope.user.admin) ? '/seller/'+$scope.user.id : '';
+        $http.get(URI + $scope.uriUser)
             .then(function (response) {
                 $scope.sales = response.data;
+            });
+    };
+    $scope.edit = function (sale) {
+        $scope.sale = sale;
+        $scope.sale.date = $filter('date')($scope.sale.date, "yyyy-MM-dd");
+        $(MODAL).modal('show');
+    };
+    $scope.update = function () {
+        $scope.sale.date = $scope.sale.date + "T05:00:00.000Z";
+        $http.put(URI + '/' + $scope.sale.id, $scope.sale)
+            .then(function () {
+                $(MODAL).modal('hide');
+                $scope.reload();
+            });
+    };
+
+    $scope.delete = function (id) {
+        $http.delete(URI + '/' + id)
+            .then(function () {
+                $scope.reload();
             });
     };
     $scope.reload();
