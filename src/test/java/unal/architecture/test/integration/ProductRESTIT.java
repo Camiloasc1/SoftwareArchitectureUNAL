@@ -3,6 +3,7 @@ package unal.architecture.test.integration;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
 import unal.architecture.entity.Product;
+import unal.architecture.test.util.ITUtil;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
@@ -14,7 +15,8 @@ import javax.ws.rs.core.Response;
 import static org.junit.Assert.*;
 
 public class ProductRESTIT {
-    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/products";
+    private static final String PATH = "products";
+    private static final String URI = ITUtil.BASE_URI + PATH;
     private static Client client;
 
     @BeforeClass
@@ -40,6 +42,8 @@ public class ProductRESTIT {
         Response response;
         Product product;
 
+        String session = ITUtil.getAdminSession();
+
         //Create
         product = new Product();
         product.setName("Test Product");
@@ -48,6 +52,7 @@ public class ProductRESTIT {
 
         product = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .post(Entity.json(product), Product.class);
         assertNotNull(product);
 
@@ -55,6 +60,7 @@ public class ProductRESTIT {
         product = client.target(URI)
                 .path(product.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .get(Product.class);
         assertNotNull(product);
         assertEquals("Test Product", product.getName());
@@ -66,6 +72,7 @@ public class ProductRESTIT {
         product = client.target(URI)
                 .path(product.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .put(Entity.json(product), Product.class);
         assertNotNull(product);
         assertEquals(100, product.getInventory());
@@ -74,12 +81,14 @@ public class ProductRESTIT {
         response = client.target(URI)
                 .path(product.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .delete();
         assertEquals(204, response.getStatus());
 
         product = client.target(URI)
                 .path(product.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .get(Product.class);
         assertNull(product);
     }

@@ -6,6 +6,7 @@ import org.junit.rules.ExpectedException;
 import unal.architecture.entity.User;
 import unal.architecture.rest.schemas.Credentials;
 import unal.architecture.rest.schemas.PasswordChange;
+import unal.architecture.test.util.ITUtil;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
@@ -17,7 +18,8 @@ import javax.ws.rs.core.Response;
 import static org.junit.Assert.assertNotNull;
 
 public class AuthRESTIT {
-    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/auth";
+    private static final String PATH = "auth";
+    private static final String URI = ITUtil.BASE_URI + PATH;
     private static Client client;
 
     @Rule

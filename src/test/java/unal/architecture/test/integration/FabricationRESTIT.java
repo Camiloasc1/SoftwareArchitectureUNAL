@@ -4,8 +4,7 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
 import unal.architecture.entity.Fabrication;
 import unal.architecture.entity.Product;
-import unal.architecture.entity.User;
-import unal.architecture.rest.schemas.Credentials;
+import unal.architecture.test.util.ITUtil;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
@@ -17,7 +16,8 @@ import javax.ws.rs.core.Response;
 import static org.junit.Assert.*;
 
 public class FabricationRESTIT {
-    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/fabrications";
+    private static final String PATH = "fabrications";
+    private static final String URI = ITUtil.BASE_URI + PATH;
     private static Client client;
 
     @BeforeClass
@@ -30,18 +30,8 @@ public class FabricationRESTIT {
         client.close();
     }
 
-    private String session;
-
     @Before
     public void before() {
-        Credentials credentials = new Credentials();
-        credentials.setUsername("admin");
-        credentials.setPassword("admin");
-        Response response = client.target("http://localhost:8080/SoftwareArchitectureUNAL/auth")
-                .path("login")
-                .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json(credentials));
-        session = response.getCookies().get("JSESSIONID").getValue();
     }
 
     @After
@@ -49,9 +39,11 @@ public class FabricationRESTIT {
     }
 
     @Test
-    public void crudProduct() {
+    public void crudFabrication() {
         Response response;
         Fabrication fabrication;
+
+        String session = ITUtil.getAdminSession();
 
         Product product = new Product();
         product.setName("Test Product");
@@ -59,6 +51,7 @@ public class FabricationRESTIT {
         product.setPrice(10.0f);
         product = client.target("http://localhost:8080/SoftwareArchitectureUNAL/products")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .post(Entity.json(product), Product.class);
         assertNotNull(product);
 
@@ -77,6 +70,7 @@ public class FabricationRESTIT {
         fabrication = client.target(URI)
                 .path(fabrication.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .get(Fabrication.class);
         assertNotNull(fabrication);
         assertEquals(product, fabrication.getProduct());
@@ -87,6 +81,7 @@ public class FabricationRESTIT {
         fabrication = client.target(URI)
                 .path(fabrication.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .put(Entity.json(fabrication), Fabrication.class);
         assertNotNull(fabrication);
         assertEquals(10, fabrication.getQuantity());
@@ -95,12 +90,14 @@ public class FabricationRESTIT {
         response = client.target(URI)
                 .path(fabrication.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .delete();
         assertEquals(204, response.getStatus());
 
         fabrication = client.target(URI)
                 .path(fabrication.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .get(Fabrication.class);
         assertNull(fabrication);
     }
