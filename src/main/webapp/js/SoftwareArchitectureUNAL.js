@@ -267,13 +267,17 @@ app.controller('ProductionController', ['$scope', '$http', function ($scope, $ht
             });
     };
     $scope.edit = function (product) {
+        $scope.fabrications.product = product;
         $scope.product = product;
         $(MODAL).modal('show');
     };
     $scope.submit = function () {
+        $scope.fabrications.worker = $scope.user;
         $http.post('fabrications', $scope.fabrications)
             .then(function () {
                 $(MODAL).modal('hide');
+                alert("Fabriacion del producto completa");
+                $scope.fabrications = {};
                 $scope.reload();
             });
     };
