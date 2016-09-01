@@ -79,6 +79,7 @@
                 <version>7.0.1</version>
                 <configuration>
                     <tomeeClassifier>plus</tomeeClassifier>
+                    <config>${project.basedir}/src/test/tomee/conf</config>
                 </configuration>
                 <executions>
                     <execution>
