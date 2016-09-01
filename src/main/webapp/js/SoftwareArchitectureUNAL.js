@@ -1,18 +1,7 @@
 "use strict";
 var app = angular.module('SoftwareArchitectureUNAL', ['ngRoute']);
 
-app.factory('globalUser', function(){
-    var user = {};
-    return  {setUser: function(currentUser){
-        user = currentUser;
-    },
-        getUser: function(){
-            return user;
-        }
-    };
-});
-
-app.controller('NavigationController', ['$scope', '$http', '$location', '$timeout', 'globalUser', function ($scope, $http, $location, $timeout, globalUser) {
+app.controller('NavigationController', ['$scope', '$http', '$location', '$timeout', function ($scope, $http, $location, $timeout) {
     $scope.user = null;
     $scope.credentials = {};
     $scope.success = false;
@@ -34,7 +23,6 @@ app.controller('NavigationController', ['$scope', '$http', '$location', '$timeou
                 $scope.error = false;
                 $scope.credentials = {};
                 $scope.user = response.data;
-                globalUser.setUser($scope.user);
                 $timeout(function () {
                     $("#login").modal("hide");
                 }, 1000);
@@ -48,7 +36,6 @@ app.controller('NavigationController', ['$scope', '$http', '$location', '$timeou
         $http.post('auth/logout', {})
             .then(function () {
                 $scope.user = null;
-                globalUser.setUser(null);
             });
     };
 
@@ -173,32 +160,58 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
     $scope.reload();
 }]);
 
-app.controller('SalesController', ['$scope', '$http', '$filter', 'globalUser', function ($scope, $http, $filter, globalUser) {
+app.controller('SalesController', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
     $scope.sales = {};
     $scope.sale = {};
-    $scope.user = globalUser.getUser();
+    $scope.user = {};
+    $scope.option = false;
     const URI = 'sales';
     const MODAL = '#sales';
 
+    $scope.getUser = function () {
+        $http.get('auth/me')
+            .then(function (response) {
+                $scope.user = response.data;
+            });
+    };
+
     $scope.reload = function () {
+        $scope.getUser();
         $scope.uriUser = ($scope.user.salesman) && !($scope.user.admin) ? '/seller/'+$scope.user.id : '';
         $http.get(URI + $scope.uriUser)
             .then(function (response) {
                 $scope.sales = response.data;
             });
     };
+
+    $scope.new = function () {
+        $scope.sale = {"id" : 0, "client" : "", "seller" : $scope.user};
+        $scope.sale.date = $filter('date')(new Date(), "yyyy-MM-dd");
+        $scope.option = false;
+        $(MODAL).modal('show');
+    };
+
     $scope.edit = function (sale) {
         $scope.sale = sale;
         $scope.sale.date = $filter('date')($scope.sale.date, "yyyy-MM-dd");
+        $scope.option = true;
         $(MODAL).modal('show');
     };
-    $scope.update = function () {
+    $scope.submit = function () {
         $scope.sale.date = $scope.sale.date + "T05:00:00.000Z";
-        $http.put(URI + '/' + $scope.sale.id, $scope.sale)
-            .then(function () {
-                $(MODAL).modal('hide');
-                $scope.reload();
-            });
+        if( $scope.option ) {
+            $http.put(URI + '/' + $scope.sale.id, $scope.sale)
+                .then(function () {
+                    $(MODAL).modal('hide');
+                    $scope.reload();
+                });
+        }else{
+            $http.post(URI, $scope.sale)
+                .then(function () {
+                    $(MODAL).modal('hide');
+                    $scope.reload();
+                });
+        }
     };
 
     $scope.delete = function (id) {
@@ -208,9 +221,6 @@ app.controller('SalesController', ['$scope', '$http', '$filter', 'globalUser', f
             });
     };
     $scope.reload();
-
-
-
 }]);
 
 app.controller('ProductionController', ['$scope', '$http', function ($scope, $http) {
