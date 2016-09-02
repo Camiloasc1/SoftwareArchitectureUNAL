@@ -1,5 +1,5 @@
 "use strict";
-var app = angular.module('SoftwareArchitectureUNAL', ['ngRoute']);
+var app = angular.module('SoftwareArchitectureUNAL', ['ngRoute', 'ngMaterial']);
 
 app.controller('NavigationController', ['$scope', '$http', '$location', '$timeout', function ($scope, $http, $location, $timeout) {
     $scope.user = null;
@@ -227,6 +227,34 @@ app.controller('CreditsController', ['$scope', '$http', function ($scope, $http)
 app.controller('SalesController', ['$scope', '$http', function ($scope, $http) {
 }]);
 
+app.controller('StatisticsController', ['$scope', '$http', function ($scope, $http) {
+    $scope.sales = "";
+
+    $scope.date = new Date();
+
+    $scope.minDate = new Date(
+        $scope.date.getFullYear(),
+        $scope.date.getMonth() - 2,
+        $scope.date.getDate());
+
+    $scope.maxDate = $scope.date;
+
+    $scope.getByDay = function(){
+        console.log("entra");
+    }
+
+    $scope.reload = function(){
+        var date = $scope.date.getFullYear()+"-"+($scope.date.getMonth()+1)+"-"+$scope.date.getDate();
+        console.log(date);
+        console.log($scope.date);
+        $http.get("sales/stats/"+date)
+            .then( function(response) {
+                $scope.sales = response.data;
+                console.log($scope.sales);
+            });
+    }
+}]);
+
 app.controller('ProductionController', ['$scope', '$http', function ($scope, $http) {
 }]);
 
@@ -324,7 +352,10 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
             templateUrl: 'partials/production.html',
             controller: 'ProductionController'
         })
-
+        .when('/statistics', {
+            templateUrl: 'partials/statistics.html',
+            controller: 'StatisticsController'
+        })
 
         .otherwise({redirectTo: '/'});
 
