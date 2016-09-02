@@ -3,7 +3,7 @@ package unal.architecture.test.integration;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
 import unal.architecture.entity.UserCredentials;
-import unal.architecture.rest.schemas.Credentials;
+import unal.architecture.test.util.ITUtil;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
@@ -17,7 +17,8 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class UserRESTIT {
-    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/users";
+    private static final String PATH = "users";
+    private static final String URI = ITUtil.BASE_URI + PATH;
     private static Client client;
 
     @BeforeClass
@@ -42,8 +43,11 @@ public class UserRESTIT {
     public void findAdminFromList() {
         List<UserCredentials> users;
 
+        String session = ITUtil.getAdminSession();
+
         users = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .get(new GenericType<List<UserCredentials>>() {
                 });
         assertNotNull(users);
@@ -65,10 +69,13 @@ public class UserRESTIT {
         Response response;
         UserCredentials user;
 
+        String session = ITUtil.getAdminSession();
+
         //Create
 
         user = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .post(Entity.json("{\"username\":\"testuser\",\"password\":\"testuser\",\"roles\":[]}"), UserCredentials.class);
         assertNotNull(user);
 
@@ -76,6 +83,7 @@ public class UserRESTIT {
         user = client.target(URI)
                 .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .get(UserCredentials.class);
         assertNotNull(user);
         assertEquals("testuser", user.getUsername());
@@ -86,6 +94,7 @@ public class UserRESTIT {
         user = client.target(URI)
                 .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .put(Entity.json("{\"username\":\"testuser\",\"password\":\"testuser\",\"roles\":[\"ADMIN\"]}"), UserCredentials.class);
         assertNotNull(user);
         assertTrue(user.getRoles().contains(UserCredentials.Roles.ADMIN));
@@ -94,12 +103,14 @@ public class UserRESTIT {
         response = client.target(URI)
                 .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .delete();
         assertEquals(204, response.getStatus());
 
         user = client.target(URI)
                 .path(user.getUsername())
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .get(UserCredentials.class);
         assertNull(user);
     }

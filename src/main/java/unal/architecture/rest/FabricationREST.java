@@ -4,6 +4,7 @@ import unal.architecture.dao.FabricationDAO;
 import unal.architecture.entity.Fabrication;
 import unal.architecture.entity.User;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,6 +20,7 @@ import java.util.List;
 @Path("fabrications")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@RolesAllowed({"WORKER"})
 public class FabricationREST {
     @PersistenceContext
     private EntityManager em;

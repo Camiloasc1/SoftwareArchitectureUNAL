@@ -3,7 +3,7 @@ package unal.architecture.test.integration;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
 import unal.architecture.entity.Credit;
-import unal.architecture.rest.schemas.Credentials;
+import unal.architecture.test.util.ITUtil;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
@@ -15,7 +15,8 @@ import javax.ws.rs.core.Response;
 import static org.junit.Assert.*;
 
 public class CreditRESTIT {
-    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/credits";
+    private static final String PATH = "credits";
+    private static final String URI = ITUtil.BASE_URI + PATH;
     private static Client client;
 
     @BeforeClass
@@ -28,18 +29,8 @@ public class CreditRESTIT {
         client.close();
     }
 
-    private String session;
-
     @Before
     public void before() {
-        Credentials credentials = new Credentials();
-        credentials.setUsername("admin");
-        credentials.setPassword("admin");
-        Response response = client.target("http://localhost:8080/SoftwareArchitectureUNAL/auth")
-                .path("login")
-                .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json(credentials));
-        session = response.getCookies().get("JSESSIONID").getValue();
     }
 
     @After
@@ -47,9 +38,11 @@ public class CreditRESTIT {
     }
 
     @Test
-    public void crudProduct() {
+    public void crudCredit() {
         Response response;
         Credit credit;
+
+        String session = ITUtil.getAdminSession();
 
         //Create
         credit = new Credit();
@@ -66,6 +59,7 @@ public class CreditRESTIT {
         credit = client.target(URI)
                 .path(credit.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .get(Credit.class);
         assertNotNull(credit);
         assertEquals(0.1f, credit.getInterest(), 0.01f);
@@ -76,6 +70,7 @@ public class CreditRESTIT {
         credit = client.target(URI)
                 .path(credit.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .put(Entity.json(credit), Credit.class);
         assertNotNull(credit);
         assertEquals(true, credit.isPaid());
@@ -84,12 +79,14 @@ public class CreditRESTIT {
         response = client.target(URI)
                 .path(credit.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .delete();
         assertEquals(204, response.getStatus());
 
         credit = client.target(URI)
                 .path(credit.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .get(Credit.class);
         assertNull(credit);
     }

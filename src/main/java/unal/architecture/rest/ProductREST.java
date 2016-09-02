@@ -3,6 +3,7 @@ package unal.architecture.rest;
 import unal.architecture.dao.ProductDAO;
 import unal.architecture.entity.Product;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -15,6 +16,7 @@ import java.util.List;
 @Path("products")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@RolesAllowed({"ADMIN"})
 public class ProductREST {
     @PersistenceContext
     private EntityManager em;

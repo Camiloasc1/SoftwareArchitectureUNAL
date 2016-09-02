@@ -4,6 +4,7 @@ import unal.architecture.dao.CreditDAO;
 import unal.architecture.entity.Credit;
 import unal.architecture.entity.User;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,6 +20,7 @@ import java.util.List;
 @Path("credits")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@RolesAllowed({"ADMIN"})
 public class CreditREST {
     @PersistenceContext
     private EntityManager em;

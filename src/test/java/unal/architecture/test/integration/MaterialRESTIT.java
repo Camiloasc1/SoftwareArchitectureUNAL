@@ -3,6 +3,7 @@ package unal.architecture.test.integration;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.*;
 import unal.architecture.entity.Material;
+import unal.architecture.test.util.ITUtil;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
@@ -14,7 +15,8 @@ import javax.ws.rs.core.Response;
 import static org.junit.Assert.*;
 
 public class MaterialRESTIT {
-    private static final String URI = "http://localhost:8080/SoftwareArchitectureUNAL/materials";
+    private static final String PATH = "materials";
+    private static final String URI = ITUtil.BASE_URI + PATH;
     private static Client client;
 
     @BeforeClass
@@ -40,6 +42,8 @@ public class MaterialRESTIT {
         Response response;
         Material material;
 
+        String session = ITUtil.getAdminSession();
+
         //Create
         material = new Material();
         material.setName("Test Product");
@@ -51,6 +55,7 @@ public class MaterialRESTIT {
 
         material = client.target(URI)
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .post(Entity.json(material), Material.class);
         assertNotNull(material);
 
@@ -58,6 +63,7 @@ public class MaterialRESTIT {
         material = client.target(URI)
                 .path(material.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .get(Material.class);
         assertNotNull(material);
         assertEquals("Test Product", material.getName());
@@ -71,6 +77,7 @@ public class MaterialRESTIT {
         material = client.target(URI)
                 .path(material.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .put(Entity.json(material), Material.class);
         assertNotNull(material);
         assertEquals(100, material.getInventory());
@@ -79,12 +86,14 @@ public class MaterialRESTIT {
         response = client.target(URI)
                 .path(material.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .delete();
         assertEquals(204, response.getStatus());
 
         material = client.target(URI)
                 .path(material.getId() + "")
                 .request(MediaType.APPLICATION_JSON)
+                .cookie("JSESSIONID", session)
                 .get(Material.class);
         assertNull(material);
     }
