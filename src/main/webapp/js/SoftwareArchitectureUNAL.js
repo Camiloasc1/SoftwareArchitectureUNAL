@@ -186,6 +186,16 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
     };
 
 
+    $scope.deleteRecipe = function (recipe) {
+        for(var key in $scope.product.recipes){
+            var my_recipe = $scope.product.recipes[key];
+            if(my_recipe.id === recipe.id){
+                $scope.product.recipes.splice(key,1);
+                break;
+            }
+        }
+    };
+
     $scope.searchMaterial = function () {
 
         if (typeof $scope.product.recipes === "undefined") {
@@ -197,12 +207,28 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
 
                if(response.status === 200){
 
-                   var recipe = {
-                       "material":response.data,
-                       "requiredQuantity":0
-                   };
+                   var alreadyPut = false;
 
-                   $scope.product.recipes.push(recipe);
+                   for(var key in $scope.product.recipes){
+                       var my_recipe = $scope.product.recipes[key];
+                       if(my_recipe.material.id === response.data.id){
+                           alreadyPut = true;
+                           break;
+                       }
+                   }
+
+                   if(!alreadyPut){
+                       var recipe = {
+                           "material":response.data,
+                           "requiredQuantity":0
+                       };
+
+                       $scope.product.recipes.push(recipe);
+                   }else{
+                       alert("Ya habias agregado ese producto");
+                   }
+
+
 
                }else{
                    alert("Material no encontrado");

@@ -28,4 +28,8 @@ public class MaterialDAO {
             return credentials.get(0);
     }
 
+    public void remove(long id){
+        em.createNativeQuery("delete from FabricationRecipe where material_id="+id).executeUpdate();
+        em.remove(em.find(Material.class,id));
+    }
 }

@@ -17,4 +17,10 @@ public class ProductDAO {
         TypedQuery<Product> query = em.createNamedQuery("Product.findAll", Product.class);
         return query.getResultList();
     }
+
+    public void remove(long id){
+        em.createNativeQuery("delete from FabricationRecipe where product_id="+id).executeUpdate();
+        em.remove(em.find(Product.class,id));
+    }
+
 }

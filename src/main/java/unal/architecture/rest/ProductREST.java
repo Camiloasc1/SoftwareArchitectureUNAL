@@ -1,5 +1,6 @@
 package unal.architecture.rest;
 
+import unal.architecture.dao.FabricationRecipeDAO;
 import unal.architecture.dao.ProductDAO;
 import unal.architecture.entity.Fabrication;
 import unal.architecture.entity.FabricationRecipe;
@@ -24,6 +25,8 @@ public class ProductREST {
     private EntityManager em;
     @EJB
     ProductDAO productDAO;
+    @EJB
+    FabricationRecipeDAO recipesDAO = new FabricationRecipeDAO();
 
     @GET
     public List<Product> list() {
@@ -34,9 +37,10 @@ public class ProductREST {
     public Product create(Product product) {
         product.setId(0);
 
-        for(FabricationRecipe fabricationRecipe : product.getRecipes()){
-            fabricationRecipe.setProduct(product);
-        }
+        if(product.getRecipes()!=null)
+            for(FabricationRecipe fabricationRecipe : product.getRecipes()){
+                fabricationRecipe.setProduct(product);
+            }
 
         em.persist(product);
         return product;
@@ -57,6 +61,15 @@ public class ProductREST {
             fabricationRecipe.setProduct(product);
         }
 
+        List<FabricationRecipe> toErase = em.find(Product.class,id).getRecipes();
+        toErase.removeAll(product.getRecipes());
+
+
+        if(toErase!=null)
+            for (FabricationRecipe fabricationRecipe : toErase){
+                recipesDAO.delete(fabricationRecipe.getId());
+            }
+
         em.merge(product);
         return product;
     }
@@ -64,21 +77,6 @@ public class ProductREST {
     @DELETE
     @Path("{id}")
     public void delete(@PathParam("id") long id) {
-
-        throw new RuntimeException("Not implemented yet");
-        //Session session = factory
-        /*Product toDelete = em.find(Product.class, id);
-        if(toDelete!=null){
-            if(toDelete.getRecipes()!=null){
-                for(FabricationRecipe fabricationRecipe: toDelete.getRecipes()){
-                    em.remove(fabricationRecipe);
-                    fabricationRecipe.setProduct(null);
-                }
-            }
-            toDelete.getRecipes().clear();
-            em.flush();
-            em.remove(toDelete);
-
-        }*/
+        productDAO.remove(id);
     }
 }

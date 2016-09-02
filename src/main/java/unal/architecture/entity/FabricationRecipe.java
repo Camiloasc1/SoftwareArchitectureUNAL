@@ -64,11 +64,12 @@ public class FabricationRecipe {
 
         FabricationRecipe that = (FabricationRecipe) o;
 
-        if (id != that.id) return false;
+        return that.id == this.id;
+
+        /*if (id != that.id) return false;
         if (requiredQuantity != that.requiredQuantity) return false;
         if (product != null ? !product.equals(that.product) : that.product != null) return false;
-        return material != null ? material.equals(that.material) : that.material == null;
-
+        return material != null ? material.equals(that.material) : that.material == null;*/
     }
 
     @Override
