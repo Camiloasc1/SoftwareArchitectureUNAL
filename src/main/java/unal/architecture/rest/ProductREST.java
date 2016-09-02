@@ -13,6 +13,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
+import org.hibernate.Session;
+
 @Stateless
 @Path("products")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -50,6 +52,11 @@ public class ProductREST {
     @Path("{id}")
     public Product update(@PathParam("id") long id, Product product) {
         product.setId(id);
+
+        for(FabricationRecipe fabricationRecipe : product.getRecipes()){
+            fabricationRecipe.setProduct(product);
+        }
+
         em.merge(product);
         return product;
     }
@@ -57,7 +64,21 @@ public class ProductREST {
     @DELETE
     @Path("{id}")
     public void delete(@PathParam("id") long id) {
-        em.remove(em.find(Product.class, id));
-        return;
+
+        throw new RuntimeException("Not implemented yet");
+        //Session session = factory
+        /*Product toDelete = em.find(Product.class, id);
+        if(toDelete!=null){
+            if(toDelete.getRecipes()!=null){
+                for(FabricationRecipe fabricationRecipe: toDelete.getRecipes()){
+                    em.remove(fabricationRecipe);
+                    fabricationRecipe.setProduct(null);
+                }
+            }
+            toDelete.getRecipes().clear();
+            em.flush();
+            em.remove(toDelete);
+
+        }*/
     }
 }

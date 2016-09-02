@@ -171,8 +171,6 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
                     $scope.reload();
                 });
         else{
-            $scope.product.recipes = [];
-            $scope.product.recipes.push({"requiredQuantity":10 , "material": {"id":3,"name":"Aluminio","inventory":57,"supply":false,"price":272000.0,"rawMaterial":true,"provider":"Proveedor 0"}});
             $http.post(URI, $scope.product)
                 .then(function () {
                     $(MODAL).modal('hide');
@@ -189,11 +187,23 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
 
 
     $scope.searchMaterial = function () {
+
+        if (typeof $scope.product.recipes === "undefined") {
+            $scope.product.recipes = [];
+        }
+
         $http.get("materials/name=" + $scope.material.name)
             .then(function (response) {
 
                if(response.status === 200){
-                   $scope.materials.push(response.data);
+
+                   var recipe = {
+                       "material":response.data,
+                       "requiredQuantity":0
+                   };
+
+                   $scope.product.recipes.push(recipe);
+
                }else{
                    alert("Material no encontrado");
                }
