@@ -293,12 +293,16 @@ app.controller('ProductionController', ['$scope', '$http', function ($scope, $ht
             $http.get('materials/' + m.material.id)
                 .then(function (response) {
                     $scope.mQtyToUpdate = response.data;
-                    $scope.mQtyToUpdate.inventory = $scope.mQtyToUpdate.inventory - (m.requiredQuantity*$scope.fabrications.quantity);
-                    $http.put('materials/' + m.material.id, $scope.mQtyToUpdate)
-                        .then(function () {
-                            $scope.mQtyToUpdate = {};
-                            alert("Fabriacion del producto completa");
-                        });
+                    if($scope.mQtyToUpdate.inventory < (m.requiredQuantity*$scope.fabrications.quantity) ){
+                        alert("No existe suficiente material para la fabricacion");
+                    }
+                    else {
+                        $scope.mQtyToUpdate.inventory = $scope.mQtyToUpdate.inventory - (m.requiredQuantity * $scope.fabrications.quantity);
+                        $http.put('materials/' + m.material.id, $scope.mQtyToUpdate)
+                            .then(function () {
+                                $scope.mQtyToUpdate = {};
+                            });
+                    }
                 });
         }
         for(var key in $scope.product.recipes){
@@ -308,6 +312,7 @@ app.controller('ProductionController', ['$scope', '$http', function ($scope, $ht
         $http.post('fabrications', $scope.fabrications)
             .then(function () {
                 $(MODAL).modal('hide');
+                alert("Fabriacion del producto completa");
                 $scope.fabrications = {};
                 $scope.reload();
             });
