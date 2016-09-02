@@ -29,6 +29,7 @@ public class AuthREST {
     @POST
     public Response login(Credentials credentials) {
         try {
+            ctx.getSession(); // F**k you JEE!!!
             ctx.login(credentials.getUsername(), credentials.getPassword());
             User user = em.find(UserCredentials.class, credentials.getUsername()).getUser();
             ctx.getSession().setAttribute("user", user.getId());
@@ -43,7 +44,7 @@ public class AuthREST {
     public void logout() {
         try {
             ctx.logout();
-            ctx.getSession().setAttribute("user", null);
+            ctx.getSession().invalidate();
         } catch (ServletException e) {
         }
     }

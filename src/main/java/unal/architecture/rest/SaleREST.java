@@ -4,6 +4,7 @@ import unal.architecture.dao.SaleDAO;
 import unal.architecture.entity.Sale;
 import unal.architecture.entity.User;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,6 +20,7 @@ import java.util.List;
 @Path("sales")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@RolesAllowed({"SELLER"})
 public class SaleREST {
     @PersistenceContext
     private EntityManager em;

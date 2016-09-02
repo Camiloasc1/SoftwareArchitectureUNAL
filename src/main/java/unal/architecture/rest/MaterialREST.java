@@ -3,6 +3,7 @@ package unal.architecture.rest;
 import unal.architecture.dao.MaterialDAO;
 import unal.architecture.entity.Material;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -15,6 +16,7 @@ import java.util.List;
 @Path("materials")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@RolesAllowed({"ADMIN"})
 public class MaterialREST {
     @PersistenceContext
     private EntityManager em;

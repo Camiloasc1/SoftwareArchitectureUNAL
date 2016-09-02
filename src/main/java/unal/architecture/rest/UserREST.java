@@ -4,6 +4,7 @@ import unal.architecture.dao.UserCredentialsDAO;
 import unal.architecture.entity.User;
 import unal.architecture.entity.UserCredentials;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,6 +17,7 @@ import java.util.List;
 @Path("users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@RolesAllowed({"ADMIN"})
 public class UserREST {
     @PersistenceContext
     private EntityManager em;
