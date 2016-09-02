@@ -44,6 +44,31 @@
                 <form name="form" class="form-horizontal" ng-submit="submit()">
                     <fieldset>
                         <p>Cantidad de materiales a usar: </p>
+                        <div>
+                            <table id="table2" class="table table-striped table-hover">
+
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Cantidad</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+
+                                <tr ng-repeat="p in product.recipes">
+                                    <td>{{p.material.id}}</td>
+                                    <td>{{p.material.name}}</td>
+                                    <td>
+                                        <input type="number" name="material_quantity" class="form-control"
+                                               id="material_quantity"
+                                               placeholder="0" ng-model="p.requiredQuantity"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <p>Cantidad de {{fabrications.product.name}}(s) a fabricar:</p>
                         <div class="form-group">
                             <div class="row">
                                 <label class="control-label col-sm-2" for="ntc">Cantidad a fabricar:</label>
