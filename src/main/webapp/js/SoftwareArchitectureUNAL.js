@@ -286,40 +286,51 @@ app.controller('ProductionController', ['$scope', '$http', function ($scope, $ht
         $(MODAL).modal('show');
     };
     $scope.submit = function () {
-        $scope.mQtyToUpdate = {};
-        $scope.fabrications.worker = $scope.user;
-        $scope.product.inventory = $scope.product.inventory + $scope.fabrications.quantity;
-        var updateMaterial = function(m){
-            $http.get('materials/' + m.material.id)
-                .then(function (response) {
-                    $scope.mQtyToUpdate = response.data;
-                    if($scope.mQtyToUpdate.inventory < (m.requiredQuantity*$scope.fabrications.quantity) ){
-                        alert("No existe suficiente material para la fabricacion");
-                    }
-                    else {
+
+        var check =false;
+
+        for (var k in $scope.product.recipes) {
+            var c = $scope.product.recipes[k];
+            if( c.material.inventory < (c.requiredQuantity * $scope.fabrications.quantity) ){
+                check = true;
+                break;
+            }
+        }
+        if(check === true ){
+            alert("No hay suficiente material para la fabricacion del producto");
+        }
+        else {
+            $scope.mQtyToUpdate = {};
+            $scope.fabrications.worker = $scope.user;
+            $scope.product.inventory = $scope.product.inventory + $scope.fabrications.quantity;
+            var updateMaterial = function (m) {
+                $http.get('materials/' + m.material.id)
+                    .then(function (response) {
+                        $scope.mQtyToUpdate = response.data;
                         $scope.mQtyToUpdate.inventory = $scope.mQtyToUpdate.inventory - (m.requiredQuantity * $scope.fabrications.quantity);
                         $http.put('materials/' + m.material.id, $scope.mQtyToUpdate)
                             .then(function () {
                                 $scope.mQtyToUpdate = {};
                             });
-                    }
+
+                    });
+            }
+            for (var key in $scope.product.recipes) {
+                var m = $scope.product.recipes[key];
+                updateMaterial(m);
+            }
+            $http.post('fabrications', $scope.fabrications)
+                .then(function () {
+                    $(MODAL).modal('hide');
+                    alert("Fabriacion del producto completa");
+                    $scope.fabrications = {};
+                    $scope.reload();
+                });
+            $http.put('products/' + $scope.fabrications.product.id, $scope.product)
+                .then(function () {
+                    $scope.reload();
                 });
         }
-        for(var key in $scope.product.recipes){
-            var m = $scope.product.recipes[key];
-            updateMaterial(m);
-        }
-        $http.post('fabrications', $scope.fabrications)
-            .then(function () {
-                $(MODAL).modal('hide');
-                alert("Fabriacion del producto completa");
-                $scope.fabrications = {};
-                $scope.reload();
-            });
-        $http.put('products/' + $scope.fabrications.product.id, $scope.product)
-            .then(function () {
-                $scope.reload();
-            });
     };
 
     $scope.reload();
