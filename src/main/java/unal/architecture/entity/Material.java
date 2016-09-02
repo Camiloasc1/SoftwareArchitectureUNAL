@@ -1,9 +1,13 @@
 package unal.architecture.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.util.List;
 
 @Entity
 @NamedQueries({
@@ -29,6 +33,14 @@ public class Material {
     private boolean rawMaterial;
     @Column(nullable = false)
     private String provider;
+
+    @JsonIgnore
+    public List<FabricationRecipe> getRecipes() {
+        return recipes;
+    }
+
+    @OneToMany(mappedBy = "material",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private List<FabricationRecipe> recipes;
 
     public long getId() {
         return id;

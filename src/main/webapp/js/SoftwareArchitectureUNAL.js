@@ -170,12 +170,13 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
                     $(MODAL).modal('hide');
                     $scope.reload();
                 });
-        else
+        else{
             $http.post(URI, $scope.product)
                 .then(function () {
                     $(MODAL).modal('hide');
                     $scope.reload();
                 });
+        }
     };
     $scope.delete = function (product) {
         $http.delete(URI + '/' + product.id)
@@ -186,11 +187,23 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
 
 
     $scope.searchMaterial = function () {
+
+        if (typeof $scope.product.recipes === "undefined") {
+            $scope.product.recipes = [];
+        }
+
         $http.get("materials/name=" + $scope.material.name)
             .then(function (response) {
 
                if(response.status === 200){
-                   $scope.materials.push(response.data);
+
+                   var recipe = {
+                       "material":response.data,
+                       "requiredQuantity":0
+                   };
+
+                   $scope.product.recipes.push(recipe);
+
                }else{
                    alert("Material no encontrado");
                }

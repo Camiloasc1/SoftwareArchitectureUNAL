@@ -1,8 +1,11 @@
 package unal.architecture.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NamedQueries({
@@ -19,6 +22,27 @@ public class Product {
     private int inventory;
     @Column(nullable = false)
     private float price;
+
+
+    @OneToMany(mappedBy = "product",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private List<FabricationRecipe> recipes;
+
+
+    public void addMaterial(Material material , int quantity){
+        FabricationRecipe fabricationRecipe = new FabricationRecipe();
+        fabricationRecipe.setProduct(this);
+        fabricationRecipe.setMaterial(material);
+        fabricationRecipe.setRequiredQuantity(quantity);
+        fabricationRecipe.setId(0);
+
+        this.recipes.add(fabricationRecipe);
+        material.getRecipes().add(fabricationRecipe);
+    }
+
+    public void addFabricationRecipe(FabricationRecipe fabricationRecipe){
+        fabricationRecipe.setProduct(this);
+        this.recipes.add(fabricationRecipe);
+    }
 
     public long getId() {
         return id;
@@ -38,6 +62,10 @@ public class Product {
 
     public int getInventory() {
         return inventory;
+    }
+
+    public List<FabricationRecipe> getRecipes() {
+        return recipes;
     }
 
     public void setInventory(int inventory) {
