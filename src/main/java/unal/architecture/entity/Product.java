@@ -24,6 +24,10 @@ public class Product {
     private float price;
 
 
+    public void setRecipes(List<FabricationRecipe> recipes) {
+        this.recipes = recipes;
+    }
+
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER,cascade = CascadeType.ALL )
     private List<FabricationRecipe> recipes;
 
