@@ -261,6 +261,7 @@ app.controller('SalesController', ['$scope', '$http', function ($scope, $http) {
 app.controller('ProductionController', ['$scope', '$http', function ($scope, $http) {
 
     $scope.products = {};
+    $scope.product = {};
     $scope.user ={};
     $scope.fabrications = {};
     const MODAL = '#product';
@@ -285,12 +286,28 @@ app.controller('ProductionController', ['$scope', '$http', function ($scope, $ht
         $(MODAL).modal('show');
     };
     $scope.submit = function () {
+        $scope.mQtyToUpdate = {};
         $scope.fabrications.worker = $scope.user;
         $scope.product.inventory = $scope.product.inventory + $scope.fabrications.quantity;
+        var updateMaterial = function(m){
+            $http.get('materials/' + m.material.id)
+                .then(function (response) {
+                    $scope.mQtyToUpdate = response.data;
+                    $scope.mQtyToUpdate.inventory = $scope.mQtyToUpdate.inventory - (m.requiredQuantity*$scope.fabrications.quantity);
+                    $http.put('materials/' + m.material.id, $scope.mQtyToUpdate)
+                        .then(function () {
+                            $scope.mQtyToUpdate = {};
+                            alert("Fabriacion del producto completa");
+                        });
+                });
+        }
+        for(var key in $scope.product.recipes){
+            var m = $scope.product.recipes[key];
+            updateMaterial(m);
+        }
         $http.post('fabrications', $scope.fabrications)
             .then(function () {
                 $(MODAL).modal('hide');
-                alert("Fabriacion del producto completa");
                 $scope.fabrications = {};
                 $scope.reload();
             });

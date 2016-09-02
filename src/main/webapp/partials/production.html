@@ -57,13 +57,13 @@
                                 </tr>
                                 </thead>
 
-                                <tr ng-repeat="p in product.recipes">
-                                    <td>{{p.material.id}}</td>
-                                    <td>{{p.material.name}}</td>
+                                <tr ng-repeat="pr in product.recipes">
+                                    <td>{{pr.material.id}}</td>
+                                    <td>{{pr.material.name}}</td>
                                     <td>
                                         <input type="number" name="material_quantity" class="form-control"
                                                id="material_quantity"
-                                               placeholder="0" ng-model="p.requiredQuantity"/>
+                                               placeholder="0" ng-model="pr.requiredQuantity"/>
                                     </td>
                                 </tr>
                             </table>
