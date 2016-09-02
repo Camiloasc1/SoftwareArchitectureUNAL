@@ -184,6 +184,11 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
             });
     };
 
+    $scope.detail = function (sale) {
+        $scope.sale = sale;
+        $('#detail').modal('show');
+    };
+
     $scope.new = function () {
         $scope.sale = {"id" : 0, "client" : "", "seller" : $scope.user};
         $scope.sale.date = $filter('date')(new Date(), "yyyy-MM-dd");
