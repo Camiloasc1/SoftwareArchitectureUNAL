@@ -1,5 +1,7 @@
 package unal.architecture.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -10,10 +12,15 @@ public class FabricationRecipe {
     @Id
     @GeneratedValue
     private long id;
+
     @ManyToOne(optional = false)
+    @PrimaryKeyJoinColumn(name="PRODUCTID",referencedColumnName = "ID")
     private Product product;
+
     @ManyToOne(optional = false)
+    @PrimaryKeyJoinColumn(name="MATERIALID",referencedColumnName = "ID")
     private Material material;
+
     @Column(nullable = false)
     private int requiredQuantity;
 
@@ -25,6 +32,7 @@ public class FabricationRecipe {
         this.id = id;
     }
 
+    @JsonIgnore
     public Product getProduct() {
         return product;
     }

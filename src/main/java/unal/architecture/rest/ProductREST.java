@@ -1,6 +1,8 @@
 package unal.architecture.rest;
 
 import unal.architecture.dao.ProductDAO;
+import unal.architecture.entity.Fabrication;
+import unal.architecture.entity.FabricationRecipe;
 import unal.architecture.entity.Product;
 
 import javax.ejb.EJB;
@@ -29,6 +31,11 @@ public class ProductREST {
     @POST
     public Product create(Product product) {
         product.setId(0);
+
+        for(FabricationRecipe fabricationRecipe : product.getRecipes()){
+            fabricationRecipe.setProduct(product);
+        }
+
         em.persist(product);
         return product;
     }

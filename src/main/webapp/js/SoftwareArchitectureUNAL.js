@@ -170,12 +170,15 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
                     $(MODAL).modal('hide');
                     $scope.reload();
                 });
-        else
+        else{
+            $scope.product.recipes = [];
+            $scope.product.recipes.push({"requiredQuantity":10 , "material": {"id":3,"name":"Aluminio","inventory":57,"supply":false,"price":272000.0,"rawMaterial":true,"provider":"Proveedor 0"}});
             $http.post(URI, $scope.product)
                 .then(function () {
                     $(MODAL).modal('hide');
                     $scope.reload();
                 });
+        }
     };
     $scope.delete = function (product) {
         $http.delete(URI + '/' + product.id)
