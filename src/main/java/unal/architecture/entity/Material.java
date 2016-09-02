@@ -39,7 +39,7 @@ public class Material {
         return recipes;
     }
 
-    @OneToMany(mappedBy = "material",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "material", fetch = FetchType.EAGER,cascade = CascadeType.ALL )
     private List<FabricationRecipe> recipes;
 
     public long getId() {

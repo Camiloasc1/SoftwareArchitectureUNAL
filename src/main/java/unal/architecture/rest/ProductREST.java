@@ -64,21 +64,6 @@ public class ProductREST {
     @DELETE
     @Path("{id}")
     public void delete(@PathParam("id") long id) {
-
-        throw new RuntimeException("Not implemented yet");
-        //Session session = factory
-        /*Product toDelete = em.find(Product.class, id);
-        if(toDelete!=null){
-            if(toDelete.getRecipes()!=null){
-                for(FabricationRecipe fabricationRecipe: toDelete.getRecipes()){
-                    em.remove(fabricationRecipe);
-                    fabricationRecipe.setProduct(null);
-                }
-            }
-            toDelete.getRecipes().clear();
-            em.flush();
-            em.remove(toDelete);
-
-        }*/
+        productDAO.remove(id);
     }
 }

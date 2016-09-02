@@ -56,7 +56,6 @@ public class MaterialREST {
     @DELETE
     @Path("{id}")
     public void delete(@PathParam("id") long id) {
-        em.remove(em.find(Material.class, id));
-        return;
+        materialDAO.remove(id);
     }
 }
