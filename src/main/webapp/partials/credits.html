@@ -1,5 +1,5 @@
 <div class="jumbotron">
-    <legend>Consultar Productos</legend>
+    <legend>Consultar Creditos</legend>
     <div align="right">
         <button ng-click="edit({})" class="btn btn-primary btn-raised">
             <span class="glyphicon glyphicon-plus"></span>
@@ -14,25 +14,29 @@
 
             <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Existencias</th>
-                <th>Precio</th>
+                <th>Fecha</th>
+                <th>Monto</th>
+                <th>Interés</th>
+                <th>Pagado</th>
+                <th>Usuario</th>
                 <th></th>
                 <th></th>
             </tr>
             </thead>
 
-            <tr ng-repeat="p in products">
-                <td>{{p.name}}</td>
-                <td>{{p.inventory}}</td>
-                <td>{{p.price}}</td>
+            <tr ng-repeat="c in credits">
+                <td>{{c.date | date:'mediumDate'}}</td>
+                <td>{{c.amount}}</td>
+                <td>{{c.interest}}</td>
+                <td>{{c.paid}}</td>
+                <td>{{c.user.name}}</td>
                 <td>
-                    <button ng-click="edit(p)" class="btn btn-primary btn-raised">
+                    <button ng-click="edit(c)" class="btn btn-primary btn-raised">
                         <span class="glyphicon glyphicon-pencil"></span>
                     </button>
                 </td>
                 <td>
-                    <button ng-click="delete(p)" class="btn btn-primary btn-raised">
+                    <button ng-click="delete(c)" class="btn btn-primary btn-raised">
                         <span class="glyphicon glyphicon-remove"></span>
                     </button>
                 </td>
@@ -41,42 +45,43 @@
     </div>
 </div>
 
-
-<div id="product" class="modal fade" role="dialog">
+<div id="credit" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Editar Producto</h4>
+                <h4 class="modal-title">Editar Material</h4>
             </div>
             <div class="modal-body">
                 <form name="form" class="form-horizontal" ng-submit="submit()">
                     <fieldset>
                         <div class="form-group">
                             <div class="row">
-                                <label class="control-label col-sm-2" for="name">Nombre:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" name="name" class="form-control" id="name"
-                                           placeholder="Nombre" required="required" ng-model="product.name"/>
+                                <label class="control-label col-sm-2" for="amount">Monto:</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="amount" class="form-control" id="amount"
+                                           placeholder="-" min="0" required="required"
+                                           ng-model="credit.amount"/>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="row">
-                                <label class="control-label col-sm-2" for="inventory">Existencias:</label>
+                                <label class="control-label col-sm-2" for="interest">Interés:</label>
                                 <div class="col-sm-9">
-                                    <input type="number" name="inventory" class="form-control" id="inventory"
-                                           placeholder="-" min="0" required="required" ng-model="product.inventory"/>
+                                    <input type="number" name="interest" class="form-control" id="interest"
+                                           placeholder="-" min="0" step="0.1" required="required"
+                                           ng-model="credit.interest"/>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="row">
-                                <label class="control-label col-sm-2" for="price">Precio:</label>
+                                <label class="control-label col-sm-2" for="paid">Pagado:</label>
                                 <div class="col-sm-9">
-                                    <input type="number" name="price" class="form-control" id="price"
-                                           placeholder="-" min="0" ng-model="product.price"/>
+                                    <input type="checkbox" name="paid" class="form-control" id="paid"
+                                           placeholder="Pagado" ng-model="credit.paid"/>
                                 </div>
                             </div>
                         </div>

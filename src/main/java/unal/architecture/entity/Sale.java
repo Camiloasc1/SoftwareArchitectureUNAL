@@ -5,13 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Sale.findAll", query = "Select s from Sale s"),
+        @NamedQuery(name = "Sale.findByDate", query = "Select s from Sale s WHERE s.date >= :date1 AND s.date <= :date2"),
         @NamedQuery(name = "Sale.findAllBySeller", query = "Select s from Sale s where s.seller.id = :id")
-
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Sale {

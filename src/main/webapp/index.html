@@ -21,6 +21,8 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/bootstrap.material-design/0.5.10/css/bootstrap-material-design.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.material-design/0.5.10/css/ripples.min.css">
+    <!-- Angular Material style sheet -->
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
 </head>
 <body ng-app="SoftwareArchitectureUNAL" ng-controller="NavigationController" ng-cloak>
 
@@ -37,8 +39,17 @@
                 <ul class="dropdown-menu">
                     <li ng-show="user.admin"><a href="#!/admin">Administracion</a></li>
                     <li ng-show="user.admin"><a href="#!/materials">Materias Primas</a></li>
-                    <li ng-show="user.admin"><a href="#!/users">Usuarios</a></li>
                     <li ng-show="user.admin"><a href="#!/products">Productos</a></li>
+                    <li ng-show="user.admin"><a href="#!/users">Usuarios</a></li>
+                    <li ng-show="user.admin"><a href="#!/credits">Creditos</a></li>
+                </ul>
+            </li>
+            <li ng-show="user.worker" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button">Ventas
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li ng-show="user.admin"><a href="#!/statistics">Estadisticas</a></li>
+                    <li ng-show="user.admin"><a href="#!/materials">Materias Primas</a></li>
                 </ul>
             </li>
             <li ng-show="user.salesman" class="dropdown">
@@ -141,8 +152,15 @@
 <!-- AngularJS -->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
-<!-- AngularJS i18n es-CO -->
-<script src="https://code.angularjs.org/1.5.8/i18n/angular-locale_es-co.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+
+<!-- Angular Material Library -->
+<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js">
+
+    <!-- AngularJS i18n es-CO -->
+    <script src="https://code.angularjs.org/1.5.8/i18n/angular-locale_es-co.js"></script>
 <!-- Bootstrap Material Design -->
 <script src="https://cdn.jsdelivr.net/bootstrap.material-design/0.5.10/js/material.min.js"></script>
 <script src="https://cdn.jsdelivr.net/bootstrap.material-design/0.5.10/js/ripples.min.js"></script>

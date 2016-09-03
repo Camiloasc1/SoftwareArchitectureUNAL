@@ -9,6 +9,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +43,15 @@ public class SaleREST {
     @Path("{id}")
     public Sale show(@PathParam("id") long id) {
         return em.find(Sale.class, id);
+    }
+
+    @GET
+    @Path("stats/{date}")
+    public List<Sale> byDate(@PathParam("date") String d ) throws ParseException {
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date date1 = formatter.parse(d+" 00:00:00");
+        Date date2 = formatter.parse(d+" 23:59:59");
+        return saleDAO.findByDate( date1, date2 );
     }
 
     @GET

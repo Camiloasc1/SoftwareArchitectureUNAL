@@ -1,5 +1,5 @@
 <div class="jumbotron">
-    <legend>Consultar materiales</legend>
+    <legend>Consultar Materiales</legend>
     <div align="right">
         <button ng-click="edit({})" class="btn btn-primary btn-raised">
             <span class="glyphicon glyphicon-plus"></span>
@@ -54,7 +54,7 @@
                 <h4 class="modal-title">Editar Material</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal">
+                <form name="form" class="form-horizontal" ng-submit="submit()">
                     <fieldset>
                         <div class="form-group">
                             <div class="row">
@@ -70,7 +70,7 @@
                                 <label class="control-label col-sm-2" for="inventory">Existencias:</label>
                                 <div class="col-sm-9">
                                     <input type="number" name="inventory" class="form-control" id="inventory"
-                                           placeholder="0" ng-model="material.inventory"/>
+                                           placeholder="-" min="0" required="required" ng-model="material.inventory"/>
                                 </div>
                             </div>
                         </div>
@@ -79,7 +79,7 @@
                                 <label class="control-label col-sm-2" for="price">Precio:</label>
                                 <div class="col-sm-9">
                                     <input type="number" name="price" class="form-control" id="price"
-                                           placeholder="0" ng-model="material.price"/>
+                                           placeholder="-" min="0" required="required" ng-model="material.price"/>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +110,8 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-offset-1">
-                                <button ng-click="submit()" type="submit" class="btn btn-primary btn-raised">Guardar
+                                <button ng-disabled="form.$invalid" type="submit" class="btn btn-primary btn-raised">
+                                    Guardar
                                 </button>
                             </div>
                         </div>

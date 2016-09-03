@@ -1,5 +1,5 @@
 "use strict";
-var app = angular.module('SoftwareArchitectureUNAL', ['ngRoute']);
+var app = angular.module('SoftwareArchitectureUNAL', ['ngRoute', 'ngMaterial']);
 
 app.controller('NavigationController', ['$scope', '$http', '$location', '$timeout', function ($scope, $http, $location, $timeout) {
     $scope.user = null;
@@ -153,12 +153,36 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
         $http.get(URI)
             .then(function (response) {
                 $scope.products = response.data;
-                alert($scope.products);
+            });
+    };
+    $scope.edit = function (product) {
+        $scope.product = product;
+        $(MODAL).modal('show');
+    };
+    $scope.submit = function () {
+        if ($scope.product.id)
+            $http.put(URI + '/' + $scope.product.id, $scope.product)
+                .then(function () {
+                    $(MODAL).modal('hide');
+                    $scope.reload();
+                });
+        else
+            $http.post(URI, $scope.product)
+                .then(function () {
+                    $(MODAL).modal('hide');
+                    $scope.reload();
+                });
+    };
+    $scope.delete = function (product) {
+        $http.delete(URI + '/' + product.id)
+            .then(function () {
+                $scope.reload();
             });
     };
 
     $scope.reload();
 }]);
+
 
 app.controller('SalesController', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
     $scope.sales = {};
@@ -226,6 +250,81 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
             });
     };
     $scope.reload();
+}]);
+
+app.controller('CreditsController', ['$scope', '$http', function ($scope, $http) {
+    $scope.credits = {};
+    $scope.credit = {};
+
+    const URI = 'credits';
+    const MODAL = '#credit';
+
+    $scope.reload = function () {
+        $http.get(URI)
+            .then(function (response) {
+                $scope.credits = response.data;
+            });
+    };
+    $scope.edit = function (credit) {
+        $scope.credit = credit;
+        $(MODAL).modal('show');
+    };
+    $scope.submit = function () {
+        if ($scope.credit.id)
+            $http.put(URI + '/' + $scope.credit.id, $scope.credit)
+                .then(function () {
+                    $(MODAL).modal('hide');
+                    $scope.reload();
+                });
+        else
+            $http.post(URI, $scope.credit)
+                .then(function () {
+                    $(MODAL).modal('hide');
+                    $scope.reload();
+                });
+    };
+    $scope.delete = function (credit) {
+        $http.delete(URI + '/' + credit.id)
+            .then(function () {
+                $scope.reload();
+            });
+    };
+
+    $scope.reload();
+}]);
+
+
+app.controller('StatisticsController', ['$scope', '$http', function ($scope, $http) {
+    $scope.sales = {};
+    $scope.sale = {};
+
+    const URI = 'stats';
+    const MODAL = '#details';
+
+    $scope.date = new Date();
+
+    $scope.minDate = new Date(
+        $scope.date.getFullYear(),
+        $scope.date.getMonth() - 2,
+        $scope.date.getDate());
+
+    $scope.maxDate = $scope.date;
+
+    $scope.edit = function (sale) {
+        $scope.sale = sale;
+        $(MODAL).modal('show');
+    };
+
+    $scope.reload = function(){
+        var date = $scope.date.getFullYear()+"-"+($scope.date.getMonth()+1)+"-"+$scope.date.getDate();
+        console.log(date);
+        console.log($scope.date);
+        $http.get("sales/stats/"+date)
+            .then( function(response) {
+                $scope.sales = response.data;
+                console.log($scope.sales);
+            });
+    }
 }]);
 
 app.controller('ProductionController', ['$scope', '$http', function ($scope, $http) {
@@ -313,6 +412,10 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
             templateUrl: 'partials/users.html',
             controller: 'controlUsersController'
         })
+        .when('/credits', {
+            templateUrl: 'partials/credits.html',
+            controller: 'CreditsController'
+        })
         .when('/sales', {
             templateUrl: 'partials/sales.html',
             controller: 'SalesController'
@@ -326,6 +429,10 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
             controller: 'SalesController'
         })
 
+        .when('/statistics', {
+            templateUrl: 'partials/statistics.html',
+            controller: 'StatisticsController'
+        })
 
         .otherwise({redirectTo: '/'});
 
