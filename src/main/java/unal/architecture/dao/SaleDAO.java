@@ -6,7 +6,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -24,4 +23,14 @@ public class SaleDAO {
         TypedQuery<Sale> query = em.createNamedQuery("Sale.findByDate", Sale.class).setParameter("date1", date1 ).setParameter("date2", date2);
         return query.getResultList();
     }
+
+    public List<Sale> findAllBySeller(long id) {
+        TypedQuery<Sale> query = em.createNamedQuery("Sale.findAllBySeller", Sale.class);
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
+
 }
+
+
+

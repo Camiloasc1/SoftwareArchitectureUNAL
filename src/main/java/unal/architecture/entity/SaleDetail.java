@@ -1,5 +1,6 @@
 package unal.architecture.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -10,8 +11,11 @@ public class SaleDetail {
     @Id
     @GeneratedValue
     private long id;
+
     @ManyToOne(optional = false)
+    @PrimaryKeyJoinColumn(name="SALEID",referencedColumnName = "ID")
     private Sale sale;
+
     @ManyToOne(optional = false)
     private Product product;
     @Column(nullable = false)
@@ -27,6 +31,7 @@ public class SaleDetail {
         this.id = id;
     }
 
+    @JsonIgnore
     public Sale getSale() {
         return sale;
     }

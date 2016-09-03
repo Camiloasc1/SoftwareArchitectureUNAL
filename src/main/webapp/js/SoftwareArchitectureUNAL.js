@@ -153,33 +153,78 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
         $http.get(URI)
             .then(function (response) {
                 $scope.products = response.data;
+                alert($scope.products);
             });
     };
-    $scope.edit = function (product) {
-        $scope.product = product;
+
+    $scope.reload();
+}]);
+
+app.controller('SalesController', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
+    $scope.sales = {};
+    $scope.sale = {};
+    $scope.user = {};
+    $scope.option = false;
+    const URI = 'sales';
+    const MODAL = '#sales';
+
+    $scope.getUser = function () {
+        $http.get('auth/me')
+            .then(function (response) {
+                $scope.user = response.data;
+            });
+    };
+
+    $scope.reload = function () {
+        $scope.getUser();
+        $scope.uriUser = ($scope.user.salesman) && !($scope.user.admin) ? '/seller/'+$scope.user.id : '';
+        $http.get(URI + $scope.uriUser)
+            .then(function (response) {
+                $scope.sales = response.data;
+            });
+    };
+
+    $scope.detail = function (sale) {
+        $scope.sale = sale;
+        $('#detail').modal('show');
+    };
+
+    $scope.new = function () {
+        $scope.sale = {"id" : 0, "client" : "", "seller" : $scope.user};
+        $scope.sale.date = $filter('date')(new Date(), "yyyy-MM-dd");
+        $scope.option = false;
+        $(MODAL).modal('show');
+    };
+
+    $scope.edit = function (sale) {
+        $scope.sale = sale;
+        $scope.sale.date = $filter('date')($scope.sale.date, "yyyy-MM-dd");
+        $scope.option = true;
         $(MODAL).modal('show');
     };
     $scope.submit = function () {
-        if ($scope.product.id)
-            $http.put(URI + '/' + $scope.product.id, $scope.product)
+        $scope.sale.date = $scope.sale.date + "T05:00:00.000Z";
+        if( $scope.option ) {
+            $http.put(URI + '/' + $scope.sale.id, $scope.sale)
                 .then(function () {
                     $(MODAL).modal('hide');
                     $scope.reload();
                 });
-        else
-            $http.post(URI, $scope.product)
+        }else{
+            $http.post(URI, $scope.sale)
                 .then(function () {
                     $(MODAL).modal('hide');
                     $scope.reload();
                 });
+        }
     };
-    $scope.delete = function (product) {
-        $http.delete(URI + '/' + product.id)
+
+    $scope.delete = function (id) {
+        $http.delete(URI + '/' + id)
             .then(function () {
                 $scope.reload();
             });
     };
-
     $scope.reload();
 }]);
 
@@ -357,6 +402,11 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
             templateUrl: 'partials/production.html',
             controller: 'ProductionController'
         })
+        .when('/sales', {
+            templateUrl: 'partials/sales.html',
+            controller: 'SalesController'
+        })
+
         .when('/statistics', {
             templateUrl: 'partials/statistics.html',
             controller: 'StatisticsController'
