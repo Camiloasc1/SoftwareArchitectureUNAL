@@ -228,7 +228,11 @@ app.controller('SalesController', ['$scope', '$http', function ($scope, $http) {
 }]);
 
 app.controller('StatisticsController', ['$scope', '$http', function ($scope, $http) {
-    $scope.sales = "";
+    $scope.sales = {};
+    $scope.sale = {};
+
+    const URI = 'stats';
+    const MODAL = '#details';
 
     $scope.date = new Date();
 
@@ -239,9 +243,10 @@ app.controller('StatisticsController', ['$scope', '$http', function ($scope, $ht
 
     $scope.maxDate = $scope.date;
 
-    $scope.getByDay = function(){
-        console.log("entra");
-    }
+    $scope.edit = function (sale) {
+        $scope.sale = sale;
+        $(MODAL).modal('show');
+    };
 
     $scope.reload = function(){
         var date = $scope.date.getFullYear()+"-"+($scope.date.getMonth()+1)+"-"+$scope.date.getDate();
