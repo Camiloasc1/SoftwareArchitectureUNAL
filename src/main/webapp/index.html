@@ -44,21 +44,12 @@
                     <li ng-show="user.admin"><a href="#!/credits">Creditos</a></li>
                 </ul>
             </li>
-            <li ng-show="user.worker" class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" role="button">Ventas
-                    <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li ng-show="user.admin"><a href="#!/statistics">Estadisticas</a></li>
-                    <li ng-show="user.admin"><a href="#!/materials">Materias Primas</a></li>
-                </ul>
-            </li>
             <li ng-show="user.salesman" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" role="button">Ventas
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li ng-show="user.salesman"><a href="#!/sales">Ver/Registrar venta</a></li>
-                    <li ng-show="user.salesman"><a href="">Comisiones Obtenidas</a></li> <!-- TODO: define Links -->
-                    <li ng-show="user.salesman"><a href="">Estadisticas</a></li>    <!-- TODO: define Links -->
+                    <li ng-show="user.salesman"><a href="#!/statistics">Estadisticas</a></li>
                 </ul>
             </li>
             <li ng-show="user.worker"><a href="#!/production">Produccion</a></li>
