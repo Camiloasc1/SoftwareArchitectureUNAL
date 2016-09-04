@@ -188,6 +188,8 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
     $scope.sales = {};
     $scope.sale = {};
     $scope.user = {};
+    $scope.products = {};
+    $scope.selected = {};
     $scope.option = false;
     const URI = 'sales';
     const MODAL = '#sales';
@@ -208,8 +210,17 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
             });
     };
 
+    $scope.getProducts = function () {
+        $http.get('products')
+            .then(function (response) {
+                $scope.products = response.data;
+            });
+    };
+
     $scope.detail = function (sale) {
         $scope.sale = sale;
+        $scope.getProducts();
+        $scope.selected.inventory = 1000;
         $('#detail').modal('show');
     };
 
