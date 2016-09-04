@@ -193,24 +193,22 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
     $scope.quantity = 0;
     $scope.selected = {};
 
+
     const URI = 'sales';
     const MODAL = '#sales';
 
-    $scope.getUser = function () {
+    $scope.reload = function () {
         $http.get('auth/me')
             .then(function (response) {
                 $scope.user = response.data;
+                $scope.uriUser = ($scope.user.salesman) && !($scope.user.admin) ? '/seller/'+$scope.user.id : '';
+                $http.get(URI + $scope.uriUser)
+                    .then(function (response) {
+                        $scope.sales = response.data;
+                        $scope.getProducts();
+                    });
             });
-    };
 
-    $scope.reload = function () {
-        $scope.getUser();
-        $scope.uriUser = ($scope.user.salesman) && !($scope.user.admin) ? '/seller/'+$scope.user.id : '';
-        $http.get(URI + $scope.uriUser)
-            .then(function (response) {
-                $scope.sales = response.data;
-                $scope.getProducts();
-            });
     };
 
     $scope.getSalePrice = function(sale){
@@ -281,6 +279,7 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
     $scope.new = function () {
         $scope.sale = {"id" : 0, "client" : "", "seller" : $scope.user};
         $scope.sale.date = $filter('date')(new Date(), "yyyy-MM-dd");
+        $scope.date = $scope.sale.date;
         $scope.option = false;
         $(MODAL).modal('show');
     };
@@ -288,11 +287,12 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
     $scope.edit = function (sale) {
         $scope.sale = sale;
         $scope.sale.date = $filter('date')($scope.sale.date, "yyyy-MM-dd");
+        $scope.date = $scope.sale.date;
         $scope.option = true;
         $(MODAL).modal('show');
     };
     $scope.submit = function () {
-        $scope.sale.date = $scope.sale.date + "T05:00:00.000Z";
+        $scope.sale.date = $scope.date + "T05:00:00.000Z";
         if( $scope.option ) {
             $http.put(URI + '/' + $scope.sale.id, $scope.sale)
                 .then(function () {

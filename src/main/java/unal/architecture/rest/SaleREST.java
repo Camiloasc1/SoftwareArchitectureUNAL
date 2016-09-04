@@ -65,9 +65,11 @@ public class SaleREST {
     @PUT
     @Path("{id}")
     public Sale update(@PathParam("id") long id, Sale sale) {
-        sale.setId(id);
-        em.merge(sale);
-        return sale;
+        Sale changeSale = em.find(Sale.class, id);
+        changeSale.setDate(sale.getDate());
+        changeSale.setClient(sale.getClient());
+        em.merge(changeSale);
+        return changeSale;
     }
 
     @POST
