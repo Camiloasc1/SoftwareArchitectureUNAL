@@ -3,6 +3,7 @@ package unal.architecture.rest;
 import unal.architecture.dao.SaleDAO;
 import unal.architecture.entity.Sale;
 import unal.architecture.entity.SaleDetail;
+import unal.architecture.entity.Product;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -87,14 +88,25 @@ public class SaleREST {
     @DELETE
     @Path("{id}")
     public void delete(@PathParam("id") long id) {
-        em.remove(em.find(Sale.class, id));
+        Sale sale = em.find(Sale.class, id);
+        List<SaleDetail> saleDetails = sale.getSaleDetail();
+        sale.setSaleDetail(null);
+        Product product;
+        for( SaleDetail s : saleDetails ){
+            product = s.getProduct();
+            product.setInventory( product.getInventory() + s.getQuantity());
+            em.remove(s);
+        }
+        em.remove(sale);
         return;
     }
 
     @DELETE
-    @Path("SaleDetail/{id}")
-    public void deleteSaleDetail(@PathParam("id") long id) {
+    @Path("SaleDetail/{id}/{inventory}")
+    public void deleteSaleDetail(@PathParam("id") long id, @PathParam("inventory") int inventory) {
         SaleDetail saleDetail = em.find(SaleDetail.class, id);
+        Product product = saleDetail.getProduct();
+        product.setInventory(product.getInventory() + inventory);
         Sale sale = saleDetail.getSale();
         List<SaleDetail> saleDetails = sale.getSaleDetail();
         saleDetails.remove(saleDetail);

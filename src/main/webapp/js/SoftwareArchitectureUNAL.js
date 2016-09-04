@@ -269,8 +269,8 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
             });
     };
 
-    $scope.deleteSaleDetail = function(id){
-        $http.delete(URI + '/SaleDetail/' + id)
+    $scope.deleteSaleDetail = function( saleDetail ){
+        $http.delete(URI + '/SaleDetail/' + saleDetail.id + '/' + saleDetail.quantity)
             .then(function () {
                 $scope.reload();
                 $scope.getSaleDetails();
