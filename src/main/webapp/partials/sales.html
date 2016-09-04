@@ -16,6 +16,7 @@
                     <th>Venta N°</th>
                     <th>Fecha</th>
                     <th>Cliente</th>
+                    <th>Total</th>
                     <th></th>
                 </tr>
             </thead>
@@ -24,6 +25,7 @@
             <td>{{s.id}}</td>
             <td>{{s.date | date:'yyyy-MM-dd'}}</td>
             <td>{{s.client}}</td>
+            <td>{{getSalePrice(s) | currency}}</td>
             <td>
                 <button ng-click="detail(s)" class="btn btn-primary btn-raised">
                     <span class="glyphicon glyphicon-list-alt"></span>
@@ -103,7 +105,7 @@
             <div class="modal-body">
 
                 <div class="jumbotron">
-                    <form class="form-inline" >
+                    <form name="formDetail" class="form-inline" novalidate>
 
 
                         <h5 >Agregar Producto:</h5>
@@ -116,12 +118,12 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="number" name="quantity" class="form-control" id="quantity" placeholder="Cantidad"
+                            <input type="number" name="quantity" class="form-control" required="required" id="quantity" placeholder="Cantidad"
                                    required="required" min="1" max="{{sale.quantity}}" ng-model="quantity"
                                    style="width: 100px; margin-left:15px;"/>
                         </div>
                         <div style="float: right;">
-                            <button ng-click="addProduct()" class="btn btn-primary btn-raised">
+                            <button ng-click="formDetail.$valid  && addProduct()" class="btn btn-primary btn-raised">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
 
@@ -149,9 +151,9 @@
                         </thead>
                         <tr ng-repeat="s in sale.saleDetail">
                             <td>{{s.product.name}}</td>
-                            <td>{{s.product.price}}</td>
+                            <td>{{s.product.price | currency}}</td>
                             <td>{{s.quantity}}</td>
-                            <td>{{s.price}}</td>
+                            <td>{{s.price | currency}}</td>
                             <td>
                                 <button ng-click="deleteSaleDetail(s.id)" class="btn btn-primary btn-raised">
                                     <span class="glyphicon glyphicon-remove"></span>

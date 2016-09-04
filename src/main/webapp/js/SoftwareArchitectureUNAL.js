@@ -208,7 +208,16 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
         $http.get(URI + $scope.uriUser)
             .then(function (response) {
                 $scope.sales = response.data;
+                $scope.getProducts();
             });
+    };
+
+    $scope.getSalePrice = function(sale){
+        $scope.sum = 0;
+        angular.forEach(sale.saleDetail, function (saleDetail) {
+            $scope.sum += saleDetail.price;
+        })
+        return $scope.sum;
     };
 
     $scope.getProducts = function () {
@@ -244,7 +253,7 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
         };
         $http.post(URI + '/SaleDetail/' + $scope.sale.id, $scope.saleDetail)
             .then(function () {
-                $scope.getProducts();
+                $scope.reload();
                 $scope.getSaleDetails();
             });
 
@@ -259,6 +268,7 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
     $scope.deleteSaleDetail = function(id){
         $http.delete(URI + '/SaleDetail/' + id)
             .then(function () {
+                $scope.reload();
                 $scope.getSaleDetails();
             });
     };
