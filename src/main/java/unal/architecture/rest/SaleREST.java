@@ -2,6 +2,7 @@ package unal.architecture.rest;
 
 import unal.architecture.dao.SaleDAO;
 import unal.architecture.entity.Sale;
+import unal.architecture.entity.SaleDetail;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -9,10 +10,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,6 +67,21 @@ public class SaleREST {
         sale.setId(id);
         em.merge(sale);
         return sale;
+    }
+
+    @POST
+    @Path("SaleDetail/{id}")
+    public SaleDetail createSaleDetail(@PathParam("id") long id, SaleDetail saleDetail) {
+        saleDetail.setId(0);
+        Sale sale = em.find(Sale.class, id);
+        saleDetail.setSale(sale);
+        List<SaleDetail> saleDetails = sale.getSaleDetail();
+        if( saleDetails == null )
+            saleDetails = new ArrayList<SaleDetail>();
+        saleDetails.add(saleDetail);
+        sale.setSaleDetail(saleDetails);
+        em.persist(saleDetail);
+        return saleDetail;
     }
 
     @DELETE

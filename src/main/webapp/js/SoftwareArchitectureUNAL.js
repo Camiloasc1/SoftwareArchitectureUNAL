@@ -189,8 +189,9 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
     $scope.sale = {};
     $scope.user = {};
     $scope.products = {};
+    $scope.quantity = 0;
     $scope.selected = {};
-    $scope.option = false;
+
     const URI = 'sales';
     const MODAL = '#sales';
 
@@ -217,11 +218,47 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
             });
     };
 
+    $scope.getSaleDetails = function(){
+        $http.get(URI + "/"+ $scope.sale.id)
+            .then(function (response) {
+                $scope.sale = response.data;
+            });
+
+    };
+
     $scope.detail = function (sale) {
         $scope.sale = sale;
         $scope.getProducts();
+        $scope.getSaleDetails();
+        $scope.quantity = 0;
+        $scope.selected = {};
         $scope.selected.inventory = 1000;
         $('#detail').modal('show');
+    };
+    $scope.addProduct = function (){
+
+        $scope.saleDetail = {
+            "id": 0,
+            "product": $scope.selected,
+            "quantity": $scope.quantity,
+            "price": ($scope.selected.price * $scope.quantity)
+        };
+
+        $http.post(URI + '/SaleDetail/' + $scope.sale.id, $scope.saleDetail)
+            .then(function () {
+                $scope.getProducts();
+                $scope.reload();
+                $scope.getSaleDetails();
+            });
+
+        $scope.selected.inventory = $scope.selected.inventory - $scope.quantity;
+        $http.put('products' + '/' + $scope.selected.id, $scope.selected)
+            .then(function () {
+                $scope.reload();
+                $scope.getProducts();
+                $scope.getSaleDetails();
+            });
+
     };
 
     $scope.new = function () {

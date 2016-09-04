@@ -117,10 +117,11 @@
                         </div>
                         <div class="form-group">
                             <input type="number" name="quantity" class="form-control" id="quantity" placeholder="Cantidad"
-                                   required="required" min="1" max="{{selected.inventory}}" style="width: 100px; margin-left:15px;"/>
+                                   required="required" min="1" max="{{sale.quantity}}" ng-model="quantity"
+                                   style="width: 100px; margin-left:15px;"/>
                         </div>
                         <div style="float: right;">
-                            <button ng-click="" class="btn btn-primary btn-raised">
+                            <button ng-click="addProduct()" class="btn btn-primary btn-raised">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
 
@@ -140,7 +141,7 @@
                             <th>Cantidad</th>
                             <th>Valor Parcial</th>
                             <th>
-                                <button ng-click="" class="btn btn-primary btn-raised">
+                                <button ng-click="getProducts()" class="btn btn-primary btn-raised">
                                     <span class="glyphicon glyphicon-refresh"></span>
                                 </button>
                             </th>
