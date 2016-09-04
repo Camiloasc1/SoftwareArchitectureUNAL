@@ -184,6 +184,7 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
 }]);
 
 
+
 app.controller('SalesController', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
     $scope.sales = {};
     $scope.sale = {};
@@ -357,9 +358,9 @@ app.controller('CreditsController', ['$scope', '$http', function ($scope, $http)
     $scope.reload();
 }]);
 
-
 app.controller('StatisticsController', ['$scope', '$http', function ($scope, $http) {
     $scope.sales = {};
+    $scope.total = 0;
     $scope.sale = {};
 
     const URI = 'stats';
@@ -368,28 +369,174 @@ app.controller('StatisticsController', ['$scope', '$http', function ($scope, $ht
     $scope.date = new Date();
 
     $scope.minDate = new Date(
-        $scope.date.getFullYear(),
-        $scope.date.getMonth() - 2,
+        $scope.date.getFullYear()-2,
+        $scope.date.getMonth(),
         $scope.date.getDate());
 
     $scope.maxDate = $scope.date;
 
-    $scope.edit = function (sale) {
+    $scope.seeDetails = function (sale) {
         $scope.sale = sale;
         $(MODAL).modal('show');
     };
 
+    $scope.fixDates = function(){
+        for(var i = 0; i < $scope.sales.length; i++){
+            $scope.sales[i].date = $scope.sales[i].date.substr(0,10) + " a las " + $scope.sales[i].date.substr(11,8);
+        }
+    }
+
     $scope.reload = function(){
         var date = $scope.date.getFullYear()+"-"+($scope.date.getMonth()+1)+"-"+$scope.date.getDate();
-        console.log(date);
-        console.log($scope.date);
         $http.get("sales/stats/"+date)
             .then( function(response) {
+                var ctx = document.getElementById("statistics-box");
+                ctx.style.display = "block";
                 $scope.sales = response.data;
                 console.log($scope.sales);
+                $scope.fixDates();
+                $scope.total = 0;
+                for( var i = 0; i < $scope.sales.length; i++ ){
+                    var price = 0;
+                    for( var j = 0; j < $scope.sales[i].saleDetail.length; j++ ){
+                        price += $scope.sales[i].saleDetail[j].price;
+                    }
+                    $scope.sales[i].price = price;
+                    $scope.total += price;
+                }
+                $scope.salesPerSeller();
+                $scope.salesPerDay();
+                $scope.mostSelled();
             });
     }
+
+    $scope.randomColors = function(){
+        var letters = '0123456789ABCDEF'.split('');
+        var color = "#";
+        for( var i = 0; i < 6; i++ )
+            color += letters[Math.floor( Math.random() * 16 )];
+        return color;
+    }
+
+    $scope.salesPerSeller = function(){
+        var ctx = document.getElementById("myChart");
+        var sellers = [];
+        var sells = [];
+        var colors = [];
+        for( var i = 0; i < $scope.sales.length; i++ ) {
+            if (sellers.indexOf($scope.sales[i].seller.name) !== -1) {
+                sells[sellers.indexOf($scope.sales[i].seller.name)]++;
+            } else {
+                sellers.push($scope.sales[i].seller.name);
+                sells.push(1);
+                var color = "";
+                do {
+                    color = $scope.randomColors();
+                }while( colors.indexOf(color) != -1 );
+                colors.push(color);
+            }
+        }
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: sellers,
+                datasets: [{
+                    label: '# de ventas',
+                    data: sells,
+                    borderWidth: 1,
+                    backgroundColor: colors
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    $scope.salesPerDay = function(){
+        var ctx = document.getElementById("myChart2");
+        var hours = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        for(var i = 0; i < $scope.sales.length; i++ ){
+            var hour = parseInt($scope.sales[i].date.substr(17,2));
+            var price = 0;
+            var detailLen = $scope.sales[i].saleDetail.length;
+            for( var j = 0; j < detailLen; j++ ){
+                price += $scope.sales[i].saleDetail[j].price;
+            }
+            hours[hour-8] += price;
+        }
+
+        var data = {
+            labels: ["8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00" ],
+            datasets: [
+                {
+                    label: "Datos del día",
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(75,192,192,0.4)",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderCapStyle: 'butt',
+                    data: hours
+                }
+            ]
+        }
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: {}
+        });
+    }
+
+    $scope.mostSelled = function(){
+        var ctx = document.getElementById("myChart3");
+        var products = [];
+        var prices = [];
+        var quantities = [];
+        var colors = [];
+        for( var i = 0; i < $scope.sales.length; i++ ){
+            for( var j = 0; j < $scope.sales[i].saleDetail.length; j++ ){
+                if( products.indexOf($scope.sales[i].saleDetail[j].product.name) == -1 ){
+                    products.push($scope.sales[i].saleDetail[j].product.name);
+                    prices.push($scope.sales[i].saleDetail[j].product.price);
+                    quantities.push( 1 );
+                    var color = "";
+                    do {
+                        color = $scope.randomColors();
+                    }while( colors.indexOf(color) != -1 );
+                    colors.push(color);
+                }else{
+                    quantities[ products.indexOf($scope.sales[i].saleDetail[j].product.name) ]++;
+                }
+            }
+        }
+        for( var i = 0; i < quantities.length; i++ ){
+            quantities[i] = quantities[i]*prices[i];
+        }
+        console.log( products );
+        console.log( prices );
+        console.log( quantities );
+        var data = {
+            labels: products,
+            datasets: [
+                {
+                    data: quantities,
+                    backgroundColor: colors
+                }
+            ]
+        }
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: data
+        });
+    }
 }]);
+
 
 app.controller('ProductionController', ['$scope', '$http', function ($scope, $http) {
 }]);
@@ -488,11 +635,6 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
             templateUrl: 'partials/production.html',
             controller: 'ProductionController'
         })
-        .when('/sales', {
-            templateUrl: 'partials/sales.html',
-            controller: 'SalesController'
-        })
-
         .when('/statistics', {
             templateUrl: 'partials/statistics.html',
             controller: 'StatisticsController'

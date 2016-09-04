@@ -8,7 +8,7 @@
                     <md-datepicker ng-model="date" md-placeholder="Enter date" md-min-date="minDate" md-max-date="maxDate"></md-datepicker>
                 </div>
                 <button ng-click="reload()" class="btn btn-primary btn-raised">
-                    <span class="glyphicon glyphicon-refresh"></span>
+                    <span class="glyphicon glyphicon-ok"></span>
                 </button>
             </div>
         </md-content>
@@ -22,7 +22,7 @@
                 <th>Nombre</th>
                 <th>Fecha</th>
                 <th>Vendedor</th>
-                <th>Detalles</th>
+                <th>Total de la venta</th>
                 <th></th>
             </tr>
             </thead>
@@ -31,14 +31,50 @@
                 <td>{{s.client}}</td>
                 <td>{{s.date}}</td>
                 <td>{{s.seller.name}}</td>
-                <td>{{s.details}}</td>
+                <td>{{s.price}}</td>
                 <td>
-                    <button ng-click="edit(s)" class="btn btn-primary btn-raised">
-                        <span class="glyphicon glyphicon-pencil"></span>
+                    <button ng-click="seeDetails(s)" class="btn btn-primary btn-raised">
+                        <span class="glyphicon glyphicon-copy"></span>
                     </button>
                 </td>
             </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>TOTAL DEL DÍA</td>
+                <td>{{total}}</td>
+                <td></td>
+            </tr>
         </table>
+    </div>
+    <div id="statistics-box" style="display: none;">
+        <h1>Estadisticas</h1>
+        <md-content>
+            <md-tabs md-dynamic-height="" md-border-bottom="">
+                <md-tab label="Ventas por vendedor">
+                    <md-content class="md-padding">
+                        <h2 class="md-display-2">Ventas por vendedor</h2>
+                        <p>Se muestra la cantidad de ventas realizadas por cada vendedor</p>
+                        <canvas id="myChart" width="400" height="200"></canvas>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Ventas en el día">
+                    <md-content class="md-padding">
+                        <h2 class="md-display-2">Ventas en el día</h2>
+                        <p>Se muestra por hora, el total de venta en el día</p>
+                        <canvas id="myChart2" width="400" height="200"></canvas>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Productos más vendidos">
+                    <md-content class="md-padding">
+                        <h2 class="md-display-2">Productos más vendidos</h2>
+                        <p>Se muestra una gráfica de pastel con el total vendido por cada producto en el día</p>
+                        <canvas id="myChart3" width="400" height="200"></canvas>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-content>
+        <!---->
     </div>
 </div>
 
@@ -57,14 +93,16 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Cantidad</th>
-                        <th>Precio</th>
+                        <th>Precio unidad</th>
+                        <th>Total</th>
                     </tr>
                     </thead>
 
-                    <tr ng-repeat="s in sales">
-                        <td>{{s.client}}</td>
-                        <td>{{s.date}}</td>
-                        <td>{{s.seller.name}}</td>
+                    <tr ng-repeat="d in sale.saleDetail">
+                        <td>{{d.product.name}}</td>
+                        <td>{{d.quantity}}</td>
+                        <td>{{d.product.price}}</td>
+                        <td>{{d.price}}</td>
                     </tr>
                 </table>
             </div>
@@ -74,4 +112,3 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.min.js"></script>
