@@ -220,6 +220,10 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
         return $scope.sum;
     };
 
+    $scope.getCommission = function(sale){
+        return 0.1*$scope.getSalePrice(sale);
+    };
+
     $scope.getProducts = function () {
         $http.get('products')
             .then(function (response) {
