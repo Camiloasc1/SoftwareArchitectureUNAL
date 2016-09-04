@@ -236,18 +236,15 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
         $('#detail').modal('show');
     };
     $scope.addProduct = function (){
-
         $scope.saleDetail = {
             "id": 0,
             "product": $scope.selected,
             "quantity": $scope.quantity,
             "price": ($scope.selected.price * $scope.quantity)
         };
-
         $http.post(URI + '/SaleDetail/' + $scope.sale.id, $scope.saleDetail)
             .then(function () {
                 $scope.getProducts();
-                $scope.reload();
                 $scope.getSaleDetails();
             });
 
@@ -255,10 +252,15 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
         $http.put('products' + '/' + $scope.selected.id, $scope.selected)
             .then(function () {
                 $scope.reload();
-                $scope.getProducts();
                 $scope.getSaleDetails();
             });
+    };
 
+    $scope.deleteSaleDetail = function(id){
+        $http.delete(URI + '/SaleDetail/' + id)
+            .then(function () {
+                $scope.getSaleDetails();
+            });
     };
 
     $scope.new = function () {

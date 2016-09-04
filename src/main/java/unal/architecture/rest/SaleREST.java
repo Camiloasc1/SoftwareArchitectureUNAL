@@ -90,4 +90,17 @@ public class SaleREST {
         em.remove(em.find(Sale.class, id));
         return;
     }
+
+    @DELETE
+    @Path("SaleDetail/{id}")
+    public void deleteSaleDetail(@PathParam("id") long id) {
+        SaleDetail saleDetail = em.find(SaleDetail.class, id);
+        Sale sale = saleDetail.getSale();
+        List<SaleDetail> saleDetails = sale.getSaleDetail();
+        saleDetails.remove(saleDetail);
+        sale.setSaleDetail(saleDetails);
+        em.remove(saleDetail);
+        return;
+    }
+
 }
