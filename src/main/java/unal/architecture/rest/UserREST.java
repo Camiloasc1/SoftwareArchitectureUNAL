@@ -1,7 +1,9 @@
 package unal.architecture.rest;
 
+import unal.architecture.dao.AuthDAO;
 import unal.architecture.dao.UserDAO;
 import unal.architecture.entity.User;
+import unal.architecture.entity.UserCredentials;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -20,6 +22,8 @@ public class UserREST {
     private EntityManager em;
     @EJB
     UserDAO userDAO;
+    @EJB
+    AuthDAO authDAO;
 
     @GET
     public List<User> list() {
@@ -39,6 +43,15 @@ public class UserREST {
         return em.find(User.class, id);
     }
 
+    @GET
+    @Path("username/{username}")
+    public User checkUsername(@PathParam("username") String username) {
+        UserCredentials userCredentials = authDAO.findByUsername(username);
+        if( userCredentials == null )
+            return null;
+        return userCredentials.getUser();
+    }
+
     @PUT
     @Path("{id}")
     public User update(@PathParam("id") long id, User user) {
@@ -50,7 +63,11 @@ public class UserREST {
     @DELETE
     @Path("{id}")
     public void delete(@PathParam("id") long id) {
-        em.remove(em.find(User.class, id));
+        User user = em.find(User.class, id);
+        UserCredentials userCredentials = authDAO.findByUserId(user.getId());
+        userCredentials.setUser(null);
+        em.remove(userCredentials);
+        em.remove(user);
         return;
     }
 }

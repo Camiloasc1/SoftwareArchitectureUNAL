@@ -6,7 +6,8 @@ import javax.persistence.*;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "UserCredentials.findByUsername", query = "Select uc from UserCredentials uc where uc.username = :username")
+        @NamedQuery(name = "UserCredentials.findByUsername", query = "Select uc from UserCredentials uc where uc.username = :username"),
+        @NamedQuery(name = "UserCredentials.findByUserId", query = "Select uc from UserCredentials uc where uc.user.id = :id")
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserCredentials {

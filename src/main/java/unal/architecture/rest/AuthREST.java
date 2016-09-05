@@ -42,6 +42,18 @@ public class AuthREST {
         request.getSession().setAttribute("user", null);
     }
 
+    @Path("create")
+    @POST
+    public User create( UserCredentials userCredentials) {
+        userCredentials.setId(0);
+        User user = userCredentials.getUser();
+        user.setId(0);
+        em.persist(user);
+        userCredentials.setId(0);
+        em.persist(userCredentials);
+        return userCredentials.getUser();
+    }
+
     @Path("me")
     @GET
     public User me(@Context HttpServletRequest request) {
