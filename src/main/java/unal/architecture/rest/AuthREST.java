@@ -46,7 +46,6 @@ public class AuthREST {
     @GET
     public User me(@Context HttpServletRequest request) {
         Long userId = (Long) request.getSession().getAttribute("user");
-        userId = 1L;
         if (userId == null)
             throw new NotAuthorizedException("");
         return em.find(User.class, userId);
