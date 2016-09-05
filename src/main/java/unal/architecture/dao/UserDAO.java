@@ -17,4 +17,6 @@ public class UserDAO {
         TypedQuery<User> query = em.createNamedQuery("User.findAll", User.class);
         return query.getResultList();
     }
+
+
 }

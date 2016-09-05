@@ -5,10 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "Sale.findAll", query = "Select s from Sale s")
+        @NamedQuery(name = "Sale.findAll", query = "Select s from Sale s"),
+        @NamedQuery(name = "Sale.findByDate", query = "Select s from Sale s WHERE s.date >= :date1 AND s.date <= :date2"),
+        @NamedQuery(name = "Sale.findAllBySeller", query = "Select s from Sale s where s.seller.id = :id")
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Sale {
@@ -22,6 +25,10 @@ public class Sale {
     private String client;
     @ManyToOne(optional = false)
     private User seller;
+
+    @OneToMany(mappedBy = "sale",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private List<SaleDetail> saleDetail;
+
 
     public long getId() {
         return id;
@@ -54,6 +61,10 @@ public class Sale {
     public void setSeller(User seller) {
         this.seller = seller;
     }
+
+    public List<SaleDetail> getSaleDetail(){ return this.saleDetail; }
+
+    public void setSaleDetail(List<SaleDetail> sailDetail){ this.saleDetail = sailDetail; }
 
     @Override
     public boolean equals(Object o) {
