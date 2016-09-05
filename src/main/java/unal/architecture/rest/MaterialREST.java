@@ -26,6 +26,12 @@ public class MaterialREST {
         return materialDAO.findAll();
     }
 
+    @GET
+    @Path("name={name}")
+    public Material getMaterialByName(@PathParam("name") String name){
+        return materialDAO.findByName(name);
+    }
+
     @POST
     public Material create(Material material) {
         material.setId(0);
@@ -50,7 +56,6 @@ public class MaterialREST {
     @DELETE
     @Path("{id}")
     public void delete(@PathParam("id") long id) {
-        em.remove(em.find(Material.class, id));
-        return;
+        materialDAO.remove(id);
     }
 }

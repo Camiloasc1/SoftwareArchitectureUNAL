@@ -144,7 +144,11 @@ app.controller('MaterialController', ['$scope', '$http', function ($scope, $http
 
 app.controller('ProductsController', ['$scope', '$http', function ($scope, $http) {
     $scope.products = {};
+
     $scope.product = {};
+
+    $scope.material = {};
+    $scope.materials = [];
 
     const URI = 'products';
     const MODAL = '#product';
@@ -166,17 +170,70 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
                     $(MODAL).modal('hide');
                     $scope.reload();
                 });
-        else
+        else{
             $http.post(URI, $scope.product)
                 .then(function () {
                     $(MODAL).modal('hide');
                     $scope.reload();
                 });
+        }
     };
     $scope.delete = function (product) {
         $http.delete(URI + '/' + product.id)
             .then(function () {
                 $scope.reload();
+            });
+    };
+
+
+    $scope.deleteRecipe = function (recipe) {
+        for(var key in $scope.product.recipes){
+            var my_recipe = $scope.product.recipes[key];
+            if(my_recipe.id === recipe.id){
+                $scope.product.recipes.splice(key,1);
+                break;
+            }
+        }
+    };
+
+    $scope.searchMaterial = function () {
+
+        if (typeof $scope.product.recipes === "undefined") {
+            $scope.product.recipes = [];
+        }
+
+        $http.get("materials/name=" + $scope.material.name)
+            .then(function (response) {
+
+               if(response.status === 200){
+
+                   var alreadyPut = false;
+
+                   for(var key in $scope.product.recipes){
+                       var my_recipe = $scope.product.recipes[key];
+                       if(my_recipe.material.id === response.data.id){
+                           alreadyPut = true;
+                           break;
+                       }
+                   }
+
+                   if(!alreadyPut){
+                       var recipe = {
+                           "material":response.data,
+                           "requiredQuantity":0
+                       };
+
+                       $scope.product.recipes.push(recipe);
+                   }else{
+                       alert("Ya habias agregado ese producto");
+                   }
+
+
+
+               }else{
+                   alert("Material no encontrado");
+               }
+
             });
     };
 
@@ -539,6 +596,82 @@ app.controller('StatisticsController', ['$scope', '$http', function ($scope, $ht
 
 
 app.controller('ProductionController', ['$scope', '$http', function ($scope, $http) {
+
+    $scope.products = {};
+    $scope.product = {};
+    $scope.user ={};
+    $scope.fabrications = {};
+    const MODAL = '#product';
+
+    $scope.me = function () {
+        $http.get('auth/me')
+            .then(function (response) {
+                $scope.user = response.data;
+            }, function () {
+                $scope.user = {};
+            });
+    };
+    $scope.reload = function () {
+        $http.get('products')
+            .then(function (response) {
+                $scope.products = response.data;
+            });
+    };
+    $scope.edit = function (product) {
+        $scope.fabrications.product = product;
+        $scope.product = product;
+        $(MODAL).modal('show');
+    };
+    $scope.submit = function () {
+
+        var check =false;
+
+        for (var k in $scope.product.recipes) {
+            var c = $scope.product.recipes[k];
+            if( c.material.inventory < (c.requiredQuantity * $scope.fabrications.quantity) ){
+                check = true;
+                break;
+            }
+        }
+        if(check === true ){
+            alert("No hay suficiente material para la fabricacion del producto");
+        }
+        else {
+            $scope.mQtyToUpdate = {};
+            $scope.fabrications.worker = $scope.user;
+            $scope.product.inventory = $scope.product.inventory + $scope.fabrications.quantity;
+            var updateMaterial = function (m) {
+                $http.get('materials/' + m.material.id)
+                    .then(function (response) {
+                        $scope.mQtyToUpdate = response.data;
+                        $scope.mQtyToUpdate.inventory = $scope.mQtyToUpdate.inventory - (m.requiredQuantity * $scope.fabrications.quantity);
+                        $http.put('materials/' + m.material.id, $scope.mQtyToUpdate)
+                            .then(function () {
+                                $scope.mQtyToUpdate = {};
+                            });
+
+                    });
+            }
+            for (var key in $scope.product.recipes) {
+                var m = $scope.product.recipes[key];
+                updateMaterial(m);
+            }
+            $http.post('fabrications', $scope.fabrications)
+                .then(function () {
+                    $(MODAL).modal('hide');
+                    alert("Fabriacion del producto completa");
+                    $scope.fabrications = {};
+                    $scope.reload();
+                });
+            $http.put('products/' + $scope.fabrications.product.id, $scope.product)
+                .then(function () {
+                    $scope.reload();
+                });
+        }
+    };
+
+    $scope.reload();
+    $scope.me();
 }]);
 
 app.controller('controlUsersController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
