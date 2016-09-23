@@ -18,7 +18,7 @@ public class MaterialDAO {
         return query.getResultList();
     }
 
-    public Material findByName(String name){
+    public Material findByName(String name) {
         TypedQuery<Material> query = em.createNamedQuery("Material.findByName", Material.class);
         query.setParameter("name", name);
         List<Material> credentials = query.getResultList();
@@ -28,8 +28,8 @@ public class MaterialDAO {
             return credentials.get(0);
     }
 
-    public void remove(long id){
-        em.createNativeQuery("delete from FabricationRecipe where material_id="+id).executeUpdate();
-        em.remove(em.find(Material.class,id));
+    public void remove(long id) {
+        em.createNativeQuery("delete from FabricationRecipe where material_id=" + id).executeUpdate();
+        em.remove(em.find(Material.class, id));
     }
 }

@@ -18,9 +18,9 @@ public class ProductDAO {
         return query.getResultList();
     }
 
-    public void remove(long id){
-        em.createNativeQuery("delete from FabricationRecipe where product_id="+id).executeUpdate();
-        em.remove(em.find(Product.class,id));
+    public void remove(long id) {
+        em.createNativeQuery("delete from FabricationRecipe where product_id=" + id).executeUpdate();
+        em.remove(em.find(Product.class, id));
     }
 
 }

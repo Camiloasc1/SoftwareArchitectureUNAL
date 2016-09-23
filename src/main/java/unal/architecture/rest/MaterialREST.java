@@ -30,7 +30,7 @@ public class MaterialREST {
 
     @GET
     @Path("name={name}")
-    public Material getMaterialByName(@PathParam("name") String name){
+    public Material getMaterialByName(@PathParam("name") String name) {
         return materialDAO.findByName(name);
     }
 

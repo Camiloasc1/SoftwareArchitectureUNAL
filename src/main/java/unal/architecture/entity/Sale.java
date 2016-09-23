@@ -26,7 +26,7 @@ public class Sale {
     @ManyToOne(optional = false)
     private User seller;
 
-    @OneToMany(mappedBy = "sale",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sale", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<SaleDetail> saleDetail;
 
 
@@ -62,9 +62,13 @@ public class Sale {
         this.seller = seller;
     }
 
-    public List<SaleDetail> getSaleDetail(){ return this.saleDetail; }
+    public List<SaleDetail> getSaleDetail() {
+        return this.saleDetail;
+    }
 
-    public void setSaleDetail(List<SaleDetail> sailDetail){ this.saleDetail = sailDetail; }
+    public void setSaleDetail(List<SaleDetail> sailDetail) {
+        this.saleDetail = sailDetail;
+    }
 
     @Override
     public boolean equals(Object o) {

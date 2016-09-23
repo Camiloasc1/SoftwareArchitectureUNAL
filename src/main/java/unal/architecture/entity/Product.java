@@ -1,8 +1,6 @@
 package unal.architecture.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -28,11 +26,11 @@ public class Product {
         this.recipes = recipes;
     }
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER,cascade = CascadeType.ALL )
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<FabricationRecipe> recipes;
 
 
-    public void addMaterial(Material material , int quantity){
+    public void addMaterial(Material material, int quantity) {
         FabricationRecipe fabricationRecipe = new FabricationRecipe();
         fabricationRecipe.setProduct(this);
         fabricationRecipe.setMaterial(material);
@@ -43,7 +41,7 @@ public class Product {
         material.getRecipes().add(fabricationRecipe);
     }
 
-    public void addFabricationRecipe(FabricationRecipe fabricationRecipe){
+    public void addFabricationRecipe(FabricationRecipe fabricationRecipe) {
         fabricationRecipe.setProduct(this);
         this.recipes.add(fabricationRecipe);
     }

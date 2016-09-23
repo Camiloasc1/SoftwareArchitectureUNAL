@@ -1,9 +1,9 @@
 package unal.architecture.rest;
 
 import unal.architecture.dao.SaleDAO;
+import unal.architecture.entity.Product;
 import unal.architecture.entity.Sale;
 import unal.architecture.entity.SaleDetail;
-import unal.architecture.entity.Product;
 import unal.architecture.entity.User;
 
 import javax.annotation.security.RolesAllowed;
@@ -57,11 +57,11 @@ public class SaleREST {
 
     @GET
     @Path("stats/{date}")
-    public List<Sale> byDate(@PathParam("date") String d ) throws ParseException {
+    public List<Sale> byDate(@PathParam("date") String d) throws ParseException {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Date date1 = formatter.parse(d+" 00:00:00");
-        Date date2 = formatter.parse(d+" 23:59:59");
-        return saleDAO.findByDate( date1, date2 );
+        Date date1 = formatter.parse(d + " 00:00:00");
+        Date date2 = formatter.parse(d + " 23:59:59");
+        return saleDAO.findByDate(date1, date2);
     }
 
     @GET
@@ -87,7 +87,7 @@ public class SaleREST {
         Sale sale = em.find(Sale.class, id);
         saleDetail.setSale(sale);
         List<SaleDetail> saleDetails = sale.getSaleDetail();
-        if( saleDetails == null )
+        if (saleDetails == null)
             saleDetails = new ArrayList<SaleDetail>();
         saleDetails.add(saleDetail);
         sale.setSaleDetail(saleDetails);
@@ -102,9 +102,9 @@ public class SaleREST {
         List<SaleDetail> saleDetails = sale.getSaleDetail();
         sale.setSaleDetail(null);
         Product product;
-        for( SaleDetail s : saleDetails ){
+        for (SaleDetail s : saleDetails) {
             product = s.getProduct();
-            product.setInventory( product.getInventory() + s.getQuantity());
+            product.setInventory(product.getInventory() + s.getQuantity());
             em.remove(s);
         }
         em.remove(sale);

@@ -196,7 +196,7 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
                     $(MODAL).modal('hide');
                     $scope.reload();
                 });
-        else{
+        else {
             $http.post(URI, $scope.product)
                 .then(function () {
                     $(MODAL).modal('hide');
@@ -213,10 +213,10 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
 
 
     $scope.deleteRecipe = function (recipe) {
-        for(var key in $scope.product.recipes){
+        for (var key in $scope.product.recipes) {
             var my_recipe = $scope.product.recipes[key];
-            if(my_recipe.id === recipe.id){
-                $scope.product.recipes.splice(key,1);
+            if (my_recipe.id === recipe.id) {
+                $scope.product.recipes.splice(key, 1);
                 break;
             }
         }
@@ -231,41 +231,39 @@ app.controller('ProductsController', ['$scope', '$http', function ($scope, $http
         $http.get("materials/name=" + $scope.material.name)
             .then(function (response) {
 
-               if(response.status === 200){
+                if (response.status === 200) {
 
-                   var alreadyPut = false;
+                    var alreadyPut = false;
 
-                   for(var key in $scope.product.recipes){
-                       var my_recipe = $scope.product.recipes[key];
-                       if(my_recipe.material.id === response.data.id){
-                           alreadyPut = true;
-                           break;
-                       }
-                   }
+                    for (var key in $scope.product.recipes) {
+                        var my_recipe = $scope.product.recipes[key];
+                        if (my_recipe.material.id === response.data.id) {
+                            alreadyPut = true;
+                            break;
+                        }
+                    }
 
-                   if(!alreadyPut){
-                       var recipe = {
-                           "material":response.data,
-                           "requiredQuantity":0
-                       };
+                    if (!alreadyPut) {
+                        var recipe = {
+                            "material": response.data,
+                            "requiredQuantity": 0
+                        };
 
-                       $scope.product.recipes.push(recipe);
-                   }else{
-                       alert("Ya habias agregado ese producto");
-                   }
+                        $scope.product.recipes.push(recipe);
+                    } else {
+                        alert("Ya habias agregado ese producto");
+                    }
 
 
-
-               }else{
-                   alert("Material no encontrado");
-               }
+                } else {
+                    alert("Material no encontrado");
+                }
 
             });
     };
 
     $scope.reload();
 }]);
-
 
 
 app.controller('SalesController', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
@@ -284,7 +282,7 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
         $http.get('auth/me')
             .then(function (response) {
                 $scope.user = response.data;
-                $scope.uriUser = ($scope.user.salesman) && !($scope.user.admin) ? '/seller/'+$scope.user.id : '';
+                $scope.uriUser = ($scope.user.salesman) && !($scope.user.admin) ? '/seller/' + $scope.user.id : '';
                 $http.get(URI + $scope.uriUser)
                     .then(function (response) {
                         $scope.sales = response.data;
@@ -294,7 +292,7 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
 
     };
 
-    $scope.getSalePrice = function(sale){
+    $scope.getSalePrice = function (sale) {
         $scope.sum = 0;
         angular.forEach(sale.saleDetail, function (saleDetail) {
             $scope.sum += saleDetail.price;
@@ -302,8 +300,8 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
         return $scope.sum;
     };
 
-    $scope.getCommission = function(sale){
-        return 0.1*$scope.getSalePrice(sale);
+    $scope.getCommission = function (sale) {
+        return 0.1 * $scope.getSalePrice(sale);
     };
 
     $scope.getProducts = function () {
@@ -313,8 +311,8 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
             });
     };
 
-    $scope.getSaleDetails = function(){
-        $http.get(URI + "/"+ $scope.sale.id)
+    $scope.getSaleDetails = function () {
+        $http.get(URI + "/" + $scope.sale.id)
             .then(function (response) {
                 $scope.sale = response.data;
             });
@@ -330,7 +328,7 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
         $scope.selected.inventory = 1000;
         $('#detail').modal('show');
     };
-    $scope.addProduct = function (){
+    $scope.addProduct = function () {
         $scope.saleDetail = {
             "id": 0,
             "product": $scope.selected,
@@ -351,7 +349,7 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
             });
     };
 
-    $scope.deleteSaleDetail = function( saleDetail ){
+    $scope.deleteSaleDetail = function (saleDetail) {
         $http.delete(URI + '/SaleDetail/' + saleDetail.id + '/' + saleDetail.quantity)
             .then(function () {
                 $scope.reload();
@@ -360,7 +358,7 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
     };
 
     $scope.new = function () {
-        $scope.sale = {"id" : 0, "client" : "", "seller" : $scope.user};
+        $scope.sale = {"id": 0, "client": "", "seller": $scope.user};
         $scope.sale.date = $filter('date')(new Date(), "yyyy-MM-dd");
         $scope.date = $scope.sale.date;
         $scope.option = false;
@@ -376,13 +374,13 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
     };
     $scope.submit = function () {
         $scope.sale.date = $scope.date + "T05:00:00.000Z";
-        if( $scope.option ) {
+        if ($scope.option) {
             $http.put(URI + '/' + $scope.sale.id, $scope.sale)
                 .then(function () {
                     $(MODAL).modal('hide');
                     $scope.reload();
                 });
-        }else{
+        } else {
             $http.post(URI, $scope.sale)
                 .then(function () {
                     $(MODAL).modal('hide');
@@ -452,7 +450,7 @@ app.controller('StatisticsController', ['$scope', '$http', function ($scope, $ht
     $scope.date = new Date();
 
     $scope.minDate = new Date(
-        $scope.date.getFullYear()-2,
+        $scope.date.getFullYear() - 2,
         $scope.date.getMonth(),
         $scope.date.getDate());
 
@@ -463,25 +461,25 @@ app.controller('StatisticsController', ['$scope', '$http', function ($scope, $ht
         $(MODAL).modal('show');
     };
 
-    $scope.fixDates = function(){
-        for(var i = 0; i < $scope.sales.length; i++){
-            $scope.sales[i].date = $scope.sales[i].date.substr(0,10) + " a las " + $scope.sales[i].date.substr(11,8);
+    $scope.fixDates = function () {
+        for (var i = 0; i < $scope.sales.length; i++) {
+            $scope.sales[i].date = $scope.sales[i].date.substr(0, 10) + " a las " + $scope.sales[i].date.substr(11, 8);
         }
     }
 
-    $scope.reload = function(){
-        var date = $scope.date.getFullYear()+"-"+($scope.date.getMonth()+1)+"-"+$scope.date.getDate();
-        $http.get("sales/stats/"+date)
-            .then( function(response) {
+    $scope.reload = function () {
+        var date = $scope.date.getFullYear() + "-" + ($scope.date.getMonth() + 1) + "-" + $scope.date.getDate();
+        $http.get("sales/stats/" + date)
+            .then(function (response) {
                 var ctx = document.getElementById("statistics-box");
                 ctx.style.display = "block";
                 $scope.sales = response.data;
                 console.log($scope.sales);
                 $scope.fixDates();
                 $scope.total = 0;
-                for( var i = 0; i < $scope.sales.length; i++ ){
+                for (var i = 0; i < $scope.sales.length; i++) {
                     var price = 0;
-                    for( var j = 0; j < $scope.sales[i].saleDetail.length; j++ ){
+                    for (var j = 0; j < $scope.sales[i].saleDetail.length; j++) {
                         price += $scope.sales[i].saleDetail[j].price;
                     }
                     $scope.sales[i].price = price;
@@ -493,20 +491,20 @@ app.controller('StatisticsController', ['$scope', '$http', function ($scope, $ht
             });
     }
 
-    $scope.randomColors = function(){
+    $scope.randomColors = function () {
         var letters = '0123456789ABCDEF'.split('');
         var color = "#";
-        for( var i = 0; i < 6; i++ )
-            color += letters[Math.floor( Math.random() * 16 )];
+        for (var i = 0; i < 6; i++)
+            color += letters[Math.floor(Math.random() * 16)];
         return color;
     }
 
-    $scope.salesPerSeller = function(){
+    $scope.salesPerSeller = function () {
         var ctx = document.getElementById("myChart");
         var sellers = [];
         var sells = [];
         var colors = [];
-        for( var i = 0; i < $scope.sales.length; i++ ) {
+        for (var i = 0; i < $scope.sales.length; i++) {
             if (sellers.indexOf($scope.sales[i].seller.name) !== -1) {
                 sells[sellers.indexOf($scope.sales[i].seller.name)]++;
             } else {
@@ -515,7 +513,7 @@ app.controller('StatisticsController', ['$scope', '$http', function ($scope, $ht
                 var color = "";
                 do {
                     color = $scope.randomColors();
-                }while( colors.indexOf(color) != -1 );
+                } while (colors.indexOf(color) != -1);
                 colors.push(color);
             }
         }
@@ -534,7 +532,7 @@ app.controller('StatisticsController', ['$scope', '$http', function ($scope, $ht
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero:true
+                            beginAtZero: true
                         }
                     }]
                 }
@@ -542,21 +540,21 @@ app.controller('StatisticsController', ['$scope', '$http', function ($scope, $ht
         });
     }
 
-    $scope.salesPerDay = function(){
+    $scope.salesPerDay = function () {
         var ctx = document.getElementById("myChart2");
         var hours = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        for(var i = 0; i < $scope.sales.length; i++ ){
-            var hour = parseInt($scope.sales[i].date.substr(17,2));
+        for (var i = 0; i < $scope.sales.length; i++) {
+            var hour = parseInt($scope.sales[i].date.substr(17, 2));
             var price = 0;
             var detailLen = $scope.sales[i].saleDetail.length;
-            for( var j = 0; j < detailLen; j++ ){
+            for (var j = 0; j < detailLen; j++) {
                 price += $scope.sales[i].saleDetail[j].price;
             }
-            hours[hour-8] += price;
+            hours[hour - 8] += price;
         }
 
         var data = {
-            labels: ["8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00" ],
+            labels: ["8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"],
             datasets: [
                 {
                     label: "Datos del día",
@@ -576,34 +574,34 @@ app.controller('StatisticsController', ['$scope', '$http', function ($scope, $ht
         });
     }
 
-    $scope.mostSelled = function(){
+    $scope.mostSelled = function () {
         var ctx = document.getElementById("myChart3");
         var products = [];
         var prices = [];
         var quantities = [];
         var colors = [];
-        for( var i = 0; i < $scope.sales.length; i++ ){
-            for( var j = 0; j < $scope.sales[i].saleDetail.length; j++ ){
-                if( products.indexOf($scope.sales[i].saleDetail[j].product.name) == -1 ){
+        for (var i = 0; i < $scope.sales.length; i++) {
+            for (var j = 0; j < $scope.sales[i].saleDetail.length; j++) {
+                if (products.indexOf($scope.sales[i].saleDetail[j].product.name) == -1) {
                     products.push($scope.sales[i].saleDetail[j].product.name);
                     prices.push($scope.sales[i].saleDetail[j].product.price);
-                    quantities.push( 1 );
+                    quantities.push(1);
                     var color = "";
                     do {
                         color = $scope.randomColors();
-                    }while( colors.indexOf(color) != -1 );
+                    } while (colors.indexOf(color) != -1);
                     colors.push(color);
-                }else{
-                    quantities[ products.indexOf($scope.sales[i].saleDetail[j].product.name) ]++;
+                } else {
+                    quantities[products.indexOf($scope.sales[i].saleDetail[j].product.name)]++;
                 }
             }
         }
-        for( var i = 0; i < quantities.length; i++ ){
-            quantities[i] = quantities[i]*prices[i];
+        for (var i = 0; i < quantities.length; i++) {
+            quantities[i] = quantities[i] * prices[i];
         }
-        console.log( products );
-        console.log( prices );
-        console.log( quantities );
+        console.log(products);
+        console.log(prices);
+        console.log(quantities);
         var data = {
             labels: products,
             datasets: [
@@ -625,7 +623,7 @@ app.controller('ProductionController', ['$scope', '$http', function ($scope, $ht
 
     $scope.products = {};
     $scope.product = {};
-    $scope.user ={};
+    $scope.user = {};
     $scope.fabrications = {};
     const MODAL = '#product';
 
@@ -650,16 +648,16 @@ app.controller('ProductionController', ['$scope', '$http', function ($scope, $ht
     };
     $scope.submit = function () {
 
-        var check =false;
+        var check = false;
 
         for (var k in $scope.product.recipes) {
             var c = $scope.product.recipes[k];
-            if( c.material.inventory < (c.requiredQuantity * $scope.fabrications.quantity) ){
+            if (c.material.inventory < (c.requiredQuantity * $scope.fabrications.quantity)) {
                 check = true;
                 break;
             }
         }
-        if(check === true ){
+        if (check === true) {
             alert("No hay suficiente material para la fabricacion del producto");
         }
         else {
@@ -737,14 +735,14 @@ app.controller('UsersController', ['$scope', '$http', function ($scope, $http) {
         $(MODAL).modal('show');
     };
     $scope.submit = function () {
-        $scope.user.roles=[];
-        if($scope.user.admin)
+        $scope.user.roles = [];
+        if ($scope.user.admin)
             $scope.user.roles.push('ADMIN');
-        if($scope.user.worker)
+        if ($scope.user.worker)
             $scope.user.roles.push('WORKER');
-        if($scope.user.seller)
+        if ($scope.user.seller)
             $scope.user.roles.push('SELLER');
-        
+
         if ($scope.user.id)
             $http.put(URI + '/' + $scope.user.username, $scope.user)
                 .then(function () {

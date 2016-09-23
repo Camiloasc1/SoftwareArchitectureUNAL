@@ -13,7 +13,7 @@ public class SaleDetail {
     private long id;
 
     @ManyToOne(optional = false)
-    @PrimaryKeyJoinColumn(name="SALEID",referencedColumnName = "ID")
+    @PrimaryKeyJoinColumn(name = "SALEID", referencedColumnName = "ID")
     private Sale sale;
 
     @ManyToOne(optional = false)
