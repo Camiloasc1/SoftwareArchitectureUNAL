@@ -79,11 +79,17 @@
                 <version>7.0.1</version>
                 <configuration>
                     <tomeeClassifier>plus</tomeeClassifier>
-                    <config>${project.basedir}/src/test/tomee/conf</config>
+                    <config>${project.basedir}/src/main/tomee/conf</config>
+                    <libs>
+                        <lib>mysql:mysql-connector-java:6.0.3</lib>
+                    </libs>
                 </configuration>
                 <executions>
                     <execution>
                         <id>start</id>
+                        <configuration>
+                            <config>${project.basedir}/src/test/tomee/conf</config>
+                        </configuration>
                         <phase>pre-integration-test</phase>
                         <goals>
                             <goal>start</goal>
