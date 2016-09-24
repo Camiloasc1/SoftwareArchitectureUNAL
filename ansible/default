@@ -1,0 +1,12 @@
+upstream tomee {
+    server 192.168.2.84:8080;
+    server 192.168.2.85:8080;
+}
+
+server {
+    listen 80;
+
+    location / {
+        proxy_pass http://tomee;
+    }
+}
