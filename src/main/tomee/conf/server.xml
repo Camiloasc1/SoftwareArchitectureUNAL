@@ -47,7 +47,7 @@
                   pathname="conf/tomcat-users.xml"/>
         <Resource name="jdbc/AuthDB" auth="Container" type="javax.sql.DataSource" maxTotal="100" maxIdle="30"
                   maxWaitMillis="10000" username="tomee" password="tomee" driverClassName="com.mysql.jdbc.Driver"
-                  url="jdbc:mysql://localhost:3306/tomee"/>
+                  url="jdbc:mysql://192.168.2.83:3306/tomee"/>
     </GlobalNamingResources>
 
     <!-- A "Service" is a collection of one or more "Connectors" that share
