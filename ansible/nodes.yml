@@ -18,7 +18,7 @@
     apt: pkg=maven state=installed
 
   - name: clone repo
-    git: repo=https://github.com/Camiloasc1/SoftwareArchitectureUNAL.git dest=~/SoftwareArchitectureUNAL accept_hostkey=true
+    git: repo=https://github.com/Camiloasc1/SoftwareArchitectureUNAL.git dest=SoftwareArchitectureUNAL accept_hostkey=true
 
   - name: run
-    command: ./run.sh & chdir=~/SoftwareArchitectureUNAL
+    command: ./run.sh & chdir=SoftwareArchitectureUNAL
