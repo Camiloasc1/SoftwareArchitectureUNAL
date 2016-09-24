@@ -20,5 +20,6 @@
   - name: clone repo
     git: repo=https://github.com/Camiloasc1/SoftwareArchitectureUNAL.git dest=SoftwareArchitectureUNAL accept_hostkey=true
 
-  - name: run
-    command: ./run.sh & chdir=SoftwareArchitectureUNAL
+  - name: chown
+    command: chown -R architecture:architecture SoftwareArchitectureUNAL
+

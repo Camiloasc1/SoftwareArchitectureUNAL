@@ -1,0 +1,18 @@
+---
+- hosts: loadbalancer
+  become: yes
+  tasks:
+  - name: update repos
+    apt: update_cache=true
+
+  - name: install nginx
+    apt: pkg=nginx state=installed
+
+  - name: start and enable nginx
+    service: name=nginx state=started enabled=yes
+
+  - name: setup nginx
+    copy: src=default dest=/etc/nginx/sites-enabled/default
+
+  - name: start and enable nginx
+    service: name=nginx state=restarted
