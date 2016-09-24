@@ -16,17 +16,20 @@
   - name: install mysql
     apt: pkg=mysql-server state=installed
 
+  - name: start and enable MySQL
+    service: name=mysql state=started enabled=yes
+
   - name: install git
     apt: pkg=git state=installed
 
   - name: clone repo
     git: repo=https://github.com/Camiloasc1/SoftwareArchitectureUNAL.git dest=SoftwareArchitectureUNAL accept_hostkey=true
 
-  - name: setup user and database
+  - name: create user and database
     command: ./db.sh chdir=SoftwareArchitectureUNAL/ansible creates=/var/lib/mysql/tomee
 
   - name: setup MySQL
-    copy: src=my.cfg dest=/etc/mysql/my.cfg
+    copy: src=my.cnf dest=/etc/mysql/my.cnf
 
-  - name: start and enable MySQL
-    service: name=mysql state=started enabled=yes
+  - name: restart MySQL
+    service: name=mysql state=restarted
