@@ -140,6 +140,7 @@
             <!--
             <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
             -->
+            <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
 
             <!-- Use the LockOutRealm to prevent attempts to guess user passwords
                  via a brute-force attack -->
