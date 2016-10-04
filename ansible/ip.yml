@@ -1,0 +1,9 @@
+---
+- hosts: ip
+  become: yes
+  tasks:
+  - name: setup ip
+    copy: src=interfaces dest=/etc/network/interfaces
+
+  - name: restart server
+    command: reboot
