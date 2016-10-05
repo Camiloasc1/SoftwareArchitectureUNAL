@@ -56,4 +56,8 @@
     <Resource name="jdbc/ProjectDB" auth="Container" type="javax.sql.DataSource" maxTotal="100" maxIdle="30"
               maxWaitMillis="10000" username="tomee" password="tomee" driverClassName="com.mysql.jdbc.Driver"
               url="jdbc:mysql://192.168.2.83:3306/tomee"/>
+
+    <Manager className="org.apache.catalina.ha.session.DeltaManager"
+             expireSessionsOnShutdown="false"
+             notifyListenersOnReplication="true"/>
 </Context>
