@@ -140,8 +140,6 @@
             <!--
             <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
             -->
-            <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
-            <!--
             <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster" channelSendOptions="8">
 
                 <Manager className="org.apache.catalina.ha.session.DeltaManager"
@@ -174,7 +172,6 @@
 
                 <ClusterListener className="org.apache.catalina.ha.session.ClusterSessionListener"/>
             </Cluster>
-            -->
 
             <!-- Use the LockOutRealm to prevent attempts to guess user passwords
                  via a brute-force attack -->
