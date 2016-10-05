@@ -2,5 +2,11 @@
 - hosts: nodes
   become: yes
   tasks:
-  - name: run
-    command: ./run.sh & chdir=SoftwareArchitectureUNAL
+  - name: clone repo
+    git: repo=https://github.com/Camiloasc1/SoftwareArchitectureUNAL.git dest=SoftwareArchitectureUNAL accept_hostkey=true
+
+  - name: chown
+    file: path=SoftwareArchitectureUNAL owner=architecture group=architecture state=directory recurse=yes
+
+#  - name: run
+#    command: ./run.sh & chdir=SoftwareArchitectureUNAL

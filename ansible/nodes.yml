@@ -17,9 +17,5 @@
   - name: install maven
     apt: pkg=maven state=installed
 
-  - name: clone repo
-    git: repo=https://github.com/Camiloasc1/SoftwareArchitectureUNAL.git dest=SoftwareArchitectureUNAL accept_hostkey=true
-
-  - name: chown
-    command: chown -R architecture:architecture SoftwareArchitectureUNAL
-
+  - name: copy keystore
+    copy: src=keystore dest=/home/architecture/.keystore owner=architecture group=architecture
