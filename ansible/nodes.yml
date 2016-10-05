@@ -16,3 +16,6 @@
 
   - name: install maven
     apt: pkg=maven state=installed
+
+  - name: copy keystore
+    copy: src=keystore dest=/home/architecture/.keystore owner=architecture group=architecture
