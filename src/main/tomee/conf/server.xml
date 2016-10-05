@@ -147,6 +147,8 @@
                          expireSessionsOnShutdown="false"
                          notifyListenersOnReplication="true"/>
 
+                <Valve className="org.apache.catalina.ha.tcp.ReplicationValve" filter=""/>
+
                 <ClusterListener className="org.apache.catalina.ha.session.ClusterSessionListener"/>
             </Cluster>
 
