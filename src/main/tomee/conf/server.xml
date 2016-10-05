@@ -140,7 +140,13 @@
             <!--
             <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
             -->
+            <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
+            <!--
             <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster" channelSendOptions="8">
+
+                <Manager className="org.apache.catalina.ha.session.DeltaManager"
+                         expireSessionsOnShutdown="false"
+                         notifyListenersOnReplication="true"/>
 
                 <Channel className="org.apache.catalina.tribes.group.GroupChannel">
                     <Membership className="org.apache.catalina.tribes.membership.McastService"
@@ -168,6 +174,7 @@
 
                 <ClusterListener className="org.apache.catalina.ha.session.ClusterSessionListener"/>
             </Cluster>
+            -->
 
             <!-- Use the LockOutRealm to prevent attempts to guess user passwords
                  via a brute-force attack -->
