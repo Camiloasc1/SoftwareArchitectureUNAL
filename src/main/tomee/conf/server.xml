@@ -172,12 +172,6 @@
                        filter=""/>
                 <Valve className="org.apache.catalina.ha.session.JvmRouteBinderValve"/>
 
-                <Deployer className="org.apache.catalina.ha.deploy.FarmWarDeployer"
-                          tempDir="/tmp/war-temp/"
-                          deployDir="/tmp/war-deploy/"
-                          watchDir="/tmp/war-listen/"
-                          watchEnabled="false"/>
-
                 <ClusterListener className="org.apache.catalina.ha.session.JvmRouteSessionIDBinderListener"/>
                 <ClusterListener className="org.apache.catalina.ha.session.ClusterSessionListener"/>
             </Cluster>
