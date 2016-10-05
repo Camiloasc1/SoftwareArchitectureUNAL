@@ -140,8 +140,6 @@
             <!--
             <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
             -->
-            <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
-            <!--
             <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster" channelSendOptions="8">
 
                 <Manager className="org.apache.catalina.ha.session.DeltaManager"
@@ -155,7 +153,7 @@
                                 frequency="500"
                                 dropTime="3000"/>
                     <Receiver className="org.apache.catalina.tribes.transport.nio.NioReceiver"
-                              address="auto"
+                              address="192.168.2.84"
                               port="4000"
                               autoBind="100"
                               selectorTimeout="5000"
@@ -174,7 +172,6 @@
 
                 <ClusterListener className="org.apache.catalina.ha.session.ClusterSessionListener"/>
             </Cluster>
-            -->
 
             <!-- Use the LockOutRealm to prevent attempts to guess user passwords
                  via a brute-force attack -->
