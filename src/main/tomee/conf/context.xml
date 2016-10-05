@@ -57,7 +57,8 @@
               maxWaitMillis="10000" username="tomee" password="tomee" driverClassName="com.mysql.jdbc.Driver"
               url="jdbc:mysql://192.168.2.83:3306/tomee"/>
 
-    <Manager className="org.apache.catalina.ha.session.DeltaManager"
+    <Manager className="org.apache.catalina.ha.session.BackupManager"
              expireSessionsOnShutdown="false"
-             notifyListenersOnReplication="true"/>
+             notifyListenersOnReplication="true"
+             mapSendOptions="6"/>
 </Context>
