@@ -142,10 +142,6 @@
             -->
             <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster" channelSendOptions="8">
 
-                <Manager className="org.apache.catalina.ha.session.DeltaManager"
-                         expireSessionsOnShutdown="false"
-                         notifyListenersOnReplication="true"/>
-
                 <Channel className="org.apache.catalina.tribes.group.GroupChannel">
                     <Membership className="org.apache.catalina.tribes.membership.McastService"
                                 address="228.0.0.4"
@@ -153,7 +149,7 @@
                                 frequency="500"
                                 dropTime="3000"/>
                     <Receiver className="org.apache.catalina.tribes.transport.nio.NioReceiver"
-                              address="192.168.2.84"
+                              address="192.168.2.0"
                               port="4000"
                               autoBind="100"
                               selectorTimeout="5000"
