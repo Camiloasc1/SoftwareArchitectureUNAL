@@ -3,16 +3,13 @@
   become: yes
   tasks:
   - name: clone repo
-    git: repo=https://github.com/Camiloasc1/SoftwareArchitectureUNAL.git dest=SoftwareArchitectureUNAL accept_hostkey=true
+    git: repo=https://github.com/Camiloasc1/SoftwareArchitectureUNAL.git dest=SoftwareArchitectureUNAL force=yes accept_hostkey=yes
 
   - name: chown
     file: path=SoftwareArchitectureUNAL owner=architecture group=architecture state=directory recurse=yes
 
-  - name: TomEE cluster ip
+  - name: TomEE cluster node ip
     template: src=server.j2 dest=SoftwareArchitectureUNAL/src/main/tomee/conf/server.xml owner=architecture group=architecture
 
-  - name: multicast route config file
-    copy: src=nodeRoute.sh dest=SoftwareArchitectureUNAL/nodeRoute.sh owner=architecture group=architecture mode="u+x,g+x,o+x"
-
   - name: multicast route
-    command: ./nodeRoute.sh & chdir=SoftwareArchitectureUNAL
+    script: nodeRoute.sh
