@@ -5,6 +5,8 @@
 <web-app>
     <display-name>Car Accessories Inc.</display-name>
 
+    <distributable/>
+
     <security-constraint id="SecurityConstraint">
         <web-resource-collection>
             <web-resource-name>REST API</web-resource-name>
