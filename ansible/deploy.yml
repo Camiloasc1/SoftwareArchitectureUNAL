@@ -8,5 +8,11 @@
   - name: chown
     file: path=SoftwareArchitectureUNAL owner=architecture group=architecture state=directory recurse=yes
 
-#  - name: run
-#    command: ./run.sh & chdir=SoftwareArchitectureUNAL
+  - name: TomEE cluster ip
+    template: src=server.j2 dest=SoftwareArchitectureUNAL/src/main/tomee/conf/server.xml owner=architecture group=architecture
+
+  - name: multicast route config file
+    copy: src=nodeRoute.sh dest=SoftwareArchitectureUNAL/nodeRoute.sh owner=architecture group=architecture mode="u+x,g+x,o+x"
+
+  - name: multicast route
+    command: ./nodeRoute.sh & chdir=SoftwareArchitectureUNAL
