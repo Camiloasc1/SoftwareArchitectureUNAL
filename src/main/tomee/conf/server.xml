@@ -147,6 +147,7 @@
                          expireSessionsOnShutdown="false"
                          notifyListenersOnReplication="true"/>
 
+                <ClusterListener className="org.apache.catalina.ha.session.ClusterSessionListener">
             </Cluster>
 
             <!-- Use the LockOutRealm to prevent attempts to guess user passwords
