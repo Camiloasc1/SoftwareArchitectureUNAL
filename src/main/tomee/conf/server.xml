@@ -164,7 +164,6 @@
                     </Sender>
                     <Interceptor className="org.apache.catalina.tribes.group.interceptors.TcpFailureDetector"/>
                     <Interceptor className="org.apache.catalina.tribes.group.interceptors.MessageDispatchInterceptor"/>
-                    <Interceptor className="org.apache.catalina.tribes.group.interceptors.ThroughputInterceptor"/>
                 </Channel>
 
                 <Valve className="org.apache.catalina.ha.tcp.ReplicationValve" filter=""/>
