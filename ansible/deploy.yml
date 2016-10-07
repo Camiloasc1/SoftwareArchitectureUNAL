@@ -10,6 +10,3 @@
 
   - name: TomEE cluster node ip
     template: src=server.j2 dest=SoftwareArchitectureUNAL/src/main/tomee/conf/server.xml owner=architecture group=architecture
-
-  - name: multicast route
-    script: nodeRoute.sh
