@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://192.168.2.82/" />
+<title>Product</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Product</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/SoftwareArchitectureUNAL/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Ingresar</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Administracion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Materias Primas</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[2]/div/div/div/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=name</td>
+	<td>Material1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=inventory</td>
+	<td>100</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=price</td>
+	<td>10</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=provider</td>
+	<td>Proveedor1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=raw</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[@type='submit'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Administracion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Productos</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[2]/div/div/div/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=name</td>
+	<td>Producto1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=inventory</td>
+	<td>0</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=price</td>
+	<td>100</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=material_name</td>
+	<td>Material1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='product']/div/div/div[2]/form[2]/fieldset/div[3]/div/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=material_quantity</td>
+	<td>5</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[@type='submit'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='table']/tbody/tr/td[4]/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=inventory</td>
+	<td>10</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[@type='submit'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='table']/tbody/tr/td[5]/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Administracion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Materias Primas</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='table']/tbody/tr/td[7]/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Salir</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
