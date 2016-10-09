@@ -683,7 +683,7 @@ app.controller('ProductionController', ['$scope', '$http', function ($scope, $ht
             $http.post('fabrications', $scope.fabrications)
                 .then(function () {
                     $(MODAL).modal('hide');
-                    alert("Fabriacion del producto completa");
+                    //alert("Fabriacion del producto completa");
                     $scope.fabrications = {};
                     $scope.reload();
                 });
