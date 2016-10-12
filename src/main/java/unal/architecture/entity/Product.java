@@ -58,7 +58,6 @@ public class Product {
         this.price = price;
     }
 
-    @XmlTransient
     public List<FabricationRecipe> getRecipes() {
         return recipes;
     }
