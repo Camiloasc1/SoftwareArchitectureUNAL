@@ -30,4 +30,18 @@ public class ProductService {
     public Product getProduct(long id) {
         return em.find(Product.class, id);
     }
+
+    @WebMethod
+    public boolean orderProduct(long id, int ammount) {
+        Product product = em.find(Product.class, id);
+        if (product == null) {
+            return false;
+        }
+        int inventory = product.getInventory() - ammount;
+        if (inventory < 0) {
+            return false;
+        }
+        product.setInventory(inventory);
+        return true;
+    }
 }
