@@ -1,4 +1,4 @@
-package unal.architecture.service;
+package unal.architecture.startup;
 
 import unal.architecture.entity.User;
 import unal.architecture.entity.UserCredentials;
