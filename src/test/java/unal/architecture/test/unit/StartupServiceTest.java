@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import unal.architecture.service.StartupService;
+import unal.architecture.startup.StartupService;
 
 import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;

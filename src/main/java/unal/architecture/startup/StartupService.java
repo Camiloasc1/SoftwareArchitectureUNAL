@@ -1,4 +1,4 @@
-package unal.architecture.service;
+package unal.architecture.startup;
 
 import unal.architecture.entity.User;
 import unal.architecture.entity.UserCredentials;
@@ -31,6 +31,7 @@ public class StartupService {
         credentials.addRole(UserCredentials.Roles.ADMIN);
         credentials.addRole(UserCredentials.Roles.WORKER);
         credentials.addRole(UserCredentials.Roles.SELLER);
+        credentials.addRole(UserCredentials.Roles.CLIENT);
 
         em.persist(credentials);
 

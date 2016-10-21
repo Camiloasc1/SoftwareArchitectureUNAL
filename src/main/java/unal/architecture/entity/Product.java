@@ -20,31 +20,8 @@ public class Product {
     private int inventory;
     @Column(nullable = false)
     private float price;
-
-
-    public void setRecipes(List<FabricationRecipe> recipes) {
-        this.recipes = recipes;
-    }
-
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<FabricationRecipe> recipes;
-
-
-    public void addMaterial(Material material, int quantity) {
-        FabricationRecipe fabricationRecipe = new FabricationRecipe();
-        fabricationRecipe.setProduct(this);
-        fabricationRecipe.setMaterial(material);
-        fabricationRecipe.setRequiredQuantity(quantity);
-        fabricationRecipe.setId(0);
-
-        this.recipes.add(fabricationRecipe);
-        material.getRecipes().add(fabricationRecipe);
-    }
-
-    public void addFabricationRecipe(FabricationRecipe fabricationRecipe) {
-        fabricationRecipe.setProduct(this);
-        this.recipes.add(fabricationRecipe);
-    }
 
     public long getId() {
         return id;
@@ -66,10 +43,6 @@ public class Product {
         return inventory;
     }
 
-    public List<FabricationRecipe> getRecipes() {
-        return recipes;
-    }
-
     public void setInventory(int inventory) {
         if (inventory < 0) inventory = 0;
         this.inventory = inventory;
@@ -82,6 +55,30 @@ public class Product {
     public void setPrice(float price) {
         if (price < 0.0) price = 0.0f;
         this.price = price;
+    }
+
+    public List<FabricationRecipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(List<FabricationRecipe> recipes) {
+        this.recipes = recipes;
+    }
+
+    public void addMaterial(Material material, int quantity) {
+        FabricationRecipe fabricationRecipe = new FabricationRecipe();
+        fabricationRecipe.setProduct(this);
+        fabricationRecipe.setMaterial(material);
+        fabricationRecipe.setRequiredQuantity(quantity);
+        fabricationRecipe.setId(0);
+
+        this.recipes.add(fabricationRecipe);
+        material.getRecipes().add(fabricationRecipe);
+    }
+
+    public void addFabricationRecipe(FabricationRecipe fabricationRecipe) {
+        fabricationRecipe.setProduct(this);
+        this.recipes.add(fabricationRecipe);
     }
 
     @Override

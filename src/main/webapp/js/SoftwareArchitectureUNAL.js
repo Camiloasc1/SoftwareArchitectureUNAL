@@ -75,6 +75,9 @@ app.controller('UserController', ['$scope', '$http', function ($scope, $http) {
                         case 'SELLER':
                             $scope.user.seller = true;
                             break;
+                        case 'CLIENT':
+                            $scope.user.client = true;
+                            break;
                     }
                 }
             }, function () {
@@ -98,9 +101,6 @@ app.controller('UserController', ['$scope', '$http', function ($scope, $http) {
 }]);
 
 app.controller('HomeController', ['$scope', '$http', function ($scope, $http) {
-}]);
-
-app.controller('AdminController', ['$scope', '$http', function ($scope, $http) {
 }]);
 
 app.controller('MaterialController', ['$scope', '$http', function ($scope, $http) {
@@ -296,7 +296,7 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
         $scope.sum = 0;
         angular.forEach(sale.saleDetail, function (saleDetail) {
             $scope.sum += saleDetail.price;
-        })
+        });
         return $scope.sum;
     };
 
@@ -610,7 +610,7 @@ app.controller('StatisticsController', ['$scope', '$http', function ($scope, $ht
                     backgroundColor: colors
                 }
             ]
-        }
+        };
         var myPieChart = new Chart(ctx, {
             type: 'pie',
             data: data
@@ -675,7 +675,7 @@ app.controller('ProductionController', ['$scope', '$http', function ($scope, $ht
                             });
 
                     });
-            }
+            };
             for (var key in $scope.product.recipes) {
                 var m = $scope.product.recipes[key];
                 updateMaterial(m);
@@ -723,13 +723,15 @@ app.controller('UsersController', ['$scope', '$http', function ($scope, $http) {
                                 case 'SELLER':
                                     user.seller = true;
                                     break;
+                                case 'CLIENT':
+                                    user.client = true;
+                                    break;
                             }
                         }
                     }
                 }
             );
-    }
-    ;
+    };
     $scope.edit = function (user) {
         $scope.user = user;
         $(MODAL).modal('show');
@@ -742,6 +744,8 @@ app.controller('UsersController', ['$scope', '$http', function ($scope, $http) {
             $scope.user.roles.push('WORKER');
         if ($scope.user.seller)
             $scope.user.roles.push('SELLER');
+        if ($scope.user.client)
+            $scope.user.roles.push('CLIENT');
 
         if ($scope.user.id)
             $http.put(URI + '/' + $scope.user.username, $scope.user)
