@@ -16,18 +16,6 @@
             <transport-guarantee>NONE</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
-    <security-constraint id="RESTSecurityConstraint">
-        <web-resource-collection>
-            <web-resource-name>REST</web-resource-name>
-            <url-pattern>/rest/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>CLIENT</role-name>
-        </auth-constraint>
-        <user-data-constraint id="RESTUserDataConstraint">
-            <transport-guarantee>NONE</transport-guarantee>
-        </user-data-constraint>
-    </security-constraint>
     <security-constraint id="WSSecurityConstraint">
         <web-resource-collection>
             <web-resource-name>WS</web-resource-name>
@@ -36,9 +24,6 @@
         <auth-constraint>
             <role-name>CLIENT</role-name>
         </auth-constraint>
-        <user-data-constraint id="WSUserDataConstraint">
-            <transport-guarantee>NONE</transport-guarantee>
-        </user-data-constraint>
     </security-constraint>
 
     <login-config>
