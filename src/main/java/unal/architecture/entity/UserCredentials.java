@@ -16,7 +16,7 @@ import java.util.Set;
 public class UserCredentials {
 
     public enum Roles {
-        ADMIN, WORKER, SELLER
+        ADMIN, WORKER, SELLER, CLIENT
     }
 
     @Id

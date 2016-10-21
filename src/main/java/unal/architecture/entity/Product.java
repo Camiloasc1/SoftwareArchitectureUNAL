@@ -7,7 +7,8 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "Product.findAll", query = "Select p from Product p")
+        @NamedQuery(name = "Product.findAll", query = "Select p from Product p"),
+        @NamedQuery(name = "Product.findByName", query = "select p from Product p where p.name = :name")
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Product {
