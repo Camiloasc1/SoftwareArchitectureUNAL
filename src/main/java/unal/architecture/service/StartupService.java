@@ -8,6 +8,7 @@ import unal.architecture.dao.UserDAO;
 import unal.architecture.entity.*;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.faces.model.ArrayDataModel;
@@ -26,16 +27,16 @@ public class StartupService {
     @PersistenceContext
     private EntityManager em;
 
-    @Inject
+    @EJB
     private MaterialDAO materialDAO;
 
-    @Inject
+    @EJB
     private ProductDAO productDAO;
 
-    @Inject
+    @EJB
     private SaleDAO saleDAO;
 
-    @Inject
+    @EJB
     private UserDAO userDAO;
 
     @PostConstruct
