@@ -36,6 +36,7 @@ public class SaleDAOTest {
     @Test
     public void findAll() {
         List<Sale> products = saleDAO.findAll();
-        assertTrue(products.isEmpty());
+        //We have added entities
+        assertTrue(!products.isEmpty());
     }
 }
