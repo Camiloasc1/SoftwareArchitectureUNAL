@@ -137,7 +137,7 @@
   </wsdl:binding>
   <wsdl:service name="ProductServiceService">
     <wsdl:port binding="tns:ProductServiceServiceSoapBinding" name="ProductServicePort">
-      <soap:address location="http://localhost:8080/SoftwareArchitectureUNAL/webservices/ProductService"/>
+      <soap:address location="http://192.168.2.82/SoftwareArchitectureUNAL/webservices/ProductService"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
