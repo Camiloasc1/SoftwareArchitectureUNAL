@@ -31,6 +31,7 @@ public class ProductDAO {
 
     public void remove(long id) {
         em.createNativeQuery("delete from FabricationRecipe where product_id=" + id).executeUpdate();
+        em.createNativeQuery("delete from Fabrication where product_id=" + id).executeUpdate();
         em.remove(em.find(Product.class, id));
     }
 }
