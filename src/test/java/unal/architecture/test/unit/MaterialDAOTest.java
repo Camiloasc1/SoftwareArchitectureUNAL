@@ -36,6 +36,7 @@ public class MaterialDAOTest {
     @Test
     public void findAll() {
         List<Material> products = materialDAO.findAll();
-        assertTrue(products.isEmpty());
+        //We have added entities
+        assertTrue(!products.isEmpty());
     }
 }
