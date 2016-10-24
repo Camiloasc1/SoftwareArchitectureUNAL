@@ -1,6 +1,5 @@
 package unal.architecture.startup;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.MatchGenerator;
 import unal.architecture.dao.MaterialDAO;
 import unal.architecture.dao.ProductDAO;
 import unal.architecture.dao.SaleDAO;
@@ -11,12 +10,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.faces.model.ArrayDataModel;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,15 +36,14 @@ public class StartupService {
 
     @PostConstruct
     public void init() {
-        populateDatabase();
-        createAdmin();
-    }
-
-    public void createAdmin() {
         if (em.find(UserCredentials.class, "admin") != null)
             return;
 
+        createAdmin();
+        populateDatabase();
+    }
 
+    public void createAdmin() {
         UserCredentials credentials = new UserCredentials();
         credentials.setUsername("admin");
         credentials.setPassword("admin");
@@ -70,9 +64,9 @@ public class StartupService {
 
     }
 
-    public void createMaterials(){
+    public void createMaterials() {
 
-        String [] names = {
+        String[] names = {
                 "Aluminio",
                 "Madera",
                 "Plastico",
@@ -86,31 +80,29 @@ public class StartupService {
         };
 
 
-
         Material material;
-        for(int i=0 ; i<names.length ; i++){
-            if(materialDAO.findByName(names[i]) != null) continue;
+        for (int i = 0; i < names.length; i++) {
+            if (materialDAO.findByName(names[i]) != null) continue;
 
             material = new Material();
             material.setId(0);
             material.setName(names[i]);
-            material.setProvider("Proveedor " + (int)(Math.random()*10 + 1));
+            material.setProvider("Proveedor " + (int) (Math.random() * 10 + 1));
             boolean isSupply = Math.random() < 0.5;
             material.setSupply(isSupply);
-            material.setPrice((int)(Math.random()*100000 + 1000));
+            material.setPrice((int) (Math.random() * 100000 + 1000));
             material.setRawMaterial(!isSupply);
-            material.setInventory((int)(Math.random()*1000 + 10));
+            material.setInventory((int) (Math.random() * 1000 + 10));
 
             em.persist(material);
         }
 
 
-
     }
 
-    public void createProducts(){
+    public void createProducts() {
 
-        String [] names = {
+        String[] names = {
                 "Espejo retrovisor",
                 "Rin",
                 "Limpia parabrisas",
@@ -126,13 +118,13 @@ public class StartupService {
 
         Product product;
 
-        for(String name : names){
-            if(productDAO.findByName(name) != null) continue;
+        for (String name : names) {
+            if (productDAO.findByName(name) != null) continue;
 
             product = new Product();
             product.setName(name);
-            product.setPrice((int)(Math.random()*100000 + 1000));
-            product.setInventory((int)(Math.random()*1000 + 10));
+            product.setPrice((int) (Math.random() * 100000 + 1000));
+            product.setInventory((int) (Math.random() * 1000 + 10));
             product.setRecipes(createRecipes(product));
             product.setId(0);
             em.persist(product);
@@ -140,42 +132,45 @@ public class StartupService {
 
     }
 
-    private ArrayList<FabricationRecipe> createRecipes(Product p){
+    private ArrayList<FabricationRecipe> createRecipes(Product p) {
         ArrayList<FabricationRecipe> fabricationRecipes = new ArrayList<FabricationRecipe>();
         FabricationRecipe fabricationRecipe = new FabricationRecipe();
         fabricationRecipe.setProduct(p);
         fabricationRecipe.setId(0);
-        fabricationRecipe.setRequiredQuantity((int)(Math.random()*100 + 1));
+        fabricationRecipe.setRequiredQuantity((int) (Math.random() * 100 + 1));
         fabricationRecipe.setMaterial(materialDAO.findByName("Aluminio"));
         fabricationRecipes.add(fabricationRecipe);
         return fabricationRecipes;
     }
 
-    public void createUsers(){
-        String [] names ={
-            "amrondonp",
-            "dicrojasch",
-            "keacastropo",
-            "datovard",
-            "caasanchezcu",
-            "vendedor",
-            "cliente"
+    public void createUsers() {
+        String[] names = {
+                "amrondonp",
+                "dicrojasch",
+                "keacastropo",
+                "datovard",
+                "caasanchezcu",
+                "worker",
+                "seller",
+                "client"
         };
 
         User user;
 
-        for(String name : names){
+        for (String name : names) {
             if (em.find(UserCredentials.class, name) != null) continue;
             UserCredentials userCredentials = new UserCredentials();
             userCredentials.setUsername(name);
             userCredentials.setPassword(name);
 
-            if(name.equals("vendedor")) userCredentials.addRole(UserCredentials.Roles.SELLER);
-            else if(name.equals("cliente")) userCredentials.addRole(UserCredentials.Roles.CLIENT);
-            else{
+            if (name.equals("worker")) userCredentials.addRole(UserCredentials.Roles.WORKER);
+            else if (name.equals("seller")) userCredentials.addRole(UserCredentials.Roles.SELLER);
+            else if (name.equals("client")) userCredentials.addRole(UserCredentials.Roles.CLIENT);
+            else {
                 userCredentials.addRole(UserCredentials.Roles.ADMIN);
                 userCredentials.addRole(UserCredentials.Roles.WORKER);
                 userCredentials.addRole(UserCredentials.Roles.SELLER);
+                userCredentials.addRole(UserCredentials.Roles.CLIENT);
             }
 
 
@@ -184,7 +179,7 @@ public class StartupService {
             user = new User();
             user.setName(name);
             user.setId(0);
-            user.setEmail(name + "@accesories.com");
+            user.setEmail(name + "@architecture.unal");
             user.setCredentials(userCredentials);
 
             em.persist(user);
@@ -192,21 +187,21 @@ public class StartupService {
     }
 
 
-    public void createSales(){
+    public void createSales() {
         int nOfSales = 20;
         Sale sale;
 
-        if(saleDAO.findAll().size() > 0) return;
+        if (saleDAO.findAll().size() > 0) return;
 
         List<User> userList = userDAO.findAll();
-        for(int j=0 ; j<userList.size() ; j++){
-            if(userList.get(j).getName().equals("cliente")){
+        for (int j = 0; j < userList.size(); j++) {
+            if (userList.get(j).getName().equals("client")) {
                 userList.remove(j);
                 break;
             }
         }
 
-        for(int i=0 ; i<nOfSales ; i++){
+        for (int i = 0; i < nOfSales; i++) {
 
             List<Product> products = productDAO.findAll();
 
@@ -214,16 +209,16 @@ public class StartupService {
 
             SaleDetail saleDetail1 = new SaleDetail();
             saleDetail1.setId(0);
-            saleDetail1.setProduct(products.get((int)(Math.random()*products.size())));
-            saleDetail1.setPrice((int)(Math.random()*100000 + 10000));
-            saleDetail1.setQuantity((int)(Math.random()*100 + 1));
+            saleDetail1.setProduct(products.get((int) (Math.random() * products.size())));
+            saleDetail1.setPrice((int) (Math.random() * 100000 + 10000));
+            saleDetail1.setQuantity((int) (Math.random() * 100 + 1));
             saleDetail1.setSale(sale);
 
             SaleDetail saleDetail2 = new SaleDetail();
             saleDetail2.setId(0);
-            saleDetail2.setProduct(products.get((int)(Math.random()*products.size())));
-            saleDetail2.setPrice((int)(Math.random()*100000 + 10000));
-            saleDetail2.setQuantity((int)(Math.random()*100 + 1));
+            saleDetail2.setProduct(products.get((int) (Math.random() * products.size())));
+            saleDetail2.setPrice((int) (Math.random() * 100000 + 10000));
+            saleDetail2.setQuantity((int) (Math.random() * 100 + 1));
             saleDetail2.setSale(sale);
 
             ArrayList<SaleDetail> saleDetails = new ArrayList<SaleDetail>();
@@ -232,9 +227,9 @@ public class StartupService {
 
 
             sale.setSaleDetail(saleDetails);
-            sale.setClient("cliente");
+            sale.setClient("client");
 
-            sale.setSeller(userList.get((int)(Math.random()*userList.size())));
+            sale.setSeller(userList.get((int) (Math.random() * userList.size())));
             sale.setId(0);
             sale.setDate(new Date());
 
@@ -242,7 +237,7 @@ public class StartupService {
         }
     }
 
-    public void populateDatabase(){
+    public void populateDatabase() {
         createMaterials();
         createProducts();
         createUsers();
