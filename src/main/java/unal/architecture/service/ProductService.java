@@ -45,7 +45,7 @@ public class ProductService {
             return false;
         }
         int inventory = product.getInventory() - amount;
-        if (inventory < 0) {
+        if (amount<0 || inventory < 0) {
             return false;
         }
         product.setInventory(inventory);
