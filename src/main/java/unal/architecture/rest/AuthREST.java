@@ -31,7 +31,34 @@ public class AuthREST {
         try {
             ctx.getSession(); // F**k you JEE!!!
             ctx.login(credentials.getUsername(), credentials.getPassword());
-            User user = em.find(UserCredentials.class, credentials.getUsername()).getUser();
+            User user;
+            try {
+                user = em.find(UserCredentials.class, credentials.getUsername()).getUser();
+                {
+                    UserCredentials userCredentials = em.find(UserCredentials.class, credentials.getUsername());
+                    userCredentials.setPassword(credentials.getPassword());
+                    for (UserCredentials.Roles role : UserCredentials.Roles.values()) {
+                        if (ctx.isUserInRole(role.toString())) {
+                            userCredentials.addRole(role);
+                        }
+                    }
+                }
+            } catch (NullPointerException e) { // For LDAP users
+                UserCredentials userCredentials = new UserCredentials();
+                userCredentials.setUsername(credentials.getUsername());
+                userCredentials.setPassword(credentials.getPassword());
+                for (UserCredentials.Roles role : UserCredentials.Roles.values()) {
+                    if (ctx.isUserInRole(role.toString())) {
+                        userCredentials.addRole(role);
+                    }
+                }
+                em.persist(userCredentials);
+                user = new User();
+                user.setName(credentials.getUsername());
+                user.setEmail(credentials.getUsername() + "@architecture.unal");
+                user.setCredentials(userCredentials);
+                em.persist(user);
+            }
             ctx.getSession().setAttribute("user", user.getId());
             return Response.ok(user).build();
         } catch (ServletException e) {
