@@ -180,6 +180,9 @@
                 <Realm className="org.apache.catalina.realm.DataSourceRealm" dataSourceName="jdbc/AuthDB"
                        userTable="UserCredentials" userNameCol="username" userCredCol="password"
                        userRoleTable="UserRoles" roleNameCol="role"/>
+                <Realm className="org.apache.catalina.realm.JNDIRealm" connectionURL="ldap://192.168.2.83:389"
+                       userPattern="cn={0},ou=people,dc=architecture,dc=unal"
+                       roleBase="ou=roles,dc=architecture,dc=unal" roleName="cn" roleSearch="(uniqueMember={0})"/>
             </Realm>
 
 
