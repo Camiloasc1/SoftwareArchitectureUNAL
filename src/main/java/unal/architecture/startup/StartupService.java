@@ -145,11 +145,6 @@ public class StartupService {
 
     public void createUsers() {
         String[] names = {
-                "amrondonp",
-                "dicrojasch",
-                "keacastropo",
-                "datovard",
-                "caasanchezcu",
                 "worker",
                 "seller",
                 "client"
