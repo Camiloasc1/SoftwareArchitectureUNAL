@@ -34,6 +34,7 @@ public class UserREST {
         em.persist(credentials);
         User user = new User();
         user.setName(credentials.getUsername());
+        user.setEmail(credentials.getUsername() + "@architecture.unal");
         user.setCredentials(credentials);
         em.persist(user);
         return credentials;
