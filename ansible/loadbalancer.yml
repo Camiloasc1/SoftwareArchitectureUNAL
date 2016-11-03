@@ -14,5 +14,11 @@
   - name: setup nginx
     copy: src=default dest=/etc/nginx/sites-enabled/default
 
+  - name: setup nginx ssl key
+    copy: src=architecture.unal.key dest=/etc/nginx/architecture.unal.key
+
+  - name: setup nginx ssl crt
+    copy: src=architecture.unal.crt dest=/etc/nginx/architecture.unal.crt
+
   - name: start and enable nginx
     service: name=nginx state=restarted
