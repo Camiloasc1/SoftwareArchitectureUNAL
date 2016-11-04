@@ -46,7 +46,9 @@ public class CreditRESTIT {
 
         //Create
         credit = new Credit();
-        credit.setInterest(0.1f);
+        credit.setAmount(3.1415f);
+        credit.setNumberOfPayments(36);
+        credit.setType("Em-Amigable");
         credit.setPaid(false);
 
         credit = client.target(URI)
@@ -62,7 +64,6 @@ public class CreditRESTIT {
                 .cookie("JSESSIONID", session)
                 .get(Credit.class);
         assertNotNull(credit);
-        assertEquals(0.1f, credit.getInterest(), 0.01f);
         assertEquals(false, credit.isPaid());
 
         //Update

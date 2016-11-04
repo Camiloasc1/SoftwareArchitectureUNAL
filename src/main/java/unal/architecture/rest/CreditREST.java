@@ -1,5 +1,6 @@
 package unal.architecture.rest;
 
+import unal.architecture.credits.CreditsWSClient;
 import unal.architecture.dao.CreditDAO;
 import unal.architecture.entity.Credit;
 import unal.architecture.entity.User;
@@ -37,15 +38,7 @@ public class CreditREST {
 
     @POST
     public Response create(Credit credit) {
-        int numberOfPayments = (int)(Math.random()*48) + 1;
-        System.out.println("Amount= "+credit.getAmount()+" cuotas= "+numberOfPayments);
-
-        //String response = CreditsWSClient.createCreditWS("Em-Amigable",credit.getAmount(),numberOfPayments);
-        String response;
-        if(Math.random()<0.5)
-           response  = "El producto NO ha sido creado.";
-        else
-            response = "El producto ha sido creado.";
+        String response = CreditsWSClient.createCreditWS(credit.getType(),credit.getAmount(),credit.getNumberOfPayments());
 
         if(!response.equals("El producto ha sido creado.")){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();

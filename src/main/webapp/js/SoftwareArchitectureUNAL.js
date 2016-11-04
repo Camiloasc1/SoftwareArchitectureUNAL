@@ -401,6 +401,7 @@ app.controller('SalesController', ['$scope', '$http', '$filter', function ($scop
 app.controller('CreditsController', ['$scope', '$http', function ($scope, $http) {
     $scope.credits = {};
     $scope.credit = {};
+    $scope.options = ["Em-Amigable","Em-Robusto","Em-Fiel","Em-Frec"];
 
     const URI = 'credits';
     const MODAL = '#credit';
