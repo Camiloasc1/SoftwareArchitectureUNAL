@@ -16,15 +16,15 @@
             <transport-guarantee>NONE</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
-    <security-constraint id="WSSecurityConstraint">
-        <web-resource-collection>
-            <web-resource-name>WS</web-resource-name>
-            <url-pattern>/webservices/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>CLIENT</role-name>
-        </auth-constraint>
-    </security-constraint>
+    <!--<security-constraint id="WSSecurityConstraint">-->
+        <!--<web-resource-collection>-->
+            <!--<web-resource-name>WS</web-resource-name>-->
+            <!--<url-pattern>/webservices/*</url-pattern>-->
+        <!--</web-resource-collection>-->
+        <!--<auth-constraint>-->
+            <!--<role-name>CLIENT</role-name>-->
+        <!--</auth-constraint>-->
+    <!--</security-constraint>-->
 
     <login-config>
         <auth-method>BASIC</auth-method>
