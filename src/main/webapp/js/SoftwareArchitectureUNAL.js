@@ -427,6 +427,9 @@ app.controller('CreditsController', ['$scope', '$http', function ($scope, $http)
                 .then(function () {
                     $(MODAL).modal('hide');
                     $scope.reload();
+                }, function (response){
+                    alert(response.data);
+                    $scope.credit = {};
                 });
     };
     $scope.delete = function (credit) {
