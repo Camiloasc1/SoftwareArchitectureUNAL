@@ -1,18 +1,14 @@
 upstream tomee {
-    server 192.168.2.84:8443;
-    server 192.168.2.85:8443;
-    server 192.168.2.86:8443;
+    server 192.168.2.84:8080;
+    server 192.168.2.85:8080;
+    server 192.168.2.86:8080;
 }
 
 server {
     listen 80;
-    listen 443 ssl;
-    server_name architecture.unal;
-    ssl_certificate /etc/nginx/architecture.unal.crt;
-    ssl_certificate_key /etc/nginx/architecture.unal.key;
+    listen 8080;
 
     location / {
-        proxy_pass https://tomee;
+        proxy_pass http://tomee;
     }
 }
-#openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout architecture.unal.key -out architecture.unal.crt

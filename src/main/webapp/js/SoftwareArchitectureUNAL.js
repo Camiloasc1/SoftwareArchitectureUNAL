@@ -402,6 +402,8 @@ app.controller('CreditsController', ['$scope', '$http', function ($scope, $http)
     $scope.credits = {};
     $scope.credit = {};
     $scope.options = ["Em-Amigable","Em-Robusto","Em-Fiel","Em-Frec"];
+    $scope.loading = false;
+    $scope.errorMessage = false;
 
     const URI = 'credits';
     const MODAL = '#credit';
@@ -415,23 +417,32 @@ app.controller('CreditsController', ['$scope', '$http', function ($scope, $http)
     $scope.edit = function (credit) {
         $scope.credit = credit;
         $(MODAL).modal('show');
+        $scope.errorMessage = false;
     };
     $scope.submit = function () {
+        $scope.loading = true;
+        $scope.errorMessage = false;
         if ($scope.credit.id)
             $http.put(URI + '/' + $scope.credit.id, $scope.credit)
                 .then(function () {
                     $(MODAL).modal('hide');
-                    $scope.reload();
+                    $scope.loading = false;
+                    $scope.errorMessage = false;
+                    $scope.reeload();
                 });
-        else
+        else {
             $http.post(URI, $scope.credit)
                 .then(function () {
                     $(MODAL).modal('hide');
                     $scope.reload();
-                }, function (response){
-                    alert(response.data);
+                    $scope.loading = false;
+                    $scope.errorMessage = false;
+                }, function (response) {
+                    $scope.loading = false;
+                    $scope.errorMessage = true;
                     $scope.credit = {};
                 });
+        };
     };
     $scope.delete = function (credit) {
         $http.delete(URI + '/' + credit.id)

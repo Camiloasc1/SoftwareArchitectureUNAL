@@ -42,6 +42,7 @@ public class ProductService {
     public boolean orderProduct(@WebParam(name = "id") long id, @WebParam(name = "amount") int amount) {
         System.out.print("id = " + id + " amount = " + amount);
         Product product = em.find(Product.class, id);
+        System.out.println("llega");
         if (product == null) {
             System.out.println(" return: false");
             return false;

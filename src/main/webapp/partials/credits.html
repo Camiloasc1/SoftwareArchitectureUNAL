@@ -108,9 +108,22 @@
                                     Guardar
                                 </button>
                             </div>
+                            <div ng-show="loading" style="text-align: center;">
+                                <i class="fa fa-spinner fa-pulse fa-2x">
+
+                                </i>
+                            </div>
                         </div>
                     </fieldset>
                 </form>
+            </div>
+            <div ng-show="errorMessage" style="text-align: center;">
+                <a style="text-decoration: none;">
+                    El servicio no responde, por favor intentelo mas tarde.
+                </a>
+            </div>
+            <div class="col-sm-9" ng-model="credit.paid">
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
