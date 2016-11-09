@@ -1,14 +1,10 @@
 
 package unal.architecture.credits;
 
+import javax.xml.namespace.QName;
+import javax.xml.ws.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
-import javax.xml.ws.WebEndpoint;
-import javax.xml.ws.WebServiceClient;
-import javax.xml.ws.WebServiceException;
-import javax.xml.ws.WebServiceFeature;
 
 
 /**
@@ -17,7 +13,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "MakeAcquiredProductWS", targetNamespace = "http://Service.BusinessLogic/", wsdlLocation = "http://192.168.2.168:8080/Kwinty/MakeAcquiredProductWS?wsdl")
+@WebServiceClient(name = "MakeAcquiredProductWS", targetNamespace = "http://Service.BusinessLogic/", wsdlLocation = "http://192.168.2.166:8080/Kwinty/MakeAcquiredProductWS?wsdl")
 public class MakeAcquiredProductWS_Service
     extends Service
 {
@@ -30,7 +26,7 @@ public class MakeAcquiredProductWS_Service
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("http://192.168.2.168:8080/Kwinty/MakeAcquiredProductWS?wsdl");
+            url = new URL("http://192.168.2.166:8080/Kwinty/MakeAcquiredProductWS?wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }

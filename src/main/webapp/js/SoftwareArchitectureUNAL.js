@@ -439,6 +439,7 @@ app.controller('CreditsController', ['$scope', '$http', function ($scope, $http)
                     $scope.errorMessage = false;
                 }, function (response) {
                     $scope.loading = false;
+                    console.log(response.data);
                     $scope.errorMessage = true;
                     $scope.credit = {};
                 });
