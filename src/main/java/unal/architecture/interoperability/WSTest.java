@@ -7,7 +7,6 @@ import unal.architecture.interoperability.client.ProductServiceService;
 import javax.ejb.Stateless;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.xml.ws.BindingProvider;
 import java.util.List;
 
 @Stateless
@@ -30,8 +29,8 @@ public class WSTest {
     public List<ProductDTO> test() {
         ProductServiceService service = new ProductServiceService();
         ProductService productService = service.getProductServicePort();
-        ((BindingProvider) productService).getRequestContext().put(BindingProvider.USERNAME_PROPERTY, "admin");
-        ((BindingProvider) productService).getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, "admin");
+        //((BindingProvider) productService).getRequestContext().put(BindingProvider.USERNAME_PROPERTY, "admin");
+        //((BindingProvider) productService).getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, "admin");
 
         return productService.getProducts();
     }
@@ -42,8 +41,8 @@ public class WSTest {
     public boolean testBuy(@PathParam("id") long id, @PathParam("quantity") int quantity){
         ProductServiceService service = new ProductServiceService();
         ProductService productService = service.getProductServicePort();
-        ((BindingProvider) productService).getRequestContext().put(BindingProvider.USERNAME_PROPERTY, "admin");
-        ((BindingProvider) productService).getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, "admin");
+        //((BindingProvider) productService).getRequestContext().put(BindingProvider.USERNAME_PROPERTY, "admin");
+        //((BindingProvider) productService).getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, "admin");
 
         return productService.orderProduct(id,quantity);
     }

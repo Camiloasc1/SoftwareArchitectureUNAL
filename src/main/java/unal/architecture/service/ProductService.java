@@ -40,15 +40,21 @@ public class ProductService {
 
     @WebMethod
     public boolean orderProduct(@WebParam(name = "id") long id, @WebParam(name = "amount") int amount) {
+        System.out.print("id = " + id + " amount = " + amount);
         Product product = em.find(Product.class, id);
+        System.out.println("llega");
         if (product == null) {
+            System.out.println(" return: false");
             return false;
         }
         int inventory = product.getInventory() - amount;
-        if (amount<0 || inventory < 0) {
+        if (inventory < 0) {
+            System.out.println(" return: false");
             return false;
         }
         product.setInventory(inventory);
+        System.out.println(" return: true");
         return true;
     }
 }
+

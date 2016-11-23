@@ -16,8 +16,9 @@
             <tr>
                 <th>Fecha</th>
                 <th>Monto</th>
-                <th>Interés</th>
+                <th>Tipo</th>
                 <th>Pagado</th>
+                <th>Cuotas</th>
                 <th>Usuario</th>
                 <th></th>
                 <th></th>
@@ -27,11 +28,12 @@
             <tr ng-repeat="c in credits">
                 <td>{{c.date | date:'mediumDate'}}</td>
                 <td>{{c.amount}}</td>
-                <td>{{c.interest}}</td>
+                <td>{{c.type}}</td>
                 <td>
                     <span ng-show="c.paid" class="glyphicon glyphicon-ok"></span>
                     <span ng-show="!c.paid" class="glyphicon glyphicon-remove"></span>
                 </td>
+                <td>{{c.numberOfPayments}}</td>
                 <td>{{c.user.name}}</td>
                 <td>
                     <button ng-click="edit(c)" class="btn btn-primary btn-raised">
@@ -71,11 +73,11 @@
                         </div>
                         <div class="form-group">
                             <div class="row">
-                                <label class="control-label col-sm-2" for="interest">Interés:</label>
+                                <label class="control-label col-sm-2" for="type">Tipo:</label>
                                 <div class="col-sm-9">
-                                    <input type="number" name="interest" class="form-control" id="interest"
-                                           placeholder="-" min="0" step="0.1" required="required"
-                                           ng-model="credit.interest"/>
+                                    <select name="type" id="type" class="form-control" ng-model="credit.type" ng-options="o for o in options" required="required">
+                                        <option value="">Selecciona una opción</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -88,15 +90,40 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-sm-2" for="amount">Numero de cuotas:</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="amount" class="form-control" id="amount"
+                                           placeholder="-" min="1" max="48" required="required"
+                                           ng-model="credit.numberOfPayments"/>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-sm-offset-1">
                                 <button ng-disabled="form.$invalid" type="submit" class="btn btn-primary btn-raised">
                                     Guardar
                                 </button>
                             </div>
+                            <div ng-show="loading" style="text-align: center;">
+                                <i class="fa fa-spinner fa-pulse fa-2x">
+
+                                </i>
+                            </div>
                         </div>
                     </fieldset>
                 </form>
+            </div>
+            <div ng-show="errorMessage" style="text-align: center;">
+                <a style="text-decoration: none;">
+                    El servicio no responde, por favor intentelo mas tarde.
+                </a>
+            </div>
+            <div class="col-sm-9" ng-model="credit.paid">
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
