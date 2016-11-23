@@ -37,6 +37,7 @@ public class CreditRESTIT {
     public void after() {
     }
 
+    @Ignore // Requires the credits team
     @Test
     public void crudCredit() {
         Response response;
