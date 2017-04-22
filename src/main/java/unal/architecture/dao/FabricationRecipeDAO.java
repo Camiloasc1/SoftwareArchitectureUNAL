@@ -9,9 +9,4 @@ import javax.persistence.PersistenceContext;
 public class FabricationRecipeDAO {
     @PersistenceContext
     private EntityManager em;
-
-    public void delete(long id) {
-        em.createNativeQuery("DELETE FROM FabricationRecipe where id=" + id).executeUpdate();
-    }
-
 }

@@ -64,10 +64,11 @@ public class ProductREST {
         toErase.removeAll(product.getRecipes());
 
 
-        if (toErase != null)
+        if (toErase != null) {
             for (FabricationRecipe fabricationRecipe : toErase) {
-                recipesDAO.delete(fabricationRecipe.getId());
+                em.remove(fabricationRecipe);
             }
+        }
 
         em.merge(product);
         return product;
