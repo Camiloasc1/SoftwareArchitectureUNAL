@@ -1,0 +1,13 @@
+[loadbalancer]
+192.168.2.82	ansible_user=architecture
+
+[database]
+192.168.2.83	ansible_user=architecture
+
+[nodes]
+192.168.2.84	ansible_user=architecture
+192.168.2.85	ansible_user=architecture
+192.168.2.86	ansible_user=architecture
+
+[ip]
+192.168.2.81	ansible_user=architecture
