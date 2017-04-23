@@ -71,4 +71,5 @@ buildNumber.properties
 
 # Vagrant VMs
 .vagrant
+*.retry
 *.log
