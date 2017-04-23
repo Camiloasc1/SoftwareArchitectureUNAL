@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    ldap_root_pass: architecture
+  tasks:
+  - name: setup hosts
+    copy: src=hosts dest=/etc/hosts
+
+  - name: update repos
+    apt: update_cache=true
+
+  - name: LDAP root password
+    debconf: name='slapd' question='slapd/password1' value='{{ldap_root_pass | quote}}' vtype='password'
+
+  - name: LDAP root password again
+    debconf: name='slapd' question='slapd/password2' value='{{ldap_root_pass | quote}}' vtype='password'
+
+  - name: install LDAP server
+    apt: pkg=slapd state=installed
+
+  - name: install LDAP Utils
+    apt: pkg=ldap-utils state=installed
+
+  - name: start and enable LDAP
+    service: name=slapd state=started enabled=yes
+
+  - name: populate LDAP
+    command: ldapadd -x -c -D cn=admin,dc=architecture,dc=unal -w {{ldap_root_pass}} -f ldap.ldif

@@ -1,0 +1,12 @@
+127.0.0.1	localhost.architecture.unal	localhost
+192.168.0.82	loadbalancer.architecture.unal	loadbalancer
+192.168.0.83	db.architecture.unal		db
+192.168.0.84	ldap.architecture.unal		ldap
+192.168.0.85	node.architecture.unal		node
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts
+
