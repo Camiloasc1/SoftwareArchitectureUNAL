@@ -1,0 +1,14 @@
+upstream tomee {
+    server node1:8080;
+    server node2:8080;
+    server node3:8080;
+}
+
+server {
+    listen 80;
+    listen 8080;
+
+    location / {
+        proxy_pass http://tomee;
+    }
+}
