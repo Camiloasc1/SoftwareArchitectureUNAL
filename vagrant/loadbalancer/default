@@ -1,7 +1,7 @@
 upstream tomee {
-    server 192.168.2.84:8080;
-    server 192.168.2.85:8080;
-    server 192.168.2.86:8080;
+    server node1:8080;
+    server node2:8080;
+    server node3:8080;
 }
 
 server {

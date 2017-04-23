@@ -69,3 +69,7 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
+# Vagrant VMs
+.vagrant
+*.retry
+*.log
