@@ -1,0 +1,16 @@
+--- MySQL not recommended, use MariaDB (MySQL without apparmor)
+- hosts: all
+  become: yes
+  tasks:
+  - name: bypass app apparmor
+    apt: pkg=apparmor state=installed
+
+  - name: bypass app apparmor
+    apt: pkg=apparmor-utils state=installed
+
+  - name: bypass app apparmor
+    apt: pkg=apparmor-profiles state=installed
+
+  - name: bypass app apparmor
+    command: aa-complain /usr/sbin/mysqld
+

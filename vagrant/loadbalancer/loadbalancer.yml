@@ -1,7 +1,10 @@
 ---
-- hosts: loadbalancer
+- hosts: all
   become: yes
   tasks:
+  - name: setup hosts
+    copy: src=hosts dest=/etc/hosts
+
   - name: update repos
     apt: update_cache=true
 

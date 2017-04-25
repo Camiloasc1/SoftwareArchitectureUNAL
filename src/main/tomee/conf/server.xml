@@ -47,7 +47,7 @@
                   pathname="conf/tomcat-users.xml"/>
         <Resource name="jdbc/AuthDB" auth="Container" type="javax.sql.DataSource" maxTotal="100" maxIdle="30"
                   maxWaitMillis="10000" username="tomee" password="tomee" driverClassName="com.mysql.jdbc.Driver"
-                  url="jdbc:mysql://192.168.2.83:3306/tomee"/>
+                  url="jdbc:mysql://db:3306/tomee"/>
     </GlobalNamingResources>
 
     <!-- A "Service" is a collection of one or more "Connectors" that share
@@ -149,7 +149,7 @@
                                 frequency="500"
                                 dropTime="3000"/>
                     <Receiver className="org.apache.catalina.tribes.transport.nio.NioReceiver"
-                              address="192.168.2.0"
+                              address="auto"
                               port="4000"
                               autoBind="100"
                               selectorTimeout="5000"
@@ -180,7 +180,7 @@
                 <Realm className="org.apache.catalina.realm.DataSourceRealm" dataSourceName="jdbc/AuthDB"
                        userTable="UserCredentials" userNameCol="username" userCredCol="password"
                        userRoleTable="UserRoles" roleNameCol="role"/>
-                <Realm className="org.apache.catalina.realm.JNDIRealm" connectionURL="ldap://192.168.2.83:389"
+                <Realm className="org.apache.catalina.realm.JNDIRealm" connectionURL="ldap://ldap:389"
                        userPattern="cn={0},ou=people,dc=architecture,dc=unal"
                        roleBase="ou=roles,dc=architecture,dc=unal" roleName="cn" roleSearch="(uniqueMember={0})"/>
             </Realm>

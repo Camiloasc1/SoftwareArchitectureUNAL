@@ -1,9 +1,12 @@
 ---
-- hosts: database
+- hosts: all
   become: yes
   vars:
     ldap_root_pass: architecture
   tasks:
+  - name: setup hosts
+    copy: src=hosts dest=/etc/hosts
+
   - name: update repos
     apt: update_cache=true
 
@@ -22,11 +25,5 @@
   - name: start and enable LDAP
     service: name=slapd state=started enabled=yes
 
-  - name: install git
-    apt: pkg=git state=installed
-
-  - name: clone repo
-    git: repo=https://github.com/Camiloasc1/SoftwareArchitectureUNAL.git dest=SoftwareArchitectureUNAL accept_hostkey=true
-
   - name: populate LDAP
-    command: ldapadd -x -c -D cn=admin,dc=architecture,dc=unal -w architecture -f ldap.ldif chdir=SoftwareArchitectureUNAL/ansible
+    command: ldapadd -x -c -D cn=admin,dc=architecture,dc=unal -w {{ldap_root_pass}} -f ldap.ldif

@@ -1,0 +1,17 @@
+upstream tomee {
+    server node:8080;
+}
+
+server {
+    listen 80;
+    listen 8080;
+    listen 443 ssl;
+
+    server_name         architecture.unal;
+    ssl_certificate     architecture.unal.crt;
+    ssl_certificate_key architecture.unal.key;
+
+    location / {
+        proxy_pass http://tomee;
+    }
+}

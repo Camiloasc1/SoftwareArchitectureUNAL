@@ -1,9 +1,12 @@
 ---
-- hosts: database
+- hosts: all
   become: yes
   vars:
     mysql_root_pass: architecture
   tasks:
+  - name: setup hosts
+    copy: src=hosts dest=/etc/hosts
+
   - name: update repos
     apt: update_cache=true
 
@@ -14,19 +17,13 @@
     debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{mysql_root_pass | quote}}' vtype='password'
 
   - name: install mysql
-    apt: pkg=mysql-server state=installed
+    apt: pkg=mariadb-server state=installed
 
   - name: start and enable MySQL
     service: name=mysql state=started enabled=yes
 
-  - name: install git
-    apt: pkg=git state=installed
-
-  - name: clone repo
-    git: repo=https://github.com/Camiloasc1/SoftwareArchitectureUNAL.git dest=SoftwareArchitectureUNAL accept_hostkey=true
-
   - name: create user and database
-    command: ./db.sh chdir=SoftwareArchitectureUNAL/ansible creates=/var/lib/mysql/tomee
+    command: ./db.sh creates=/var/lib/mysql/tomee
 
   - name: setup MySQL
     copy: src=my.cnf dest=/etc/mysql/my.cnf
